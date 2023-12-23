@@ -19,6 +19,7 @@
     "plugins": ["react", "@typescript-eslint"],
     "rules": {
         "prettier/prettier": ["error", { "singleQuote": true, "semi": false }],
-        "space-before-function-paren": ["error", "never"]
+        "space-before-function-paren": ["error", "never"],
+        "react/react-in-jsx-scope": "off"
     }
 }
