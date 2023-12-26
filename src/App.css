@@ -4,10 +4,22 @@ body {
   min-height: 100vh;
   width: 390px;
   margin: 0 auto;
-  background-color: grey;
+  background-color: #fff;
   border: 1px solid;
 }
 
 #root {
   width: 100%;
+}
+
+ul,
+li {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
 }
