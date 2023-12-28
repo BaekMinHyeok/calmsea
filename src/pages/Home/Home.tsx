@@ -1,9 +1,38 @@
+import { Slick } from '../../components/Slider/MainSlider'
 import { Container } from './Home.styles'
+
+const env = process.env
+env.PUBLIC_URL = env.PUBLIC_URL || ''
+interface itemsProps {
+    item: string
+    name: string
+}
+
+const items: itemsProps[] = [
+    {
+        item: process.env.PUBLIC_URL + `assets/main01.png`,
+        name: 'slide01',
+    },
+    {
+        item: process.env.PUBLIC_URL + `assets/main02.png`,
+        name: 'slide02',
+    },
+    {
+        item: process.env.PUBLIC_URL + `assets/main03.png`,
+        name: 'slide03',
+    },
+]
 
 export const Home = () => {
     return (
         <Container>
-            <h2>re</h2>
+            <Slick autoplay={true} speed={500}>
+                {items.map((item, index) => (
+                    <div key={index}>
+                        <img src={item.item} alt={item.name} />
+                    </div>
+                ))}
+            </Slick>
         </Container>
     )
 }

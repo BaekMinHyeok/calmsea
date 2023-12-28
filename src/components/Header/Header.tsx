@@ -1,14 +1,5 @@
 import React, { useCallback, useState } from 'react'
-import {
-    BottomMenu,
-    Container,
-    ModalContent,
-    ModalMenu,
-    SearchInput,
-    SiteLink,
-    SubMenu,
-    TopMenu,
-} from './Header.styles'
+import * as S from './Header.styles'
 import { FaGithub, FaSearch } from 'react-icons/fa'
 import { IoShareSocial } from 'react-icons/io5'
 import { MenuModal } from '../Modal/MenuModal'
@@ -25,8 +16,8 @@ export const Header = () => {
     )
 
     return (
-        <Container>
-            <TopMenu>
+        <S.Container>
+            <S.TopMenu>
                 <Link to="/">
                     <img
                         src={process.env.PUBLIC_URL + `assets/logo.svg`}
@@ -41,8 +32,8 @@ export const Header = () => {
                 </div>
                 {isOpenModal && (
                     <MenuModal onClickToggleModal={onClickToggleModal}>
-                        <ModalContent>
-                            <ModalMenu>
+                        <S.ModalContent>
+                            <S.ModalMenu>
                                 <li>
                                     <Link
                                         to="/concert"
@@ -69,46 +60,49 @@ export const Header = () => {
                                     </Link>
                                 </li>
                                 <li>
-                                    <SubMenu>
+                                    <S.SubMenu>
                                         <Link
                                             to="/concert"
                                             onClick={onClickToggleModal}
                                         >
                                             Ranking
                                         </Link>
+                                        <div>|</div>
                                         <Link
                                             to="/concert"
                                             onClick={onClickToggleModal}
                                         >
                                             SALE
                                         </Link>
-                                    </SubMenu>
+                                    </S.SubMenu>
                                 </li>
                                 <li>
-                                    <SiteLink>
-                                        <Link
-                                            to="/concert"
+                                    <S.SiteLink>
+                                        <a
+                                            href="https://github.com/BaekMinHyeok/calmsea"
+                                            target="_blank"
                                             onClick={onClickToggleModal}
+                                            rel="calmsea noreferrer"
                                         >
                                             <FaGithub />
-                                        </Link>
+                                        </a>
                                         <Link
                                             to="/concert"
                                             onClick={onClickToggleModal}
                                         >
                                             <IoShareSocial />
                                         </Link>
-                                    </SiteLink>
+                                    </S.SiteLink>
                                 </li>
-                            </ModalMenu>
-                        </ModalContent>
+                            </S.ModalMenu>
+                        </S.ModalContent>
                     </MenuModal>
                 )}
-            </TopMenu>
-            <BottomMenu>
-                <SearchInput />
+            </S.TopMenu>
+            <S.BottomMenu>
+                <S.SearchInput />
                 <FaSearch />
-            </BottomMenu>
-        </Container>
+            </S.BottomMenu>
+        </S.Container>
     )
 }
