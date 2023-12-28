@@ -33,6 +33,7 @@ export const Home = () => {
                     </div>
                 ))}
             </Slick>
+            <h1>RANKING</h1>
         </Container>
     )
 }

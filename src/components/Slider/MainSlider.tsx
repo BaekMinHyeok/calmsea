@@ -22,6 +22,7 @@ export const Slick = ({
     const settings = useMemo<Settings>(
         () => ({
             dots: false,
+            arrows: false,
             infinite: loop,
             speed,
             slidesToShow: 1,
