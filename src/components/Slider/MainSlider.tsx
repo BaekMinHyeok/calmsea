@@ -13,12 +13,12 @@ interface sliderProps {
     loop?: boolean
 }
 
-export const Slick = ({
+export function Slick({
     children,
     autoplay = true,
     speed = 500,
     loop = true,
-}: sliderProps) => {
+}: sliderProps) {
     const settings = useMemo<Settings>(
         () => ({
             dots: false,

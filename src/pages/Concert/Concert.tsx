@@ -1,9 +1,10 @@
+import { Title } from '../../components/Text/Text'
 import { Container } from './Concert.styles'
 
-export const Concert = () => {
+export function Concert() {
     return (
         <Container>
-            <h1>콘서트</h1>
+            <Title level={1} text={'콘서트'} underline={true} />
         </Container>
     )
 }

@@ -4,10 +4,10 @@ import { Backdrop, ModalContainer, ModalWrap } from './MenuModal.styles'
 interface MenuModalProps {
     onClickToggleModal: () => void
 }
-export const MenuModal = ({
+export function MenuModal({
     onClickToggleModal,
     children,
-}: PropsWithChildren<MenuModalProps>) => {
+}: PropsWithChildren<MenuModalProps>) {
     return (
         <ModalContainer>
             <ModalWrap>{children}</ModalWrap>

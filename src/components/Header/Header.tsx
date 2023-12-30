@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom'
 const env = process.env
 env.PUBLIC_URL = env.PUBLIC_URL || ''
 
-export const Header = () => {
+export function Header() {
     const [isOpenModal, setOpenModal] = useState<boolean>(false)
     const onClickToggleModal = useCallback(
         () => setOpenModal(!isOpenModal),

@@ -23,7 +23,7 @@ const items: itemsProps[] = [
     },
 ]
 
-export const Home = () => {
+export function Home() {
     return (
         <Container>
             <Slick autoplay={true} speed={500}>
