@@ -9,7 +9,7 @@ interface TitleProps {
     bold?: boolean
 }
 
-const Line = styled.div<{ underline?: boolean }>`
+const Line = styled.div<{ underline?: string }>`
     border: ${(props) => (props.underline ? '1px solid #103680' : 'none')};
     margin: 50px 0 20px 0;
 `
@@ -24,7 +24,7 @@ export function Title({ level, text, underline }: TitleProps) {
     return (
         <>
             <Tag>{text}</Tag>
-            <Line underline={underline}></Line>
+            <Line underline={underline?.toString()}></Line>
         </>
     )
 }

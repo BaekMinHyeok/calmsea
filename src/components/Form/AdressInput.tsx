@@ -7,10 +7,7 @@ interface AdressInputProps {
     label: string
     placeholder: string
     detailPlaceholder: string
-    value: string
-    detailValue: string
     onChange: (e: ChangeEvent<HTMLInputElement>) => void
-    setAddressObj: (obj: { areaAddress: string; townAddress: string }) => void
 }
 
 interface AddressData {
@@ -29,12 +26,13 @@ export function AdressInput({
     label,
     placeholder,
     detailPlaceholder,
-    value,
-    detailValue,
     onChange,
-    setAddressObj,
 }: AdressInputProps) {
     const [isOpenModal, setOpenModal] = useState<boolean>(false)
+    const [addressObj, setAddressObj] = useState({
+        areaAddress: '',
+        townAddress: '',
+    })
 
     const onClickToggleModal = useCallback(
         () => setOpenModal(!isOpenModal),
@@ -69,6 +67,7 @@ export function AdressInput({
                     extraAddress !== '' ? `(${extraAddress})` : ''),
             })
             // 주소 검색이 완료된 후 결과를 매개변수로 전달
+            // setOpenModal(!isOpenModal)
         }
     }
 
@@ -80,7 +79,7 @@ export function AdressInput({
         transform: 'translate(-50%, -50%)',
         zIndex: 99,
     }
-
+    console.log(isOpenModal)
     return (
         <Container>
             <label>{label}</label>
@@ -88,27 +87,26 @@ export function AdressInput({
                 <input
                     type="text"
                     placeholder={placeholder}
-                    value={value}
+                    value={addressObj.areaAddress}
                     onChange={onChange}
                 />
                 <AdminBtn text={'주소검색'} onClick={onClickToggleModal} />
             </AdressStyle>
             {isOpenModal && (
-                <>
-                    <Backdrop onClick={onClickToggleModal}></Backdrop>
+                <Backdrop onClick={onClickToggleModal}>
                     <DaumPostcode
                         style={daumModal}
-                        onComplete={(data) =>
+                        onComplete={(data) => {
                             handleComplete(data, setAddressObj)
-                        }
+                        }}
                     />
-                </>
+                </Backdrop>
             )}
 
             <input
                 type="text"
                 placeholder={detailPlaceholder}
-                value={detailValue}
+                value={addressObj.townAddress}
                 onChange={onChange}
             />
         </Container>
