@@ -3,10 +3,11 @@ import { AdressStyle, Backdrop, Container } from './Form.styes'
 import { AdminBtn } from '../Button/Button'
 import DaumPostcode from 'react-daum-postcode'
 
-interface AdressInputProps {
+interface AddressInputProps {
     label: string
     placeholder: string
     detailPlaceholder: string
+    value: string
     onChange: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
@@ -22,12 +23,13 @@ interface Address {
     areaAddress: string
     townAddress: string
 }
-export function AdressInput({
+export function AddressInput({
     label,
     placeholder,
     detailPlaceholder,
     onChange,
-}: AdressInputProps) {
+    value,
+}: AddressInputProps) {
     const [isOpenModal, setOpenModal] = useState<boolean>(false)
     const [addressObj, setAddressObj] = useState({
         areaAddress: '',
@@ -79,13 +81,14 @@ export function AdressInput({
         transform: 'translate(-50%, -50%)',
         zIndex: 99,
     }
-    console.log(isOpenModal)
+
     return (
         <Container>
             <label>{label}</label>
             <AdressStyle>
                 <input
                     type="text"
+                    readOnly={true}
                     placeholder={placeholder}
                     value={addressObj.areaAddress}
                     onChange={onChange}
@@ -98,6 +101,7 @@ export function AdressInput({
                         style={daumModal}
                         onComplete={(data) => {
                             handleComplete(data, setAddressObj)
+                            onClickToggleModal()
                         }}
                     />
                 </Backdrop>
@@ -105,6 +109,7 @@ export function AdressInput({
 
             <input
                 type="text"
+                readOnly={true}
                 placeholder={detailPlaceholder}
                 value={addressObj.townAddress}
                 onChange={onChange}

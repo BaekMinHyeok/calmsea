@@ -15,7 +15,7 @@ export const Container = styled.div`
         box-shadow:
             5px 5px 20px 1px rgba(221, 221, 221, 0.25),
             5px 5px 28px 0px rgba(255, 255, 255, 0.25) inset;
-        color: #b9b9b9;
+        color: #000;
         padding: 0 20px;
         margin-top: 10px;
     }
@@ -23,7 +23,7 @@ export const Container = styled.div`
         color: #000;
     }
 `
-
+// 주소
 export const AdressStyle = styled.div`
     display: flex;
     gap: 20px;
@@ -32,9 +32,10 @@ export const AdressStyle = styled.div`
 
     & input {
         width: 60%;
+        color: #000;
     }
 `
-
+// 주소 모달 배경
 export const Backdrop = styled.div`
     width: 100vw;
     height: 100vh;
@@ -43,4 +44,14 @@ export const Backdrop = styled.div`
     left: 0;
     z-index: 9;
     background-color: rgba(0, 0, 0, 0.2);
+`
+
+// 카테고리 체크박스
+export const CategoryContent = styled.div`
+    display: flex;
+    align-items: flex-end;
+`
+export const CategoryLabel = styled.label`
+    font-size: 14px;
+    font-weight: bold;
 `
