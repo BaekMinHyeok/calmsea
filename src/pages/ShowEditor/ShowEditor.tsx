@@ -7,19 +7,21 @@ import { CategoryCheckbox } from '../../components/Form/CategoryCheckbox'
 import { CategoryItems } from '../../util/CategoryList'
 import { TimeInput } from '../../components/Form/TimeInput'
 import { PriceInput } from '../../components/Form/PriceInput'
+import { ImageInput } from '../../components/Form/ImageInput'
 
 export const getStringDate = (date: Date) => {
     return date.toISOString().slice(0, 10)
 }
 
 export function ShowEditor() {
-    const [title, setTitle] = useState('')
+    const [title, setTitle] = useState<string>('')
     const [date, setDate] = useState(getStringDate(new Date()))
-    const [address, setAddress] = useState('')
+    const [address, setAddress] = useState<string>('')
     const [selectedCategories, setSelectedCategories] = useState<number>(0)
     const [showTime, setShowTime] = useState<number>(0)
-    const [performer, setPerformer] = useState('')
+    const [performer, setPerformer] = useState<string>('')
     const [price, setPrice] = useState<number>(0)
+    const [selectedImage, setSelectedImage] = useState<string | null>(null)
 
     const handleCategoryClick = useCallback((categoryId: number) => {
         setSelectedCategories(categoryId)
@@ -31,6 +33,10 @@ export function ShowEditor() {
 
     const handlePriceChange = (value: number) => {
         setPrice(value)
+    }
+
+    const handleImageChage = (image: string | null) => {
+        setSelectedImage(image)
     }
 
     return (
@@ -83,9 +89,12 @@ export function ShowEditor() {
                 />
                 <PriceInput
                     label="가격"
-                    placeholder="가격을 작성해주세요."
                     value={price}
                     onChange={handlePriceChange}
+                />
+                <ImageInput
+                    selectedImage={selectedImage}
+                    onImageChange={handleImageChage}
                 />
             </S.Wrap>
         </S.Container>

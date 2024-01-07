@@ -81,3 +81,8 @@ export const TimeInputStyle = styled.input`
     border: none;
     background-color: inherit;
 `
+// 이미지 업로드
+export const ImageUploadStyle = styled.img`
+    max-width: 100%;
+    max-height: 200px;
+`
