@@ -1,4 +1,5 @@
 import { ChangeEvent, useState } from 'react'
+import { TimeInputWrap, TimeLabel, TimeInputStyle } from './Form.styes'
 
 interface TimeInputProps {
     label: string
@@ -34,15 +35,21 @@ export function TimeInput({ label, onChange }: TimeInputProps) {
     }
 
     return (
-        <>
-            <label>{label}</label>
-            <input
-                type="time"
-                value={startTime}
-                onChange={handleStartTimeChange}
-            />
-            <span>~</span>
-            <input type="time" value={endTime} onChange={handleEndTimeChange} />
-        </>
+        <div>
+            <TimeLabel>{label}</TimeLabel>
+            <TimeInputWrap>
+                <TimeInputStyle
+                    type="time"
+                    value={startTime}
+                    onChange={handleStartTimeChange}
+                />
+                <span>~</span>
+                <TimeInputStyle
+                    type="time"
+                    value={endTime}
+                    onChange={handleEndTimeChange}
+                />
+            </TimeInputWrap>
+        </div>
     )
 }

@@ -22,3 +22,11 @@ export const CategortWrap = styled.div`
     display: flex;
     gap: 30px;
 `
+
+// 관람시간
+export const TimeContainer = styled.div`
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    margin-bottom: 20px;
+`

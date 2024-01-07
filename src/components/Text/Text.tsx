@@ -2,37 +2,30 @@ import React from 'react'
 import styled from 'styled-components'
 
 interface TitleProps {
-    level?: number
     text: string
-    underline?: boolean
-    size?: string
-    bold?: boolean
+    size?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'b' | 'p' | 'sub'
 }
 
-const Line = styled.div<{ underline?: string }>`
-    border: ${(props) => (props.underline ? '1px solid #103680' : 'none')};
+const LineStyle = styled.div`
+    border: 1px solid #103680;
     margin: 50px 0 20px 0;
 `
 
-const TextStyle = styled.p<{ bold?: boolean; size?: string }>`
-    font-weight: ${(props) => (props.bold ? 'bold' : 'normal')};
-    font-size: ${(props) => (props.size ? props.size : 'inherit')};
-`
+// const TextStyle = styled.p<{ size?: string }>`
+//     font-size: ${(props) => (props.size ? props.size : 'inherit')};
+// `
 
-export function Title({ level, text, underline }: TitleProps) {
-    const Tag = `h${level}` as 'h1' | 'h2' | 'h3'
+export function Title({ text, size }: TitleProps) {
+    const TitleTag = size
     return (
         <>
-            <Tag>{text}</Tag>
-            <Line underline={underline?.toString()}></Line>
+            {TitleTag ? <TitleTag>{text}</TitleTag> : null}
+            <LineStyle />
         </>
     )
 }
 
-export function Text({ text, size, bold }: TitleProps) {
-    return (
-        <TextStyle bold={bold} size={size}>
-            {text}
-        </TextStyle>
-    )
+export function Text({ text, size }: TitleProps) {
+    const TitleTag = size
+    return <>{TitleTag ? <TitleTag>{text}</TitleTag> : null}</>
 }

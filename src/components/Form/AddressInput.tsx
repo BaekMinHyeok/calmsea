@@ -31,7 +31,7 @@ export function AddressInput({
     value,
 }: AddressInputProps) {
     const [isOpenModal, setOpenModal] = useState<boolean>(false)
-    const [addressObj, setAddressObj] = useState({
+    const [addressObj, setAddressObj] = useState<Address>({
         areaAddress: '',
         townAddress: '',
     })
@@ -69,7 +69,6 @@ export function AddressInput({
                     extraAddress !== '' ? `(${extraAddress})` : ''),
             })
             // 주소 검색이 완료된 후 결과를 매개변수로 전달
-            // setOpenModal(!isOpenModal)
         }
     }
 

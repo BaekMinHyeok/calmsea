@@ -16,7 +16,7 @@ export const Container = styled.div`
             5px 5px 20px 1px rgba(221, 221, 221, 0.25),
             5px 5px 28px 0px rgba(255, 255, 255, 0.25) inset;
         color: #000;
-        padding: 0 20px;
+        padding: 0 10px;
         margin-top: 10px;
     }
     & input[type='date'] {
@@ -54,4 +54,30 @@ export const CategoryContent = styled.div`
 export const CategoryLabel = styled.label`
     font-size: 14px;
     font-weight: bold;
+`
+// 관람시간
+
+export const TimeInputWrap = styled.div`
+    background-color: #f3f3f3;
+    box-shadow:
+        5px 5px 20px 1px rgba(221, 221, 221, 0.25),
+        5px 5px 28px 0px rgba(255, 255, 255, 0.25) inset;
+    border-radius: 5px;
+    & input {
+        height: 25px;
+        border: none;
+        color: #000;
+        padding: 0 10px;
+    }
+`
+export const TimeLabel = styled.label`
+    display: inline-block;
+    width: 100%;
+    font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 10px;
+`
+export const TimeInputStyle = styled.input`
+    border: none;
+    background-color: inherit;
 `

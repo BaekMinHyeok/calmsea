@@ -4,7 +4,7 @@ import { Container } from './Concert.styles'
 export function Concert() {
     return (
         <Container>
-            <Title level={1} text={'콘서트'} underline={true} />
+            <Title text={'콘서트'} size="h2" />
         </Container>
     )
 }
