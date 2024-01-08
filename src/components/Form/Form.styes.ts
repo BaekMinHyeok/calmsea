@@ -22,6 +22,16 @@ export const Container = styled.div`
     & input[type='date'] {
         color: #000;
     }
+
+    & input[type='file'] {
+        width: 80%;
+        margin: 0;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+    & input[type='file']::file-selector-button {
+        display: none;
+    }
 `
 // 주소
 export const AdressStyle = styled.div`
@@ -31,8 +41,11 @@ export const AdressStyle = styled.div`
     justify-content: space-between;
 
     & input {
-        width: 60%;
+        width: 80%;
         color: #000;
+    }
+    & button {
+        width: 40%;
     }
 `
 // 주소 모달 배경
@@ -82,7 +95,50 @@ export const TimeInputStyle = styled.input`
     background-color: inherit;
 `
 // 이미지 업로드
+export const FileInputWrap = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+`
+export const FileLabel = styled.label`
+    display: inline-block;
+    height: 35px;
+    width: 40%;
+    color: #fff;
+    border-radius: 5px;
+    background: #a7b3c9;
+    box-shadow:
+        5px 5px 20px 1px rgba(221, 221, 221, 0.25),
+        5px 5px 28px 0px rgba(255, 255, 255, 0.25) inset;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: normal;
+`
+export const FileInput = styled.input`
+    display: none;
+`
+
 export const ImageUploadStyle = styled.img`
-    max-width: 100%;
+    margin-top: 20px;
+    max-width: 50%;
     max-height: 200px;
+`
+
+// 상세설명
+
+export const DescriptionText = styled.textarea`
+    margin-top: 10px;
+    height: 120px;
+    border-radius: 5px;
+    background: #f3f3f3;
+    box-shadow:
+        5px 5px 20px 1px rgba(221, 221, 221, 0.25),
+        5px 5px 28px 0px rgba(255, 255, 255, 0.25) inset;
+    border: none;
+    padding: 10px;
+    overflow-y: scroll;
+    resize: none;
 `

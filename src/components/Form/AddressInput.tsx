@@ -1,14 +1,17 @@
-import React, { ChangeEvent, useCallback, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { AdressStyle, Backdrop, Container } from './Form.styes'
 import { AdminBtn } from '../Button/Button'
 import DaumPostcode from 'react-daum-postcode'
-
+export interface Address {
+    areaAddress: string
+    townAddress: string
+}
 interface AddressInputProps {
     label: string
     placeholder: string
     detailPlaceholder: string
-    value: string
-    onChange: (e: ChangeEvent<HTMLInputElement>) => void
+    address: Address
+    onAddressChange: (address: Address) => void
 }
 
 interface AddressData {
@@ -19,22 +22,15 @@ interface AddressData {
     bname: string
     buildingName: string
 }
-interface Address {
-    areaAddress: string
-    townAddress: string
-}
+
 export function AddressInput({
     label,
     placeholder,
     detailPlaceholder,
-    onChange,
-    value,
+    address,
+    onAddressChange,
 }: AddressInputProps) {
     const [isOpenModal, setOpenModal] = useState<boolean>(false)
-    const [addressObj, setAddressObj] = useState<Address>({
-        areaAddress: '',
-        townAddress: '',
-    })
 
     const onClickToggleModal = useCallback(
         () => setOpenModal(!isOpenModal),
@@ -43,7 +39,7 @@ export function AddressInput({
 
     const handleComplete = (
         data: AddressData,
-        onComplete: (address: Address) => void,
+        // onComplete: (address: Address) => void,
     ) => {
         let fullAddress = data.address
         let extraAddress = '' // 추가될 주소
@@ -63,11 +59,15 @@ export function AddressInput({
             // 지역주소 제외 전체주소 치환
             fullAddress = fullAddress.replace(localAddress, '')
             // 조건 판단 완료 후 지역 주소 및 상세주소 state 수정
-            setAddressObj({
+            const newAddress: Address = {
                 areaAddress: localAddress,
-                townAddress: (fullAddress +=
-                    extraAddress !== '' ? `(${extraAddress})` : ''),
-            })
+                townAddress:
+                    fullAddress +
+                    (extraAddress !== '' ? `(${extraAddress})` : ''),
+            }
+            onAddressChange(newAddress)
+            onClickToggleModal()
+
             // 주소 검색이 완료된 후 결과를 매개변수로 전달
         }
     }
@@ -89,8 +89,7 @@ export function AddressInput({
                     type="text"
                     readOnly={true}
                     placeholder={placeholder}
-                    value={addressObj.areaAddress}
-                    onChange={onChange}
+                    value={address.areaAddress}
                 />
                 <AdminBtn text={'주소검색'} onClick={onClickToggleModal} />
             </AdressStyle>
@@ -99,8 +98,7 @@ export function AddressInput({
                     <DaumPostcode
                         style={daumModal}
                         onComplete={(data) => {
-                            handleComplete(data, setAddressObj)
-                            onClickToggleModal()
+                            handleComplete(data)
                         }}
                     />
                 </Backdrop>
@@ -110,8 +108,7 @@ export function AddressInput({
                 type="text"
                 readOnly={true}
                 placeholder={detailPlaceholder}
-                value={addressObj.townAddress}
-                onChange={onChange}
+                value={address.townAddress}
             />
         </Container>
     )

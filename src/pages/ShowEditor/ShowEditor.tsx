@@ -2,12 +2,14 @@ import * as S from './ShowEditor.styles'
 import * as T from '../../components/Text/Text'
 import { DateInput, TextInput } from '../../components/Form/TextInput'
 import { useCallback, useState } from 'react'
-import { AddressInput } from '../../components/Form/AddressInput'
+import { Address, AddressInput } from '../../components/Form/AddressInput'
 import { CategoryCheckbox } from '../../components/Form/CategoryCheckbox'
 import { CategoryItems } from '../../util/CategoryList'
 import { TimeInput } from '../../components/Form/TimeInput'
 import { PriceInput } from '../../components/Form/PriceInput'
 import { ImageInput } from '../../components/Form/ImageInput'
+import { Description } from '../../components/Form/Description'
+import { AdminBtn } from '../../components/Button/Button'
 
 export const getStringDate = (date: Date) => {
     return date.toISOString().slice(0, 10)
@@ -16,27 +18,62 @@ export const getStringDate = (date: Date) => {
 export function ShowEditor() {
     const [title, setTitle] = useState<string>('')
     const [date, setDate] = useState(getStringDate(new Date()))
-    const [address, setAddress] = useState<string>('')
+    const [address, setAddress] = useState<Address>({
+        areaAddress: '',
+        townAddress: '',
+    })
     const [selectedCategories, setSelectedCategories] = useState<number>(0)
     const [showTime, setShowTime] = useState<number>(0)
     const [performer, setPerformer] = useState<string>('')
     const [price, setPrice] = useState<number>(0)
     const [selectedImage, setSelectedImage] = useState<string | null>(null)
+    const [descriptionImage, setDescriptionImage] = useState<string | null>(
+        null,
+    )
+    const [description, setDescription] = useState<string>('')
 
+    // 카테고리
     const handleCategoryClick = useCallback((categoryId: number) => {
         setSelectedCategories(categoryId)
     }, [])
-
+    // 관람시간
     const handleTimeChange = (minutes: number) => {
         setShowTime(minutes)
     }
-
+    const handleAddressChange = useCallback((newAddress: Address) => {
+        setAddress(newAddress)
+    }, [])
+    // 가격
     const handlePriceChange = (value: number) => {
         setPrice(value)
     }
-
-    const handleImageChage = (image: string | null) => {
+    // 이미지
+    const handleImageChange = (image: string | null) => {
         setSelectedImage(image)
+    }
+    // 상세설명 이미지
+    const handleDescriptionImageChange = (image: string | null) => {
+        setDescriptionImage(image)
+    }
+    // 상세설명 내용
+    const handleDescriptionChange = (description: string) => {
+        setDescription(description)
+    }
+
+    // 버튼
+    const handleCreatePost = () => {
+        console.log({
+            title,
+            date,
+            address,
+            selectedCategories,
+            showTime,
+            performer,
+            price,
+            selectedImage,
+            descriptionImage,
+            description,
+        })
     }
 
     return (
@@ -57,8 +94,8 @@ export function ShowEditor() {
                 />
                 <AddressInput
                     label="주소"
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
+                    address={address}
+                    onAddressChange={handleAddressChange}
                     placeholder="주소를 입력해주세요"
                     detailPlaceholder="상세주소를 입력해주세요"
                 />
@@ -93,9 +130,18 @@ export function ShowEditor() {
                     onChange={handlePriceChange}
                 />
                 <ImageInput
+                    label="이미지"
                     selectedImage={selectedImage}
-                    onImageChange={handleImageChage}
+                    onImageChange={handleImageChange}
                 />
+                <Description
+                    label="상세설명"
+                    selectedImage={descriptionImage}
+                    description={description}
+                    onImageChange={handleDescriptionImageChange}
+                    onDescriptionChange={handleDescriptionChange}
+                />
+                <AdminBtn text="게시글 작성" onClick={handleCreatePost} />
             </S.Wrap>
         </S.Container>
     )

@@ -8,6 +8,6 @@ export const AdminButton = styled.button`
         5px 5px 20px 1px rgba(221, 221, 221, 0.25),
         5px 5px 28px 0px rgba(255, 255, 255, 0.25) inset;
     border: none;
-    width: 82px;
+    width: 100%;
     height: 35px;
 `
