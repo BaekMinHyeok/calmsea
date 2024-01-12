@@ -1,6 +1,5 @@
 import { atom } from 'recoil'
 import { Address } from '../../components/Form/AddressInput'
-import { getStringDate } from '../../pages/\bShowEditor/ShowEditor'
 
 export interface PostState {
     id: number
@@ -18,22 +17,5 @@ export interface PostState {
 
 export const postState = atom<PostState[]>({
     key: 'postState',
-    default: [
-        {
-            id: 0,
-            title: '',
-            date: getStringDate(new Date()),
-            address: {
-                areaAddress: '',
-                townAddress: '',
-            },
-            selectedCategories: 0,
-            showTime: 0,
-            performer: '',
-            price: 0,
-            selectedImage: null,
-            descriptionImage: null,
-            description: '',
-        },
-    ],
+    default: [],
 })

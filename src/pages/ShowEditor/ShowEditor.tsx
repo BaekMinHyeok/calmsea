@@ -1,7 +1,7 @@
 import * as S from './ShowEditor.styles'
 import * as T from '../../components/Text/Text'
 import { DateInput, TextInput } from '../../components/Form/TextInput'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Address, AddressInput } from '../../components/Form/AddressInput'
 import { CategoryCheckbox } from '../../components/Form/CategoryCheckbox'
 import { CategoryItems } from '../../util/CategoryList'
@@ -10,6 +10,8 @@ import { PriceInput } from '../../components/Form/PriceInput'
 import { ImageInput } from '../../components/Form/ImageInput'
 import { Description } from '../../components/Form/Description'
 import { AdminBtn } from '../../components/Button/Button'
+import { useRecoilState } from 'recoil'
+import { postState } from '../../recoil/atoms/postState'
 
 export const getStringDate = (date: Date) => {
     return date.toISOString().slice(0, 10)
@@ -22,7 +24,7 @@ export function ShowEditor() {
         areaAddress: '',
         townAddress: '',
     })
-    const [selectedCategories, setSelectedCategories] = useState<number>(0)
+    const [selectedCategories, setSelectedCategories] = useState<number>(1)
     const [showTime, setShowTime] = useState<number>(0)
     const [performer, setPerformer] = useState<string>('')
     const [price, setPrice] = useState<number>(0)
@@ -31,6 +33,13 @@ export function ShowEditor() {
         null,
     )
     const [description, setDescription] = useState<string>('')
+    // 게시글 상태관리
+    const [post, setPost] = useRecoilState(postState)
+    // post 상태유지
+    useEffect(() => {
+        const storedPost = JSON.parse(localStorage.getItem('post') || '[]')
+        setPost(storedPost)
+    }, [])
 
     // 카테고리
     const handleCategoryClick = useCallback((categoryId: number) => {
@@ -62,18 +71,46 @@ export function ShowEditor() {
 
     // 버튼
     const handleCreatePost = () => {
-        console.log({
-            title,
-            date,
-            address,
-            selectedCategories,
-            showTime,
-            performer,
-            price,
-            selectedImage,
-            descriptionImage,
-            description,
+        setPost((prevPost) => {
+            const newPost = [
+                ...prevPost,
+                {
+                    id: prevPost.length + 1,
+                    title,
+                    date,
+                    address,
+                    selectedCategories,
+                    showTime,
+                    performer,
+                    price,
+                    selectedImage,
+                    descriptionImage,
+                    description,
+                },
+            ]
+
+            localStorage.setItem('post', JSON.stringify(newPost))
+
+            return newPost
         })
+        resetForm()
+        alert('게시글이 작성되었습니다.')
+    }
+    console.log(post)
+    const resetForm = () => {
+        setTitle('')
+        setDate(getStringDate(new Date()))
+        setAddress({
+            areaAddress: '',
+            townAddress: '',
+        })
+        setSelectedCategories(1)
+        setShowTime(0)
+        setPerformer('')
+        setPrice(0)
+        setSelectedImage(null)
+        setDescriptionImage(null)
+        setDescription('')
     }
 
     return (
