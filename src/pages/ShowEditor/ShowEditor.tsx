@@ -10,7 +10,7 @@ import { PriceInput } from '../../components/Form/PriceInput'
 import { ImageInput } from '../../components/Form/ImageInput'
 import { Description } from '../../components/Form/Description'
 import { AdminBtn } from '../../components/Button/Button'
-import { useRecoilState } from 'recoil'
+import { useSetRecoilState } from 'recoil'
 import { postState } from '../../recoil/atoms/postState'
 
 export const getStringDate = (date: Date) => {
@@ -34,7 +34,7 @@ export function ShowEditor() {
     )
     const [description, setDescription] = useState<string>('')
     // 게시글 상태관리
-    const [post, setPost] = useRecoilState(postState)
+    const setPost = useSetRecoilState(postState)
     // post 상태유지
     useEffect(() => {
         const storedPost = JSON.parse(localStorage.getItem('post') || '[]')
@@ -88,15 +88,13 @@ export function ShowEditor() {
                     description,
                 },
             ]
-
             localStorage.setItem('post', JSON.stringify(newPost))
-
             return newPost
         })
         resetForm()
         alert('게시글이 작성되었습니다.')
     }
-    console.log(post)
+
     const resetForm = () => {
         setTitle('')
         setDate(getStringDate(new Date()))
