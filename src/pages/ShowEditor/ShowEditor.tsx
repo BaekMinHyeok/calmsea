@@ -1,7 +1,7 @@
 import * as S from './ShowEditor.styles'
 import * as T from '../../components/Text/Text'
 import { DateInput, TextInput } from '../../components/Form/TextInput'
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { Address, AddressInput } from '../../components/Form/AddressInput'
 import { CategoryCheckbox } from '../../components/Form/CategoryCheckbox'
 import { CategoryItems } from '../../util/CategoryList'
@@ -10,29 +10,20 @@ import { PriceInput } from '../../components/Form/PriceInput'
 import { ImageInput } from '../../components/Form/ImageInput'
 import { Description } from '../../components/Form/Description'
 import { AdminBtn } from '../../components/Button/Button'
-import { useSetRecoilState } from 'recoil'
-import { postState } from '../../recoil/atoms/postState'
+import { useRecoilState, useSetRecoilState } from 'recoil'
+import {
+    PostState,
+    postState,
+    showInputState,
+} from '../../recoil/atoms/postState'
 
 export const getStringDate = (date: Date) => {
     return date.toISOString().slice(0, 10)
 }
 
 export function ShowEditor() {
-    const [title, setTitle] = useState<string>('')
-    const [date, setDate] = useState(getStringDate(new Date()))
-    const [address, setAddress] = useState<Address>({
-        areaAddress: '',
-        townAddress: '',
-    })
-    const [selectedCategories, setSelectedCategories] = useState<number>(1)
-    const [showTime, setShowTime] = useState<number>(0)
-    const [performer, setPerformer] = useState<string>('')
-    const [price, setPrice] = useState<number>(0)
-    const [selectedImage, setSelectedImage] = useState<string | null>(null)
-    const [descriptionImage, setDescriptionImage] = useState<string | null>(
-        null,
-    )
-    const [description, setDescription] = useState<string>('')
+    const [showInput, setShowInput] = useRecoilState(showInputState)
+    console.log(showInput)
     // 게시글 상태관리
     const setPost = useSetRecoilState(postState)
     // post 상태유지
@@ -41,51 +32,27 @@ export function ShowEditor() {
         setPost(storedPost)
     }, [])
 
-    // 카테고리
-    const handleCategoryClick = useCallback((categoryId: number) => {
-        setSelectedCategories(categoryId)
-    }, [])
-    // 관람시간
-    const handleTimeChange = (minutes: number) => {
-        setShowTime(minutes)
+    const handleShowInputChange = (
+        key: keyof PostState,
+        value: string | number | Address,
+    ) => {
+        setShowInput((prevInputState) => ({
+            ...prevInputState,
+            [key]: value,
+        }))
     }
-    const handleAddressChange = useCallback((newAddress: Address) => {
-        setAddress(newAddress)
-    }, [])
-    // 가격
-    const handlePriceChange = (value: number) => {
-        setPrice(value)
+    const handleAddressChange = (newAddress: Address) => {
+        // Address 객체를 문자열로 변환
+        handleShowInputChange('address', newAddress)
     }
-    // 이미지
-    const handleImageChange = (image: string | null) => {
-        setSelectedImage(image)
-    }
-    // 상세설명 이미지
-    const handleDescriptionImageChange = (image: string | null) => {
-        setDescriptionImage(image)
-    }
-    // 상세설명 내용
-    const handleDescriptionChange = (description: string) => {
-        setDescription(description)
-    }
-
     // 버튼
     const handleCreatePost = () => {
         setPost((prevPost) => {
             const newPost = [
                 ...prevPost,
                 {
+                    ...showInput,
                     id: prevPost.length + 1,
-                    title,
-                    date,
-                    address,
-                    selectedCategories,
-                    showTime,
-                    performer,
-                    price,
-                    selectedImage,
-                    descriptionImage,
-                    description,
                 },
             ]
             localStorage.setItem('post', JSON.stringify(newPost))
@@ -96,19 +63,22 @@ export function ShowEditor() {
     }
 
     const resetForm = () => {
-        setTitle('')
-        setDate(getStringDate(new Date()))
-        setAddress({
-            areaAddress: '',
-            townAddress: '',
+        setShowInput({
+            id: 0,
+            title: '',
+            date: new Date().toISOString().slice(0, 10),
+            address: {
+                areaAddress: '',
+                townAddress: '',
+            },
+            selectedCategories: 1,
+            showTime: 0,
+            performer: '',
+            price: 0,
+            selectedImage: null,
+            descriptionImage: null,
+            description: '',
         })
-        setSelectedCategories(1)
-        setShowTime(0)
-        setPerformer('')
-        setPrice(0)
-        setSelectedImage(null)
-        setDescriptionImage(null)
-        setDescription('')
     }
 
     return (
@@ -119,17 +89,21 @@ export function ShowEditor() {
                 <TextInput
                     label="제목"
                     placeholder="제목을 입력해주세요."
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
+                    value={showInput.title}
+                    onChange={(e) =>
+                        handleShowInputChange('title', e.target.value)
+                    }
                 />
                 <DateInput
                     label="일정"
-                    value={date}
-                    onChange={(e) => setDate(e.target.value)}
+                    value={showInput.date}
+                    onChange={(e) =>
+                        handleShowInputChange('date', e.target.value)
+                    }
                 />
                 <AddressInput
                     label="주소"
-                    address={address}
+                    address={showInput.address}
                     onAddressChange={handleAddressChange}
                     placeholder="주소를 입력해주세요"
                     detailPlaceholder="상세주소를 입력해주세요"
@@ -142,39 +116,58 @@ export function ShowEditor() {
                                 key={item.categoryId}
                                 {...item}
                                 isSelected={
-                                    item.categoryId === selectedCategories
+                                    item.categoryId ===
+                                    showInput.selectedCategories
                                 }
-                                onClick={handleCategoryClick}
+                                onClick={() =>
+                                    handleShowInputChange(
+                                        'selectedCategories',
+                                        item.categoryId,
+                                    )
+                                }
                             />
                         ))}
                     </S.CategortWrap>
                 </S.CategortContainer>
                 <S.TimeContainer>
-                    <TimeInput label="관람시간" onChange={handleTimeChange} />
-                    <p>총 {showTime}분</p>
+                    <TimeInput
+                        label="관람시간"
+                        onChange={(value) =>
+                            handleShowInputChange('showTime', value)
+                        }
+                    />
+                    <p>총 {showInput.showTime}분</p>
                 </S.TimeContainer>
                 <TextInput
                     label="출연자"
                     placeholder="출연자를 작성해주세요."
-                    value={performer}
-                    onChange={(e) => setPerformer(e.target.value)}
+                    value={showInput.performer}
+                    onChange={(e) =>
+                        handleShowInputChange('performer', e.target.value)
+                    }
                 />
                 <PriceInput
                     label="가격"
-                    value={price}
-                    onChange={handlePriceChange}
+                    value={showInput.price}
+                    onChange={(value) => handleShowInputChange('price', value)}
                 />
                 <ImageInput
                     label="이미지"
-                    selectedImage={selectedImage}
-                    onImageChange={handleImageChange}
+                    selectedImage={showInput.selectedImage}
+                    onImageChange={(image) =>
+                        handleShowInputChange('selectedImage', image ?? '')
+                    }
                 />
                 <Description
                     label="상세설명"
-                    selectedImage={descriptionImage}
-                    description={description}
-                    onImageChange={handleDescriptionImageChange}
-                    onDescriptionChange={handleDescriptionChange}
+                    selectedImage={showInput.descriptionImage}
+                    description={showInput.description}
+                    onImageChange={(image) =>
+                        handleShowInputChange('descriptionImage', image ?? '')
+                    }
+                    onDescriptionChange={(e) =>
+                        handleShowInputChange('description', e)
+                    }
                 />
                 <AdminBtn text="게시글 작성" onClick={handleCreatePost} />
             </S.Wrap>

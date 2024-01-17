@@ -19,3 +19,23 @@ export const postState = atom<PostState[]>({
     key: 'postState',
     default: [],
 })
+
+export const showInputState = atom<PostState>({
+    key: 'showInputState',
+    default: {
+        id: 0,
+        title: '',
+        date: new Date().toISOString().slice(0, 10),
+        address: {
+            areaAddress: '',
+            townAddress: '',
+        },
+        selectedCategories: 1,
+        showTime: 0,
+        performer: '',
+        price: 0,
+        selectedImage: null,
+        descriptionImage: null,
+        description: '',
+    },
+})
