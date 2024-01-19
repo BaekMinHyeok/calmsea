@@ -23,6 +23,7 @@ export const getStringDate = (date: Date) => {
 
 export function ShowEditor() {
     const [showInput, setShowInput] = useRecoilState(showInputState)
+    // const posts = useRecoilValue(getAllPostSelectors)
     console.log(showInput)
     // 게시글 상태관리
     const setPost = useSetRecoilState(postState)
