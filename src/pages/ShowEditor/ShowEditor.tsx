@@ -16,22 +16,33 @@ import {
     postState,
     showInputState,
 } from '../../recoil/atoms/postState'
+import { useNavigate, useParams } from 'react-router-dom'
 
 export const getStringDate = (date: Date) => {
     return date.toISOString().slice(0, 10)
 }
 
 export function ShowEditor() {
+    const navigate = useNavigate()
+    const { id } = useParams()
+    // 게시글 내용관리
     const [showInput, setShowInput] = useRecoilState(showInputState)
-    // const posts = useRecoilValue(getAllPostSelectors)
     console.log(showInput)
     // 게시글 상태관리
     const setPost = useSetRecoilState(postState)
     // post 상태유지
     useEffect(() => {
         const storedPost = JSON.parse(localStorage.getItem('post') || '[]')
-        setPost(storedPost)
-    }, [])
+        // id가 존재할때
+        if (id) {
+            const editPost = storedPost.find(
+                (post: PostState) => post.id === parseInt(id),
+            )
+            if (editPost) {
+                setShowInput(editPost)
+            }
+        }
+    }, [id, setShowInput])
 
     const handleShowInputChange = (
         key: keyof PostState,
@@ -60,7 +71,27 @@ export function ShowEditor() {
             return newPost
         })
         resetForm()
+        navigate('/showlist')
         alert('게시글이 작성되었습니다.')
+    }
+
+    const handleEditPost = () => {
+        const storedPosts = JSON.parse(
+            localStorage.getItem('post') || '[]',
+        ) as PostState[]
+        const editIndex = storedPosts.findIndex(
+            (post) => post.id === showInput.id,
+        )
+        if (editIndex !== -1) {
+            storedPosts[editIndex] = showInput
+            localStorage.setItem('post', JSON.stringify(storedPosts))
+            setPost(storedPosts)
+            resetForm()
+            navigate('/showlist')
+            alert('게시글이 수정되었습니다')
+        } else {
+            alert('수정할 게시글을 찾을 수 없습니다.')
+        }
     }
 
     const resetForm = () => {
@@ -85,7 +116,7 @@ export function ShowEditor() {
     return (
         <S.Container>
             {/* 게시글 수정일때도 만들어야함 */}
-            <T.Title text={'게시글 작성'} size="h2" />
+            <T.Title text={id ? '게시글 수정' : '게시글 작성'} size="h2" />
             <S.Wrap>
                 <TextInput
                     label="제목"
@@ -170,7 +201,10 @@ export function ShowEditor() {
                         handleShowInputChange('description', e)
                     }
                 />
-                <AdminBtn text="게시글 작성" onClick={handleCreatePost} />
+                <AdminBtn
+                    text={id ? '게시글 수정' : '게시글 작성'}
+                    onClick={id ? handleEditPost : handleCreatePost}
+                />
             </S.Wrap>
         </S.Container>
     )

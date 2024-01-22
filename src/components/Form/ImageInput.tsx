@@ -1,10 +1,12 @@
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useEffect } from 'react'
 import {
     Container,
     FileInputWrap,
     FileLabel,
     ImageUploadStyle,
 } from './Form.styes'
+import { useSetRecoilState } from 'recoil'
+import { showInputState } from '../../recoil/atoms/postState'
 
 interface ImageInputProps {
     label: string
@@ -18,7 +20,17 @@ export function ImageInput({
     selectedImage,
     onImageChange,
 }: ImageInputProps) {
-    const [fileName, setFileName] = useState<string | null>(null)
+    // const [showInput, setShowInput] = useRecoilState(showInputState)
+    const setShowInput = useSetRecoilState(showInputState)
+
+    useEffect(() => {
+        if (selectedImage) {
+            setShowInput((prevInputState) => ({
+                ...prevInputState,
+                selectedImage,
+            }))
+        }
+    }, [selectedImage, setShowInput])
     const isImageFile = (file: File): boolean => {
         const allowedExtesions = /(\.jpg|\.jpeg|\.png|\.gif)$/i
         return allowedExtesions.test(file.name)
@@ -35,16 +47,17 @@ export function ImageInput({
                 const reader = new FileReader()
                 reader.onloadend = () => {
                     onImageChange(reader.result as string)
-                    setFileName(file.name)
+                    setShowInput((prev) => ({
+                        ...prev,
+                        selectedImage: reader.result as string,
+                    }))
                 }
                 reader.readAsDataURL(file)
             } else {
-                setFileName(null)
                 onImageChange(null)
                 alert(`파일 크기가 ${MAX_FILE_SIZE_MB}MB를 초과했습니다.`)
             }
         } else {
-            setFileName(null)
             onImageChange(null)
             alert('유효하지 않은 파일 형식입니다.')
             console.log(onImageChange)
@@ -64,9 +77,8 @@ export function ImageInput({
             </FileInputWrap>
 
             {selectedImage && (
-                <ImageUploadStyle src={selectedImage} alt="미리보기" />
+                <ImageUploadStyle src={selectedImage} alt="이미지 미리보기" />
             )}
-            {fileName && <p>선택된 파일 : {fileName}</p>}
         </Container>
     )
 }

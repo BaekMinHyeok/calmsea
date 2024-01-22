@@ -1,5 +1,6 @@
 import { atom } from 'recoil'
 import { Address } from '../../components/Form/AddressInput'
+import { recoilPersist } from 'recoil-persist'
 
 export interface PostState {
     id: number
@@ -19,7 +20,7 @@ export const postState = atom<PostState[]>({
     key: 'postState',
     default: [],
 })
-
+const { persistAtom } = recoilPersist()
 export const showInputState = atom<PostState>({
     key: 'showInputState',
     default: {
@@ -38,4 +39,5 @@ export const showInputState = atom<PostState>({
         descriptionImage: null,
         description: '',
     },
+    effects_UNSTABLE: [persistAtom],
 })

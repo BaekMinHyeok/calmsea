@@ -1,15 +1,8 @@
 import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { getAllPostSelectors } from '../../recoil/selectors/getPosts'
-import {
-    Container,
-    EditIcon,
-    EditModal,
-    EmptyImage,
-    PostContent,
-    PostWrap,
-} from './ShowList.styles'
 
+import * as S from './ShowList.styles'
 import { MdImageNotSupported } from 'react-icons/md'
 import { SlOptionsVertical } from 'react-icons/sl'
 import { useCallback } from 'react'
@@ -21,10 +14,16 @@ export function AdminShowList() {
     const navigate = useNavigate()
     const posts = useRecoilValue(getAllPostSelectors)
     const [isOpenModal, setOpenModal] = useRecoilState(partialModal)
+    console.log(posts)
     const onEditButtonClick = useCallback(
         (id: number) => {
             // 수정 버튼 클릭 시 수정 페이지로 이동
             navigate(`/showedit/${id}`)
+            setOpenModal((prev) => ({
+                ...prev,
+                isOpen: false,
+                selectedIndex: null,
+            }))
         },
         [navigate, id],
     )
@@ -49,28 +48,28 @@ export function AdminShowList() {
             }
         },
 
-        [setOpenModal, onEditButtonClick, posts],
+        [setOpenModal, onEditButtonClick, posts, isOpenModal],
     )
 
     return (
-        <Container>
+        <S.Container>
             <h2>게시글</h2>
-            <PostWrap>
+            <S.PostWrap>
                 {posts.map((post, index) => (
-                    <PostContent key={post.id}>
+                    <S.PostContent key={post.id}>
                         {post.selectedImage !== null ? (
                             <img src={post.selectedImage} alt={post.title} />
                         ) : (
-                            <EmptyImage>
+                            <S.EmptyImage>
                                 <MdImageNotSupported />
-                            </EmptyImage>
+                            </S.EmptyImage>
                         )}
-                        <EditIcon onClick={() => onClickToggleModal(index)}>
+                        <S.EditIcon onClick={() => onClickToggleModal(index)}>
                             <SlOptionsVertical />
-                        </EditIcon>
+                        </S.EditIcon>
                         {isOpenModal.isOpen &&
                             isOpenModal.selectedIndex === index && (
-                                <EditModal>
+                                <S.EditModal>
                                     <button
                                         onClick={() =>
                                             onEditButtonClick(post.id)
@@ -79,13 +78,13 @@ export function AdminShowList() {
                                         수정
                                     </button>
                                     <button>삭제</button>
-                                </EditModal>
+                                </S.EditModal>
                             )}
                         <h2>{post.title}</h2>
                         <div>{post.date}</div>
-                    </PostContent>
+                    </S.PostContent>
                 ))}
-            </PostWrap>
-        </Container>
+            </S.PostWrap>
+        </S.Container>
     )
 }

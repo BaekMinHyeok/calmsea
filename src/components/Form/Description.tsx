@@ -4,6 +4,7 @@ import {
     FileInputWrap,
     FileLabel,
     DescriptionText,
+    ImageUploadStyle,
 } from './Form.styes'
 
 interface DescriptionProps {
@@ -52,6 +53,13 @@ export function Description({
 
                 <FileLabel htmlFor="desciption-input">파일찾기</FileLabel>
             </FileInputWrap>
+            {selectedImage && (
+                <ImageUploadStyle
+                    src={selectedImage}
+                    alt="상세보기 이미지 미리보기
+          "
+                />
+            )}
             <DescriptionText
                 placeholder="여기에 설명을 입력하세요."
                 value={description}
