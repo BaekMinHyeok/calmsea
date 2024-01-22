@@ -32,9 +32,9 @@ export function ShowEditor() {
     const setPost = useSetRecoilState(postState)
     // post 상태유지
     useEffect(() => {
-        const storedPost = JSON.parse(localStorage.getItem('post') || '[]')
         // id가 존재할때
         if (id) {
+            const storedPost = JSON.parse(localStorage.getItem('post') || '[]')
             const editPost = storedPost.find(
                 (post: PostState) => post.id === parseInt(id),
             )
@@ -72,6 +72,7 @@ export function ShowEditor() {
         })
         resetForm()
         navigate('/showlist')
+        window.location.reload()
         alert('게시글이 작성되었습니다.')
     }
 
@@ -87,7 +88,8 @@ export function ShowEditor() {
             localStorage.setItem('post', JSON.stringify(storedPosts))
             setPost(storedPosts)
             resetForm()
-            navigate('/showlist')
+            navigate('/showlist', { replace: true })
+            window.location.reload()
             alert('게시글이 수정되었습니다')
         } else {
             alert('수정할 게시글을 찾을 수 없습니다.')

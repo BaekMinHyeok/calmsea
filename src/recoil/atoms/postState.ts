@@ -15,12 +15,13 @@ export interface PostState {
     descriptionImage: string | null
     description: string
 }
-
+const { persistAtom } = recoilPersist()
 export const postState = atom<PostState[]>({
     key: 'postState',
     default: [],
+    effects_UNSTABLE: [persistAtom],
 })
-const { persistAtom } = recoilPersist()
+
 export const showInputState = atom<PostState>({
     key: 'showInputState',
     default: {
@@ -39,5 +40,4 @@ export const showInputState = atom<PostState>({
         descriptionImage: null,
         description: '',
     },
-    effects_UNSTABLE: [persistAtom],
 })
