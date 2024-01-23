@@ -6,13 +6,14 @@ import { MdImageNotSupported } from 'react-icons/md'
 import { SlOptionsVertical } from 'react-icons/sl'
 import { useCallback } from 'react'
 import { partialModal } from '../../recoil/atoms/partialModal'
+import { Title } from '../../components/Text/Text'
 
 export function AdminShowList() {
     const { id } = useParams()
     const navigate = useNavigate()
     const posts = useRecoilValue(getAllPostSelectors)
     const [isOpenModal, setOpenModal] = useRecoilState(partialModal)
-    console.log(isOpenModal)
+
     const onEditButtonClick = useCallback(
         (id: number) => {
             // 수정 버튼 클릭 시 수정 페이지로 이동
@@ -53,11 +54,23 @@ export function AdminShowList() {
 
         [setOpenModal, onEditButtonClick, posts, isOpenModal],
     )
-    // 2. 게시글을 수정하면 로컬스토리지에 업데이트는 되는데 보여지는건 새로고침해야함
-    // 3. 모달 아이콘 재클릭시 닫히는게 아니고 수정버튼으로 넘어감
+    // 삭제
+    const onDeleteButtonClick = useCallback(
+        (postId: number) => {
+            const isConfirmed = window.confirm('정말로 삭제하시겠습니까?')
+
+            if (isConfirmed) {
+                // 사용자가 확인하면 삭제 진행
+                const updatedPosts = posts.filter((post) => post.id !== postId)
+                localStorage.setItem('posts', JSON.stringify(updatedPosts))
+                window.location.reload()
+            }
+        },
+        [posts],
+    )
     return (
         <S.Container>
-            <h2>게시글</h2>
+            <Title text={'전체보기'} size="h2" />
             <S.PostWrap>
                 {posts.map((post, index) => (
                     <S.PostContent key={post.id}>
@@ -81,7 +94,13 @@ export function AdminShowList() {
                                     >
                                         수정
                                     </button>
-                                    <button>삭제</button>
+                                    <button
+                                        onClick={() =>
+                                            onDeleteButtonClick(post.id)
+                                        }
+                                    >
+                                        삭제
+                                    </button>
                                 </S.EditModal>
                             )}
                         <h2>{post.title}</h2>

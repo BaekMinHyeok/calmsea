@@ -27,7 +27,7 @@ export function ShowEditor() {
     const { id } = useParams()
     // 게시글 내용관리
     const [showInput, setShowInput] = useRecoilState(showInputState)
-    console.log(showInput)
+
     // 게시글 상태관리
     const setPost = useSetRecoilState(postState)
     // post 상태유지

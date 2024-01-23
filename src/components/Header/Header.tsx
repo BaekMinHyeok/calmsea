@@ -21,13 +21,13 @@ export function Header() {
                 <Link to="/">
                     <img
                         src={process.env.PUBLIC_URL + `assets/logo.svg`}
-                        alt=""
+                        alt="logo"
                     />
                 </Link>
                 <div onClick={onClickToggleModal}>
                     <img
                         src={process.env.PUBLIC_URL + `assets/menu.svg`}
-                        alt=""
+                        alt="menu"
                     />
                 </div>
                 {isOpenModal && (
