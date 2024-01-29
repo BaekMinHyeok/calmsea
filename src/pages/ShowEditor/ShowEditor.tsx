@@ -17,14 +17,25 @@ import {
     showInputState,
 } from '../../recoil/atoms/postState'
 import { useNavigate, useParams } from 'react-router-dom'
+import {
+    DocumentData,
+    DocumentReference,
+    addDoc,
+    collection,
+    doc,
+    getDoc,
+    updateDoc,
+} from 'firebase/firestore/lite'
+import { db } from '../../firebase'
 
 export const getStringDate = (date: Date) => {
     return date.toISOString().slice(0, 10)
 }
 
 export function ShowEditor() {
+    const { id } = useParams<{ id: string }>()
     const navigate = useNavigate()
-    const { id } = useParams()
+
     // 게시글 내용관리
     const [showInput, setShowInput] = useRecoilState(showInputState)
 
@@ -34,13 +45,27 @@ export function ShowEditor() {
     useEffect(() => {
         // id가 존재할때
         if (id) {
-            const storedPost = JSON.parse(localStorage.getItem('post') || '[]')
-            const editPost = storedPost.find(
-                (post: PostState) => post.id === parseInt(id),
-            )
-            if (editPost) {
-                setShowInput(editPost)
+            async function fetchShowData(): Promise<void> {
+                try {
+                    const params = useParams() as { id: string }
+                    const docRef: DocumentReference<DocumentData> = doc(
+                        db,
+                        'shows',
+                        params.id,
+                    )
+                    console.log('id01', id)
+                    const docSnap = await getDoc(docRef)
+
+                    if (docSnap.exists()) {
+                        const data = docSnap.data() as PostState
+                        setShowInput(data)
+                    }
+                    console.log('id', docRef.id)
+                } catch (error) {
+                    console.error('error', error)
+                }
             }
+            fetchShowData()
         }
     }, [id, setShowInput])
 
@@ -58,47 +83,46 @@ export function ShowEditor() {
         handleShowInputChange('address', newAddress)
     }
     // 버튼
-    const handleCreatePost = () => {
-        setPost((prevPost) => {
-            const newPost = [
-                ...prevPost,
-                {
-                    ...showInput,
-                    id: prevPost.length + 1,
-                },
-            ]
-            localStorage.setItem('post', JSON.stringify(newPost))
-            return newPost
-        })
-        resetForm()
-        navigate('/showlist')
-        window.location.reload()
-        alert('게시글이 작성되었습니다.')
+    async function handleCreatePost() {
+        try {
+            const docRef = await addDoc(collection(db, 'show'), showInput)
+            console.log('id', docRef.id)
+            const newPost = {
+                ...showInput,
+                id: docRef.id,
+            }
+
+            setPost((prevPosts) => [...prevPosts, newPost])
+            resetForm()
+            navigate('/showlist')
+            window.location.reload()
+            alert('게시글이 작성되었습니다.')
+        } catch (error) {
+            console.error('error', error)
+        }
     }
 
-    const handleEditPost = () => {
-        const storedPosts = JSON.parse(
-            localStorage.getItem('post') || '[]',
-        ) as PostState[]
-        const editIndex = storedPosts.findIndex(
-            (post) => post.id === showInput.id,
-        )
-        if (editIndex !== -1) {
-            storedPosts[editIndex] = showInput
-            localStorage.setItem('post', JSON.stringify(storedPosts))
-            setPost(storedPosts)
+    async function handleEditPost() {
+        try {
+            const docRef: DocumentReference<DocumentData> = doc(
+                db,
+                'shows',
+                id!,
+            )
+
+            await updateDoc(docRef, { setShowInput })
             resetForm()
             navigate('/showlist', { replace: true })
-            window.location.reload()
+            // window.location.reload()
             alert('게시글이 수정되었습니다')
-        } else {
+        } catch (error) {
+            console.error('error', error)
             alert('수정할 게시글을 찾을 수 없습니다.')
         }
     }
 
     const resetForm = () => {
         setShowInput({
-            id: 0,
             title: '',
             date: new Date().toISOString().slice(0, 10),
             address: {

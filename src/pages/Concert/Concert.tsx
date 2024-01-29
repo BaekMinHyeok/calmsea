@@ -37,7 +37,7 @@ export function Concert() {
             }
         }
         fetchData()
-    }, [])
+    }, [setShows])
     console.log(shows)
     return (
         <Container>

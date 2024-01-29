@@ -3,7 +3,7 @@ import { Address } from '../../components/Form/AddressInput'
 import { recoilPersist } from 'recoil-persist'
 
 export interface PostState {
-    id: number
+    id?: string
     title: string
     date: string
     address: Address
@@ -25,7 +25,7 @@ export const postState = atom<PostState[]>({
 export const showInputState = atom<PostState>({
     key: 'showInputState',
     default: {
-        id: 0,
+        id: '',
         title: '',
         date: new Date().toISOString().slice(0, 10),
         address: {
