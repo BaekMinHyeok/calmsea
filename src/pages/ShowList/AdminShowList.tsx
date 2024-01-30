@@ -4,7 +4,7 @@ import * as S from './ShowList.styles'
 import { getAllPostSelectors } from '../../recoil/selectors/getPosts'
 import { MdImageNotSupported } from 'react-icons/md'
 import { SlOptionsVertical } from 'react-icons/sl'
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 import { partialModal } from '../../recoil/atoms/partialModal'
 import { Title } from '../../components/Text/Text'
 import { deleteDoc, doc } from 'firebase/firestore/lite'
@@ -16,8 +16,7 @@ export function AdminShowList() {
     const posts = useRecoilValue(getAllPostSelectors)
     const [isOpenModal, setOpenModal] = useRecoilState(partialModal)
     console.log(isOpenModal)
-    console.log(posts)
-
+    // 수정버튼
     const onEditButtonClick = useCallback(
         (id: string | undefined) => {
             // 수정 버튼 클릭 시 수정 페이지로 이동
@@ -27,39 +26,18 @@ export function AdminShowList() {
                 isOpen: false,
                 selectedIndex: null,
             }))
+            console.log(id)
         },
         [navigate, setOpenModal],
     )
     const onClickToggleModal = useCallback(
-        (index: number) => {
-            // 클릭한 게시물에 대한 모달 상태만 토글
-            setOpenModal((prev) => ({
-                ...prev,
-                isOpen: prev.selectedIndex !== index ? true : !prev.isOpen,
-                selectedIndex: prev.selectedIndex !== index ? index : null,
-            }))
-
-            // 모달이 열릴 때 해당 게시물의 ID를 전달
-            const selectedPost =
-                isOpenModal.isOpen && posts ? posts[index] : null
-            if (index !== null && selectedPost) {
-                // 수정 버튼 클릭 시 네비게이션으로 이동
-                const shouldNavigate =
-                    isOpenModal.isOpen && isOpenModal.selectedIndex === index
-                if (shouldNavigate) {
-                    setOpenModal((prev) => ({
-                        ...prev,
-                        isOpen: false,
-                        selectedIndex: null,
-                    }))
-                    // onEditButtonClick(selectedPost.id)
-                }
-            }
-        },
+        (id: string) => {},
 
         [setOpenModal],
     )
-    // 삭제
+
+    useEffect(() => {}, [posts]) // 삭제 후 리렌더링 로직 필요 삭제시 조회 함수를 다시 실행시키는 방향
+    // 게시글 삭제
     async function onDeleteButtonClick(id: string | undefined) {
         const isConfirmed = window.confirm('정말로 삭제하시겠습니까?')
         if (isConfirmed) {
@@ -73,7 +51,8 @@ export function AdminShowList() {
                     selectedIndex: null,
                 }))
                 // window.location.reload()
-                window.location.replace('/showlist')
+                // window.location.replace('/showlist')
+                // navigate('/showlist')
             } catch (error) {
                 console.error(error)
             }
@@ -84,7 +63,7 @@ export function AdminShowList() {
             <Title text={'전체보기'} size="h2" />
             <S.PostWrap>
                 {posts ? (
-                    posts.map((post, index) => (
+                    posts.map((post) => (
                         <S.PostContent key={post.id}>
                             {post.selectedImage !== null ? (
                                 <img
@@ -97,12 +76,14 @@ export function AdminShowList() {
                                 </S.EmptyImage>
                             )}
                             <S.EditIcon
-                                onClick={() => onClickToggleModal(index)}
+                                onClick={() =>
+                                    post.id && onClickToggleModal(post.id)
+                                }
                             >
                                 <SlOptionsVertical />
                             </S.EditIcon>
                             {isOpenModal.isOpen &&
-                                isOpenModal.selectedIndex === index && (
+                                isOpenModal.selectedIndex === post.id && (
                                     <S.EditModal>
                                         <button
                                             onClick={() =>

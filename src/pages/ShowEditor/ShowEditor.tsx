@@ -42,6 +42,7 @@ export function ShowEditor() {
     // 게시글 상태관리
     const setPost = useSetRecoilState(postState)
     // post 상태유지
+    console.log('showinput', showInput)
     useEffect(() => {
         // id가 존재할때
         if (id) {
@@ -53,6 +54,7 @@ export function ShowEditor() {
                         'shows',
                         params.id,
                     )
+
                     console.log('id01', id)
                     const docSnap = await getDoc(docRef)
 
@@ -68,7 +70,7 @@ export function ShowEditor() {
             fetchShowData()
         }
     }, [id, setShowInput])
-
+    // input value 업데이트
     const handleShowInputChange = (
         key: keyof PostState,
         value: string | number | Address,
@@ -78,6 +80,7 @@ export function ShowEditor() {
             [key]: value,
         }))
     }
+    // 주소
     const handleAddressChange = (newAddress: Address) => {
         // Address 객체를 문자열로 변환
         handleShowInputChange('address', newAddress)
@@ -101,7 +104,7 @@ export function ShowEditor() {
             console.error('error', error)
         }
     }
-
+    // 게시글 수정
     async function handleEditPost() {
         try {
             const docRef: DocumentReference<DocumentData> = doc(
@@ -109,11 +112,10 @@ export function ShowEditor() {
                 'shows',
                 id!,
             )
-
+            console.log(id)
             await updateDoc(docRef, { setShowInput })
             resetForm()
             navigate('/showlist', { replace: true })
-            // window.location.reload()
             alert('게시글이 수정되었습니다')
         } catch (error) {
             console.error('error', error)

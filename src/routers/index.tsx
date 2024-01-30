@@ -3,9 +3,8 @@ import App from '../App'
 import { Home } from '../pages/Home/Home'
 import { Concert } from '../pages/Concert/Concert'
 import { ShowEditor } from '../pages/\bShowEditor/ShowEditor'
-// import { ShowList } from '../pages/ShowList/ShowList'
-import { AdminShowList } from '../pages/ShowList/AdminShowList'
 import { PostForm } from '../pages/Concert/ConcertAdd'
+import { ShowList } from '../pages/ShowList/ShowList'
 
 export const router = createBrowserRouter([
     {
@@ -22,7 +21,7 @@ export const router = createBrowserRouter([
             { path: '/concert/add', element: <PostForm /> },
             { path: '/shownew', element: <ShowEditor /> },
             { path: '/showedit/:id', element: <ShowEditor /> },
-            { path: '/showlist', element: <AdminShowList /> },
+            { path: '/showlist', element: <ShowList /> },
         ],
     },
 ])

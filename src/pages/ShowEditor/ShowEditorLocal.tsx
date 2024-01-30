@@ -22,7 +22,7 @@ export const getStringDate = (date: Date) => {
     return date.toISOString().slice(0, 10)
 }
 
-export function ShowEditor() {
+export function ShowEditorLocal() {
     // const navigate = useNavigate()
     // const { id } = useParams()
     // // 게시글 내용관리

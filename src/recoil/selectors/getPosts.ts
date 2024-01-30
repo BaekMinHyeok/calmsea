@@ -1,13 +1,15 @@
 import { selector } from 'recoil'
-import { collection, getDocs } from 'firebase/firestore/lite'
+import { QuerySnapshot, collection, getDocs } from 'firebase/firestore/lite'
 import { db } from '../../firebase'
 import { PostState } from '../atoms/postState'
 
-export const getAllPostSelectors = selector({
+export const getAllPostSelectors = selector<PostState[]>({
     key: 'getAllPostsSelector',
     get: async function firebaseDataSelector({ get }) {
         try {
-            const querySnapshot = await getDocs(collection(db, 'show'))
+            const querySnapshot: QuerySnapshot = await getDocs(
+                collection(db, 'show'),
+            )
             const data = querySnapshot.docs.map((doc) => {
                 const postData = doc.data()
                 const post: Partial<PostState> = {
@@ -19,6 +21,7 @@ export const getAllPostSelectors = selector({
             return data
         } catch (error) {
             console.error('error', error)
+            return []
         }
     },
 })
