@@ -4,11 +4,16 @@ import { selectedModalState } from '../../../recoil/atoms/partialModal'
 
 export const ModalProvider = () => {
     const [state] = useRecoilState(selectedModalState)
+    const latestModal = state.length > 0 ? state[state.length - 1] : null
+
     return (
         <>
-            {state.map(({ id, element }) => {
-                return <Component key={id} component={element} />
-            })}
+            {latestModal && (
+                <Component
+                    key={latestModal.id}
+                    component={latestModal.element}
+                />
+            )}
         </>
     )
 }

@@ -41,7 +41,7 @@ export function ShowEditor() {
 
     // 게시글 상태관리
     const setPost = useSetRecoilState(postState)
-    // post 상태유지
+    // 게시글 수정시 해당 내용 상태관리
     console.log('showinput', showInput)
     useEffect(() => {
         // id가 존재할때
@@ -51,7 +51,7 @@ export function ShowEditor() {
                     const params = useParams() as { id: string }
                     const docRef: DocumentReference<DocumentData> = doc(
                         db,
-                        'shows',
+                        'show',
                         params.id,
                     )
 
@@ -85,33 +85,31 @@ export function ShowEditor() {
         // Address 객체를 문자열로 변환
         handleShowInputChange('address', newAddress)
     }
-    // 버튼
+    // 게시글 추가
+
     async function handleCreatePost() {
         try {
             const docRef = await addDoc(collection(db, 'show'), showInput)
-            console.log('id', docRef.id)
+
             const newPost = {
                 ...showInput,
                 id: docRef.id,
             }
-
             setPost((prevPosts) => [...prevPosts, newPost])
+            setShowInput(newPost)
             resetForm()
-            navigate('/showlist')
-            window.location.reload()
+            navigate(`/showlist`)
+            // window.location.reload()
             alert('게시글이 작성되었습니다.')
         } catch (error) {
             console.error('error', error)
         }
     }
+
     // 게시글 수정
     async function handleEditPost() {
         try {
-            const docRef: DocumentReference<DocumentData> = doc(
-                db,
-                'shows',
-                id!,
-            )
+            const docRef: DocumentReference<DocumentData> = doc(db, 'show', id!)
             console.log(id)
             await updateDoc(docRef, { setShowInput })
             resetForm()
@@ -122,7 +120,7 @@ export function ShowEditor() {
             alert('수정할 게시글을 찾을 수 없습니다.')
         }
     }
-
+    // 게시글 리셋
     const resetForm = () => {
         setShowInput({
             title: '',

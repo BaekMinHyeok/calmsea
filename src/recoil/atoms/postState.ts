@@ -25,7 +25,6 @@ export const postState = atom<PostState[]>({
 export const showInputState = atom<PostState>({
     key: 'showInputState',
     default: {
-        id: '',
         title: '',
         date: new Date().toISOString().slice(0, 10),
         address: {
