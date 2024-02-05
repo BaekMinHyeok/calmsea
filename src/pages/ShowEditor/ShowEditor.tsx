@@ -48,14 +48,13 @@ export function ShowEditor() {
         if (id) {
             async function fetchShowData(): Promise<void> {
                 try {
-                    const params = useParams() as { id: string }
+                    // const params = useParams() as { id: string }
                     const docRef: DocumentReference<DocumentData> = doc(
                         db,
                         'show',
-                        params.id,
+                        id!,
                     )
 
-                    console.log('id01', id)
                     const docSnap = await getDoc(docRef)
 
                     if (docSnap.exists()) {
@@ -86,7 +85,6 @@ export function ShowEditor() {
         handleShowInputChange('address', newAddress)
     }
     // 게시글 추가
-
     async function handleCreatePost() {
         try {
             const docRef = await addDoc(collection(db, 'show'), showInput)
@@ -98,20 +96,27 @@ export function ShowEditor() {
             setPost((prevPosts) => [...prevPosts, newPost])
             setShowInput(newPost)
             resetForm()
-            navigate(`/showlist`)
+            navigate(`/showlist`, { replace: true })
             // window.location.reload()
             alert('게시글이 작성되었습니다.')
         } catch (error) {
             console.error('error', error)
         }
     }
-
     // 게시글 수정
     async function handleEditPost() {
         try {
             const docRef: DocumentReference<DocumentData> = doc(db, 'show', id!)
             console.log(id)
-            await updateDoc(docRef, { setShowInput })
+            const updatedShowInput = {
+                ...showInput,
+            }
+
+            // Firestore 문서 업데이트
+            await updateDoc(docRef, updatedShowInput)
+
+            setShowInput(updatedShowInput)
+            console.log(showInput)
             resetForm()
             navigate('/showlist', { replace: true })
             alert('게시글이 수정되었습니다')

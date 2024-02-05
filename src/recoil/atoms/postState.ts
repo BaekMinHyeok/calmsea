@@ -39,4 +39,5 @@ export const showInputState = atom<PostState>({
         descriptionImage: null,
         description: '',
     },
+    effects_UNSTABLE: [persistAtom],
 })

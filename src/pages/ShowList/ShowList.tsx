@@ -1,16 +1,15 @@
 import { useRecoilValueLoadable } from 'recoil'
-// import { useNavigate } from 'react-router-dom'
 import * as S from './ShowList.styles'
 import { getAllPostSelectors } from '../../recoil/selectors/getPosts'
 import { MdImageNotSupported } from 'react-icons/md'
 import { SlOptionsVertical } from 'react-icons/sl'
 import { useCallback, useMemo } from 'react'
-// import { partialModal } from '../../recoil/atoms/partialModal'
 import { Title } from '../../components/Text/Text'
-// import { deleteDoc, doc } from 'firebase/firestore/lite'
-// import { db } from '../../firebase'
 import { useModal } from '../../hooks/useModal'
 import { PostState } from '../../recoil/atoms/postState'
+import { useNavigate } from 'react-router-dom'
+import { collection, deleteDoc, doc } from 'firebase/firestore/lite'
+import { db } from '../../firebase'
 interface PostItemProps {
     post: PostState
 }
@@ -20,7 +19,7 @@ export function ShowList() {
     const rows = useMemo(() => {
         return boardList?.state === 'hasValue' ? boardList?.contents : []
     }, [boardList])
-
+    console.log(boardList)
     return (
         <S.Container>
             <Title text={'전체보기'} size="h2" />
@@ -34,6 +33,7 @@ export function ShowList() {
 }
 
 const PostItem = ({ post }: PostItemProps) => {
+    const navigate = useNavigate()
     const { isOpen, openModal, closeModal } = useModal(ShowList)
 
     const handelEditClick = useCallback(() => {
@@ -43,6 +43,25 @@ const PostItem = ({ post }: PostItemProps) => {
             openModal()
         }
     }, [isOpen, openModal, closeModal])
+    const handleEdit = () => {
+        navigate(`/showedit/${post.id}`)
+    }
+
+    async function handleDelete() {
+        const isConfirmed = window.confirm('정말로 삭제하시겠습니까?')
+        if (isConfirmed) {
+            const postRef = doc(collection(db, 'show'), post.id)
+            try {
+                await deleteDoc(postRef)
+                console.log('게시글이 성공적으로 삭제되었습니다.')
+                navigate(`/showlist`)
+                closeModal()
+                window.location.reload()
+            } catch (error) {
+                console.error('게시글 삭제 중 오류 발생:', error)
+            }
+        }
+    }
 
     return (
         <S.PostContent>
@@ -58,8 +77,8 @@ const PostItem = ({ post }: PostItemProps) => {
             </S.EditIcon>
             {isOpen && (
                 <S.EditModal>
-                    <button onClick={() => {}}>수정</button>
-                    <button onClick={() => {}}>삭제</button>
+                    <button onClick={handleEdit}>수정</button>
+                    <button onClick={handleDelete}>삭제</button>
                 </S.EditModal>
             )}
             <h2>{post.title}</h2>

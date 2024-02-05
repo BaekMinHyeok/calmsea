@@ -17,10 +17,16 @@ export const PostContent = styled.li`
     border-radius: 5px;
     position: relative;
 
-    & img,
-    svg {
+    & svg {
         width: 100%;
+    }
+    & img {
+        width: 100%;
+        height: 250px;
         border-radius: 15px;
+    }
+    & h2 {
+        margin-right: 10px;
     }
 `
 
