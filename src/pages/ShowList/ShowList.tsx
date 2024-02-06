@@ -3,7 +3,7 @@ import * as S from './ShowList.styles'
 import { getAllPostSelectors } from '../../recoil/selectors/getPosts'
 import { MdImageNotSupported } from 'react-icons/md'
 import { SlOptionsVertical } from 'react-icons/sl'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { Title } from '../../components/Text/Text'
 import { useModal } from '../../hooks/useModal'
 import { PostState } from '../../recoil/atoms/postState'
@@ -14,17 +14,45 @@ interface PostItemProps {
     post: PostState
 }
 export function ShowList() {
+    const [sortOption, setSortOption] = useState('latest')
     const boardList = useRecoilValueLoadable(getAllPostSelectors)
+    console.log(sortOption)
+    // 게시물 상태
+    const sortedRows = useMemo(() => {
+        const sortedData =
+            boardList?.state === 'hasValue' ? boardList?.contents : []
 
-    const rows = useMemo(() => {
-        return boardList?.state === 'hasValue' ? boardList?.contents : []
+        if (sortOption === 'latest') {
+            return sortedData
+                .slice()
+                .sort(
+                    (a, b) =>
+                        new Date(b.date).getTime() - new Date(a.date).getTime(),
+                )
+        } else if (sortOption === 'oldest') {
+            return sortedData
+                .slice()
+                .sort(
+                    (a, b) =>
+                        new Date(a.date).getTime() - new Date(b.date).getTime(),
+                )
+        }
+        console.log('순서', sortedData)
+        return sortedData
     }, [boardList])
     console.log(boardList)
     return (
         <S.Container>
             <Title text={'전체보기'} size="h2" />
+            <div>
+                <button onClick={() => setSortOption('latest')}>최신순</button>
+                <button onClick={() => setSortOption('oldest')}>
+                    오래된순
+                </button>
+                {/* 다른 정렬 옵션을 추가할 수 있음 */}
+            </div>
             <S.PostWrap>
-                {rows.map((post) => (
+                {sortedRows.map((post) => (
                     <PostItem key={post.id} post={post} />
                 ))}
             </S.PostWrap>

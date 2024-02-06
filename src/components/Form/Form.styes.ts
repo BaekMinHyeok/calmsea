@@ -33,6 +33,16 @@ export const Container = styled.div`
         display: none;
     }
 `
+// 상영일자
+export const ShowDateStyle = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    & input {
+        margin: 0;
+    }
+`
 // 주소
 export const AdressStyle = styled.div`
     display: flex;
@@ -69,7 +79,6 @@ export const CategoryLabel = styled.label`
     font-weight: bold;
 `
 // 관람시간
-
 export const TimeInputWrap = styled.div`
     background-color: #f3f3f3;
     box-shadow:

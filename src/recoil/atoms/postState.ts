@@ -6,6 +6,8 @@ export interface PostState {
     id?: string
     title: string
     date: string
+    showStartDate: string
+    showEndDate: string
     address: Address
     selectedCategories: number
     showTime: number
@@ -16,17 +18,20 @@ export interface PostState {
     description: string
 }
 const { persistAtom } = recoilPersist()
+// 게시글 상태
 export const postState = atom<PostState[]>({
     key: 'postState',
     default: [],
     effects_UNSTABLE: [persistAtom],
 })
-
+// 게시글 input 상태
 export const showInputState = atom<PostState>({
     key: 'showInputState',
     default: {
         title: '',
         date: new Date().toISOString().slice(0, 10),
+        showStartDate: new Date().toISOString().slice(0, 10),
+        showEndDate: new Date().toISOString().slice(0, 10),
         address: {
             areaAddress: '',
             townAddress: '',
@@ -40,4 +45,10 @@ export const showInputState = atom<PostState>({
         description: '',
     },
     effects_UNSTABLE: [persistAtom],
+})
+
+// 좋아요 상태
+export const likeState = atom<{ [postId: string]: number }>({
+    key: 'likeState',
+    default: {},
 })

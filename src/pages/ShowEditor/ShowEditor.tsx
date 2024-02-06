@@ -1,6 +1,10 @@
 import * as S from './ShowEditor.styles'
 import * as T from '../../components/Text/Text'
-import { DateInput, TextInput } from '../../components/Form/TextInput'
+import {
+    DateInput,
+    ShowDateInput,
+    TextInput,
+} from '../../components/Form/TextInput'
 import { useEffect } from 'react'
 import { Address, AddressInput } from '../../components/Form/AddressInput'
 import { CategoryCheckbox } from '../../components/Form/CategoryCheckbox'
@@ -38,11 +42,10 @@ export function ShowEditor() {
 
     // 게시글 내용관리
     const [showInput, setShowInput] = useRecoilState(showInputState)
-
     // 게시글 상태관리
     const setPost = useSetRecoilState(postState)
     // 게시글 수정시 해당 내용 상태관리
-    console.log('showinput', showInput)
+    console.log(showInput)
     useEffect(() => {
         // id가 존재할때
         if (id) {
@@ -114,11 +117,18 @@ export function ShowEditor() {
 
             // Firestore 문서 업데이트
             await updateDoc(docRef, updatedShowInput)
-
+            setPost((prevPostState) => {
+                return [
+                    ...prevPostState.map((post) =>
+                        post.id === id ? updatedShowInput : post,
+                    ),
+                ]
+            })
             setShowInput(updatedShowInput)
             console.log(showInput)
             resetForm()
             navigate('/showlist', { replace: true })
+            window.location.reload()
             alert('게시글이 수정되었습니다')
         } catch (error) {
             console.error('error', error)
@@ -130,6 +140,8 @@ export function ShowEditor() {
         setShowInput({
             title: '',
             date: new Date().toISOString().slice(0, 10),
+            showStartDate: new Date().toISOString().slice(0, 10),
+            showEndDate: new Date().toISOString().slice(0, 10),
             address: {
                 areaAddress: '',
                 townAddress: '',
@@ -158,10 +170,21 @@ export function ShowEditor() {
                     }
                 />
                 <DateInput
-                    label="일정"
+                    label="작성일자"
                     value={showInput.date}
                     onChange={(e) =>
                         handleShowInputChange('date', e.target.value)
+                    }
+                />
+                <ShowDateInput
+                    label="상영일자"
+                    startValue={showInput.showStartDate}
+                    endValue={showInput.showEndDate}
+                    startOnChange={(e) =>
+                        handleShowInputChange('showStartDate', e.target.value)
+                    }
+                    endOnChange={(e) =>
+                        handleShowInputChange('showEndDate', e.target.value)
                     }
                 />
                 <AddressInput

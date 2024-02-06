@@ -15,7 +15,6 @@ export function AdminShowList() {
     // const navigate = useNavigate()
     // const posts = useRecoilValue(getAllPostSelectors)
     // const [isOpenModal, setOpenModal] = useRecoilState(partialModal)
-    // console.log(isOpenModal)
     // // 수정버튼
     // const onEditButtonClick = useCallback(
     //     (id: string | undefined) => {
@@ -31,7 +30,31 @@ export function AdminShowList() {
     //     [navigate, setOpenModal],
     // )
     // const onClickToggleModal = useCallback(
-    //     (id: string) => {},
+    //     (id: string) => {
+    //         // 클릭한 게시물에 대한 모달 상태만 토글
+    //         setOpenModal((prev) => ({
+    //             ...prev,
+    //             isOpen: prev.selectedIndex !== id ? true : !prev.isOpen,
+    //             selectedIndex: prev.selectedIndex !== id ? id : null,
+    //         }))
+    //         console.log()
+    //         // 모달이 열릴 때 해당 게시물의 ID를 전달
+    //         const selectedPost =
+    //             isOpenModal.isOpen && posts ? posts[parseInt(id, 10)] : null
+    //         if (id !== null && selectedPost) {
+    //             // 수정 버튼 클릭 시 네비게이션으로 이동
+    //             const shouldNavigate =
+    //                 isOpenModal.isOpen && isOpenModal.selectedIndex === id
+    //             if (shouldNavigate) {
+    //                 setOpenModal((prev) => ({
+    //                     ...prev,
+    //                     isOpen: false,
+    //                     selectedIndex: null,
+    //                 }))
+    //                 // onEditButtonClick(selectedPost.id)
+    //             }
+    //         }
+    //     },
     //     [setOpenModal],
     // )
     // useEffect(() => {}, [posts]) // 삭제 후 리렌더링 로직 필요 삭제시 조회 함수를 다시 실행시키는 방향
@@ -73,9 +96,7 @@ export function AdminShowList() {
     //                             </S.EmptyImage>
     //                         )}
     //                         <S.EditIcon
-    //                             onClick={() =>
-    //                                 post.id && onClickToggleModal(post.id)
-    //                             }
+    //                             onClick={() => post.id && onClickToggleModal(post.id)}
     //                         >
     //                             <SlOptionsVertical />
     //                         </S.EditIcon>

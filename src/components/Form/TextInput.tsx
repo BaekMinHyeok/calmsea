@@ -1,5 +1,5 @@
 import React, { ChangeEvent } from 'react'
-import { Container } from './Form.styes'
+import { Container, ShowDateStyle } from './Form.styes'
 
 interface TextInputProps {
     label: string
@@ -8,6 +8,14 @@ interface TextInputProps {
     value: string
     detailValue?: string
     onChange: (e: ChangeEvent<HTMLInputElement>) => void
+}
+
+interface ShowDateInputProps {
+    label: string
+    startValue: string
+    endValue: string
+    startOnChange: (e: ChangeEvent<HTMLInputElement>) => void
+    endOnChange: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
 export function TextInput({
@@ -34,6 +42,29 @@ export function DateInput({ label, value, onChange }: TextInputProps) {
         <Container>
             <label>{label}</label>
             <input type="date" value={value} onChange={onChange} />
+        </Container>
+    )
+}
+
+export function ShowDateInput({
+    label,
+    startValue,
+    endValue,
+    startOnChange,
+    endOnChange,
+}: ShowDateInputProps) {
+    return (
+        <Container>
+            <label>{label}</label>
+            <ShowDateStyle>
+                <input
+                    type="date"
+                    value={startValue}
+                    onChange={startOnChange}
+                />
+                <p>~</p>
+                <input type="date" value={endValue} onChange={endOnChange} />
+            </ShowDateStyle>
         </Container>
     )
 }
