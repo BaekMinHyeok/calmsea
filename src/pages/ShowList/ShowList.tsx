@@ -10,18 +10,20 @@ import { PostState } from '../../recoil/atoms/postState'
 import { useNavigate } from 'react-router-dom'
 import { collection, deleteDoc, doc } from 'firebase/firestore/lite'
 import { db } from '../../firebase'
+import { LikeButton } from '../../components/LikeButton/LikeButton'
 interface PostItemProps {
     post: PostState
 }
 export function ShowList() {
     const [sortOption, setSortOption] = useState('latest')
     const boardList = useRecoilValueLoadable(getAllPostSelectors)
-    console.log(sortOption)
+
     // 게시물 상태
     const sortedRows = useMemo(() => {
         const sortedData =
             boardList?.state === 'hasValue' ? boardList?.contents : []
 
+        // 게시물 필터링(최신순,오랜된순)
         if (sortOption === 'latest') {
             return sortedData
                 .slice()
@@ -37,10 +39,8 @@ export function ShowList() {
                         new Date(a.date).getTime() - new Date(b.date).getTime(),
                 )
         }
-        console.log('순서', sortedData)
         return sortedData
-    }, [boardList])
-    console.log(boardList)
+    }, [boardList, sortOption])
     return (
         <S.Container>
             <Title text={'전체보기'} size="h2" />
@@ -90,7 +90,6 @@ const PostItem = ({ post }: PostItemProps) => {
             }
         }
     }
-
     return (
         <S.PostContent>
             {post.selectedImage !== null ? (
@@ -111,6 +110,7 @@ const PostItem = ({ post }: PostItemProps) => {
             )}
             <h2>{post.title}</h2>
             <div>{post.date}</div>
+            <LikeButton post={post} />
         </S.PostContent>
     )
 }

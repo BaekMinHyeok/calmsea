@@ -138,6 +138,7 @@ export function ShowEditor() {
     // 게시글 리셋
     const resetForm = () => {
         setShowInput({
+            id: '',
             title: '',
             date: new Date().toISOString().slice(0, 10),
             showStartDate: new Date().toISOString().slice(0, 10),

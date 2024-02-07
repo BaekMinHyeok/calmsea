@@ -30,7 +30,6 @@ export const getAllPostSelectors = selector<PostState[]>({
 
         // 정렬 옵션에 따라 데이터를 정렬
         const sortedData = data.slice().sort((a, b) => {
-            // 예시: 날짜 기준으로 최신순 정렬
             return new Date(b.date).getTime() - new Date(a.date).getTime()
         })
 
