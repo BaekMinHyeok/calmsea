@@ -110,7 +110,7 @@ const PostItem = ({ post }: PostItemProps) => {
             )}
             <h2>{post.title}</h2>
             <div>{post.date}</div>
-            <LikeButton post={post} />
+            <LikeButton postId={post.id} />
         </S.PostContent>
     )
 }

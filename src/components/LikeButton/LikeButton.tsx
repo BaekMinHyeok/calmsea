@@ -7,47 +7,40 @@ import { db } from '../../firebase'
 import { likeCountSelector } from '../../recoil/selectors/likeSelectors'
 
 interface LikeButtonProps {
-    post: { id: string }
+    postId: string
 }
 
-export function LikeButton({ post }: LikeButtonProps) {
-    const [likes, setLikes] = useRecoilState(likeState)
-    const likeCount = useRecoilValue(likeCountSelector)
-    const postId = post.id
+export function LikeButton({ postId }: LikeButtonProps) {
+    const [likes, setLikes] = useRecoilState(likeState(postId))
+    const likeCount = useRecoilValue(likeCountSelector(postId))
+
     const handleLike = useCallback(
         async function heart() {
             try {
+                // 게시물 참조
                 const postRef = doc(db, 'show', postId)
-                console.log(postId)
+                // 게시물 정보
                 const postSnapshot = await getDoc(postRef)
-                // 'likes' 속성이 있는지 확인
                 if (postSnapshot.exists() && 'likes' in postSnapshot.data()) {
                     const post = postSnapshot.data()
-                    // 좋아요 토글
                     const updatedLikes = {
                         ...post.likes,
-                        [postId]: !post.likes[postId],
+                        [postId]: !likes,
                     }
-
-                    // Firebase에 업데이트된 좋아요 상태 반영
                     await updateDoc(postRef, { likes: updatedLikes })
-
-                    // Recoil 상태 업데이트
-                    setLikes((prevLikes) => ({
-                        ...prevLikes,
-                        [postId]: updatedLikes[postId], // 토글된 좋아요 상태 반영
-                    }))
+                    setLikes(!likes)
                 }
             } catch (error) {
-                console.error('좋아요 업데이트 오류:', error)
+                console.error(error)
             }
         },
-        [likes, setLikes, postId],
+        [postId, likes, setLikes],
     )
+
     return (
         <>
             <button onClick={handleLike}>
-                {likes[postId] ? <MdFavorite /> : <MdFavoriteBorder />}
+                {likes ? <MdFavorite /> : <MdFavoriteBorder />}
             </button>
             <div>{likeCount}</div>
         </>
