@@ -16,6 +16,7 @@ export interface PostState {
     selectedImage: string | null
     descriptionImage: string | null
     description: string
+    like: number
 }
 const { persistAtom } = recoilPersist()
 // 게시글 상태
@@ -44,6 +45,7 @@ export const showInputState = atom<PostState>({
         selectedImage: null,
         descriptionImage: null,
         description: '',
+        like: 0,
     },
     effects_UNSTABLE: [persistAtom],
 })

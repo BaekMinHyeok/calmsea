@@ -82,14 +82,15 @@ const PostItem = ({ post }: PostItemProps) => {
             try {
                 await deleteDoc(postRef)
                 console.log('게시글이 성공적으로 삭제되었습니다.')
-                navigate(`/showlist`)
+                navigate(`/showlist`, { replace: true })
                 closeModal()
-                window.location.reload()
+                // window.location.reload()
             } catch (error) {
                 console.error('게시글 삭제 중 오류 발생:', error)
             }
         }
     }
+
     return (
         <S.PostContent>
             {post.selectedImage !== null ? (
@@ -110,7 +111,7 @@ const PostItem = ({ post }: PostItemProps) => {
             )}
             <h2>{post.title}</h2>
             <div>{post.date}</div>
-            <LikeButton postId={post.id} />
+            <LikeButton id={post.id} like={post.like} />
         </S.PostContent>
     )
 }

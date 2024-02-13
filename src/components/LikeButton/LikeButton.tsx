@@ -1,48 +1,51 @@
-import { useRecoilState, useRecoilValue } from 'recoil'
-import { likeState } from '../../recoil/atoms/likeState'
-import { MdFavorite, MdFavoriteBorder } from 'react-icons/md'
-import { useCallback } from 'react'
-import { doc, getDoc, updateDoc } from 'firebase/firestore/lite'
+import { useRecoilState } from 'recoil'
+import { likeCountState } from '../../recoil/atoms/likeState'
+import { useEffect } from 'react'
+import {
+    DocumentData,
+    DocumentReference,
+    doc,
+    updateDoc,
+} from 'firebase/firestore/lite'
 import { db } from '../../firebase'
-import { likeCountSelector } from '../../recoil/selectors/likeSelectors'
+
+// import { useCallback } from 'react'
 
 interface LikeButtonProps {
-    postId: string
+    id: string
+    like: number
 }
 
-export function LikeButton({ postId }: LikeButtonProps) {
-    const [likes, setLikes] = useRecoilState(likeState(postId))
-    const likeCount = useRecoilValue(likeCountSelector(postId))
-
-    const handleLike = useCallback(
-        async function heart() {
-            try {
-                // 게시물 참조
-                const postRef = doc(db, 'show', postId)
-                // 게시물 정보
-                const postSnapshot = await getDoc(postRef)
-                if (postSnapshot.exists() && 'likes' in postSnapshot.data()) {
-                    const post = postSnapshot.data()
-                    const updatedLikes = {
-                        ...post.likes,
-                        [postId]: !likes,
-                    }
-                    await updateDoc(postRef, { likes: updatedLikes })
-                    setLikes(!likes)
-                }
-            } catch (error) {
-                console.error(error)
-            }
-        },
-        [postId, likes, setLikes],
-    )
+export const LikeButton = ({ id, like }: LikeButtonProps) => {
+    const [likeCount, setLikeCount] = useRecoilState(likeCountState)
+    console.log(likeCount)
+    useEffect(() => {
+        setLikeCount(like)
+    }, [like, setLikeCount])
+    useEffect(() => {
+        console.log('이팩트', likeCount)
+    }, [likeCount])
+    // 좋아요 처리
+    async function increaseLikeCount() {
+        try {
+            const docRef: DocumentReference<DocumentData> = doc(db, 'show', id!)
+            await updateDoc(docRef, { like: like + 1 })
+            setLikeCount((prevLikeCount) => prevLikeCount + 1)
+        } catch (error) {
+            console.error('error', error)
+        }
+    }
+    const handleLike = () => {
+        // 파이어베이스 비동기 update로직 호출
+        increaseLikeCount()
+        console.log('클릭')
+    }
 
     return (
-        <>
-            <button onClick={handleLike}>
-                {likes ? <MdFavorite /> : <MdFavoriteBorder />}
-            </button>
-            <div>{likeCount}</div>
-        </>
+        <div>
+            <h2>Like Count</h2>
+            <p>{likeCount}</p>
+            <button onClick={handleLike}>Like</button>
+        </div>
     )
 }

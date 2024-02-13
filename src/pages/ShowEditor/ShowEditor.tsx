@@ -154,6 +154,7 @@ export function ShowEditor() {
             selectedImage: null,
             descriptionImage: null,
             description: '',
+            like: 0,
         })
     }
 
