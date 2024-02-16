@@ -4,7 +4,7 @@ import {
     FileInputWrap,
     FileLabel,
     ImageUploadStyle,
-} from './Form.styes'
+} from '@/components/Form/Form.styes'
 import { useSetRecoilState } from 'recoil'
 import { showInputState } from '../../recoil/atoms/postState'
 

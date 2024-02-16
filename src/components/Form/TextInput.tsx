@@ -1,5 +1,5 @@
 import React, { ChangeEvent } from 'react'
-import { Container, ShowDateStyle } from './Form.styes'
+import { Container, ShowDateStyle } from '@/components/Form/Form.styes'
 
 interface TextInputProps {
     label: string

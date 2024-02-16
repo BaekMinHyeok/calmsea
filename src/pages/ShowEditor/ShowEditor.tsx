@@ -30,7 +30,7 @@ import {
     getDoc,
     updateDoc,
 } from 'firebase/firestore/lite'
-import { db } from '../../firebase'
+import { db } from '@/firebase'
 
 export const getStringDate = (date: Date) => {
     return date.toISOString().slice(0, 10)

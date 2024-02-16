@@ -1,5 +1,5 @@
 import { selector } from 'recoil'
-import { PostState, postState } from '../atoms/postState'
+import { PostState, postState } from '@/recoil/atoms/postState'
 
 export const getAllPostSelectors = selector<PostState[]>({
     key: 'getAllPostsSelector',

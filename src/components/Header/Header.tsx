@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react'
 import * as S from './Header.styles'
 import { FaGithub, FaSearch } from 'react-icons/fa'
 import { IoShareSocial } from 'react-icons/io5'
-import { MenuModal } from '../Modal/MenuModal'
+import { MenuModal } from '@/components/Modal/MenuModal'
 import { Link } from 'react-router-dom'
 
 const env = process.env

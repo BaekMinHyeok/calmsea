@@ -3,7 +3,7 @@ import Slider, { Settings } from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 
-import { Container } from './Mainslider.styles'
+import { Container } from '@/components/Slider/Mainslider.styles'
 // import { FaSearch } from 'react-icons/fa'
 
 interface sliderProps {

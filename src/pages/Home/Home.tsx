@@ -1,5 +1,5 @@
 import { Slick } from '../../components/Slider/MainSlider'
-import { Container } from './Home.styles'
+import { Container } from '@/pages/Home/Home.styles'
 
 const env = process.env
 env.PUBLIC_URL = env.PUBLIC_URL || ''

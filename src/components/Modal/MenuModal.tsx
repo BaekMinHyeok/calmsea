@@ -1,5 +1,9 @@
 import React, { PropsWithChildren } from 'react'
-import { Backdrop, ModalContainer, ModalWrap } from './MenuModal.styles'
+import {
+    Backdrop,
+    ModalContainer,
+    ModalWrap,
+} from '@/components/Modal/MenuModal.styles'
 
 interface MenuModalProps {
     onClickToggleModal: () => void

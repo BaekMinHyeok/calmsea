@@ -1,4 +1,4 @@
-import { CategoryContent, CategoryLabel } from './Form.styes'
+import { CategoryContent, CategoryLabel } from '@/components/Form/Form.styes'
 
 interface CategoryCheckboxProps {
     categoryId: number

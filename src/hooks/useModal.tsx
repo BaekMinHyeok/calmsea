@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import { useRecoilState } from 'recoil'
-import { selectedModalState } from '../recoil/atoms/partialModal'
+import { selectedModalState } from '@/recoil/atoms/partialModal'
 import { collection, doc } from 'firebase/firestore/lite'
 import { db } from '../firebase'
 

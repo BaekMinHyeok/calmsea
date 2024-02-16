@@ -1,5 +1,5 @@
 import React from 'react'
-import { AdminButton } from './Button.styles'
+import { AdminButton } from '@/components/Button/Button.styles'
 
 interface AdminBtnProps {
     text: string

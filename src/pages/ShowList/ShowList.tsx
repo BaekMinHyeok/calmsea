@@ -1,5 +1,5 @@
 import { useRecoilValueLoadable } from 'recoil'
-import * as S from './ShowList.styles'
+import * as S from '@/pages/ShowList/ShowList.styles'
 import { getAllPostSelectors } from '../../recoil/selectors/getPosts'
 import { MdImageNotSupported } from 'react-icons/md'
 import { SlOptionsVertical } from 'react-icons/sl'

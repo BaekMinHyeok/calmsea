@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import { AdressStyle, Backdrop, Container } from './Form.styes'
-import { AdminBtn } from '../Button/Button'
+import { AdminBtn } from '@/components/Button/Button'
 import DaumPostcode from 'react-daum-postcode'
 export interface Address {
     areaAddress: string

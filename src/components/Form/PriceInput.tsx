@@ -1,5 +1,5 @@
 import { ChangeEvent } from 'react'
-import { Container } from './Form.styes'
+import { Container } from '@/components/Form/Form.styes'
 
 interface PriceInputProps {
     label: string

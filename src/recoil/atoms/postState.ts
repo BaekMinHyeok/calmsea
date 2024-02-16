@@ -1,5 +1,5 @@
 import { atom } from 'recoil'
-import { Address } from '../../components/Form/AddressInput'
+import { Address } from '@/components/Form/AddressInput'
 import { recoilPersist } from 'recoil-persist'
 
 export interface PostState {

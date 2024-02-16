@@ -4,8 +4,8 @@ import {
     collection,
     getDocs,
 } from 'firebase/firestore/lite'
-import { Title } from '../../components/Text/Text'
-import { Container } from './Concert.styles'
+import { Title } from '@/components/Text/Text'
+import { Container } from '@/pages/Concert/Concert.styles'
 
 import { useEffect, useState } from 'react'
 import { db } from '../../firebase'

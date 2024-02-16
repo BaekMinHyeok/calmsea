@@ -1,5 +1,9 @@
 import { ChangeEvent, useState } from 'react'
-import { TimeInputWrap, TimeLabel, TimeInputStyle } from './Form.styes'
+import {
+    TimeInputWrap,
+    TimeLabel,
+    TimeInputStyle,
+} from '@/components/Form/Form.styes'
 
 interface TimeInputProps {
     label: string

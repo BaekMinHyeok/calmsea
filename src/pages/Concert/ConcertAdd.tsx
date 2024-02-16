@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from 'react'
 
-import { db } from '../../firebase'
+import { db } from '@/firebase'
 import { addDoc, collection } from 'firebase/firestore/lite'
 
 // interface Post {
