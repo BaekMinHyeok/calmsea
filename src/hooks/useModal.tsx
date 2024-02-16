@@ -4,7 +4,6 @@ import { selectedModalState } from '../recoil/atoms/partialModal'
 import { collection, doc } from 'firebase/firestore/lite'
 import { db } from '../firebase'
 
-// const isArrEmpty = (arr: unknown[]) => arr.length === 0
 export function useModal(component: React.FC) {
     // modalStack
     const [modalStack, setModalStack] = useRecoilState(selectedModalState)
