@@ -1,7 +1,8 @@
 import { selector } from 'recoil'
 import { QuerySnapshot, collection, getDocs } from 'firebase/firestore/lite'
-import { db } from '../../firebase'
+
 import { PostState } from '../atoms/postState'
+import { db } from '../../firebase'
 
 async function fetchDataFromFirebase() {
     try {

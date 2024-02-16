@@ -10,6 +10,7 @@ import { PostState } from '../../recoil/atoms/postState'
 import { useNavigate } from 'react-router-dom'
 import { collection, deleteDoc, doc } from 'firebase/firestore/lite'
 import { db } from '../../firebase'
+
 // import { LikeButton } from '../../components/LikeButton/LikeButton'
 interface PostItemProps {
     post: PostState
