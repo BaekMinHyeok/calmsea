@@ -1,6 +1,6 @@
 import { useRecoilState } from 'recoil'
 import { likeCountState } from '../../recoil/atoms/likeState'
-import { useEffect } from 'react'
+
 import {
     DocumentData,
     DocumentReference,
@@ -17,12 +17,8 @@ interface LikeButtonProps {
 }
 
 export const LikeButton = ({ id, like }: LikeButtonProps) => {
-    const [likeCount, setLikeCount] = useRecoilState(likeCountState)
-
-    useEffect(() => {
-        setLikeCount(like)
-        console.log('이팩트', likeCount)
-    }, [like, setLikeCount])
+    const [likeCount, setLikeCount] = useRecoilState(likeCountState(id))
+    console.log(likeCount)
 
     // 좋아요 처리
     async function increaseLikeCount() {
@@ -31,7 +27,11 @@ export const LikeButton = ({ id, like }: LikeButtonProps) => {
             console.log(likeCount)
             // db에 like 속성 추가
             await updateDoc(docRef, { like: like + 1 })
-            setLikeCount((prevLikeCount) => prevLikeCount + 1)
+            if (id === docRef.id) {
+                console.log(id)
+                console.log(docRef.id)
+                setLikeCount((prevLikeCount) => prevLikeCount + 1)
+            }
         } catch (error) {
             console.error('error', error)
         }
