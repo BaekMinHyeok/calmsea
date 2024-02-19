@@ -10,6 +10,7 @@ import { PostState } from '../../recoil/atoms/postState'
 import { useNavigate } from 'react-router-dom'
 import { collection, deleteDoc, doc } from 'firebase/firestore/lite'
 import { db } from '../../firebase'
+import { sortFunction } from '@/util/ShowFilterList'
 
 // import { LikeButton } from '../../components/LikeButton/LikeButton'
 interface PostItemProps {
@@ -23,31 +24,20 @@ export function ShowList() {
     const sortedRows = useMemo(() => {
         const sortedData =
             boardList?.state === 'hasValue' ? boardList?.contents : []
+        const sortFunctionToUse = sortFunction[sortOption]
 
-        // 게시물 필터링(최신순,오랜된순)
-        if (sortOption === 'latest') {
-            return sortedData
-                .slice()
-                .sort(
-                    (a, b) =>
-                        new Date(b.date).getTime() - new Date(a.date).getTime(),
-                )
-        } else if (sortOption === 'oldest') {
-            return sortedData
-                .slice()
-                .sort(
-                    (a, b) =>
-                        new Date(a.date).getTime() - new Date(b.date).getTime(),
-                )
-        }
-        return sortedData
+        return sortedData ? [...sortedData].sort(sortFunctionToUse) : []
     }, [boardList, sortOption])
+    const handleSortOptionChange = (option: 'latest' | 'oldest') =>
+        setSortOption(option)
     return (
         <S.Container>
             <Title text={'전체보기'} size="h2" />
             <div>
-                <button onClick={() => setSortOption('latest')}>최신순</button>
-                <button onClick={() => setSortOption('oldest')}>
+                <button onClick={() => handleSortOptionChange('latest')}>
+                    최신순
+                </button>
+                <button onClick={() => handleSortOptionChange('oldest')}>
                     오래된순
                 </button>
                 {/* 다른 정렬 옵션을 추가할 수 있음 */}
