@@ -18,17 +18,18 @@ interface LikeButtonProps {
 
 export const LikeButton = ({ id, like }: LikeButtonProps) => {
     const [likeCount, setLikeCount] = useRecoilState(likeCountState)
-    console.log(likeCount)
+
     useEffect(() => {
         setLikeCount(like)
-    }, [like, setLikeCount])
-    useEffect(() => {
         console.log('이팩트', likeCount)
-    }, [likeCount])
+    }, [like, setLikeCount])
+
     // 좋아요 처리
     async function increaseLikeCount() {
         try {
-            const docRef: DocumentReference<DocumentData> = doc(db, 'show', id!)
+            const docRef: DocumentReference<DocumentData> = doc(db, 'show', id)
+            console.log(likeCount)
+            // db에 like 속성 추가
             await updateDoc(docRef, { like: like + 1 })
             setLikeCount((prevLikeCount) => prevLikeCount + 1)
         } catch (error) {
@@ -36,7 +37,7 @@ export const LikeButton = ({ id, like }: LikeButtonProps) => {
         }
     }
     const handleLike = () => {
-        // 파이어베이스 비동기 update로직 호출
+        // 파이어베이스 update로직 호출
         increaseLikeCount()
         console.log('클릭')
     }
