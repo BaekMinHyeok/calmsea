@@ -12,7 +12,7 @@ import { collection, deleteDoc, doc } from 'firebase/firestore/lite'
 import { db } from '../../firebase'
 import { sortFunction } from '@/util/ShowFilterList'
 
-// import { LikeButton } from '../../components/LikeButton/LikeButton'
+import { LikeButton } from '../../components/LikeButton/LikeButton'
 interface PostItemProps {
     post: PostState
 }
@@ -102,7 +102,7 @@ const PostItem = ({ post }: PostItemProps) => {
             )}
             <h2>{post.title}</h2>
             <div>{post.date}</div>
-            {/* <LikeButton id={post.id} like={post.like} /> */}
+            <LikeButton id={post.id} like={post.like} />
         </S.PostContent>
     )
 }
