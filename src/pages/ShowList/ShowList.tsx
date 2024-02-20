@@ -84,25 +84,38 @@ const PostItem = ({ post }: PostItemProps) => {
 
     return (
         <S.PostContent>
-            {post.selectedImage !== null ? (
-                <img src={post.selectedImage} alt={post.title} />
-            ) : (
-                <S.EmptyImage>
-                    <MdImageNotSupported />
-                </S.EmptyImage>
-            )}
-            <S.EditIcon onClick={handelEditClick}>
-                <SlOptionsVertical />
-            </S.EditIcon>
-            {isOpen && (
-                <S.EditModal>
-                    <button onClick={handleEdit}>수정</button>
-                    <button onClick={handleDelete}>삭제</button>
-                </S.EditModal>
-            )}
-            <h2>{post.title}</h2>
-            <div>{post.date}</div>
-            <LikeButton id={post.id} like={post.like} />
+            {/* 작성일자 */}
+            <div>{post.id}</div>
+            <div>작성일 : {post.date}</div>
+            <S.ContentWrap>
+                {/* 이미지 */}
+                <S.ImageWrap>
+                    {post.selectedImage !== null ? (
+                        <img src={post.selectedImage} alt={post.title} />
+                    ) : (
+                        <S.EmptyImage>
+                            <MdImageNotSupported />
+                        </S.EmptyImage>
+                    )}
+                </S.ImageWrap>
+                {/* 옵션 아이콘 */}
+                <S.TextWrap>
+                    <S.EditIcon onClick={handelEditClick}>
+                        <SlOptionsVertical />
+                    </S.EditIcon>
+                    {isOpen && (
+                        <S.EditModal>
+                            <button onClick={handleEdit}>수정</button>
+                            <button onClick={handleDelete}>삭제</button>
+                        </S.EditModal>
+                    )}
+                    <h2>{post.title}</h2>
+                    <div>
+                        {post.showStartDate} ~ {post.showEndDate}
+                    </div>
+                    <LikeButton id={post.id} like={post.like} />
+                </S.TextWrap>
+            </S.ContentWrap>
         </S.PostContent>
     )
 }

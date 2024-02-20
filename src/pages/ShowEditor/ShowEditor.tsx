@@ -46,6 +46,7 @@ export function ShowEditor() {
     const setPost = useSetRecoilState(postState)
     // 게시글 수정시 해당 내용 상태관리
     console.log(showInput)
+    console.log(showInput.id)
     useEffect(() => {
         // id가 존재할때
         if (id) {
@@ -72,6 +73,14 @@ export function ShowEditor() {
             fetchShowData()
         }
     }, [id, setShowInput])
+
+    useEffect(() => {
+        // 페이지를 떠날 때마다 상태 초기화
+        return () => {
+            resetForm()
+        }
+    }, [id]) // id가 변경될 때만 초기화
+
     // input value 업데이트
     const handleShowInputChange = (
         key: keyof PostState,
@@ -96,6 +105,7 @@ export function ShowEditor() {
                 ...showInput,
                 id: docRef.id,
             }
+            console.log('id', newPost.id)
             setPost((prevPosts) => [...prevPosts, newPost])
             setShowInput(newPost)
             resetForm()
@@ -109,12 +119,15 @@ export function ShowEditor() {
     // 게시글 수정
     async function handleEditPost() {
         try {
-            const docRef: DocumentReference<DocumentData> = doc(db, 'show', id!)
-            console.log(id)
             const updatedShowInput = {
                 ...showInput,
             }
-
+            const docRef: DocumentReference<DocumentData> = doc(
+                db,
+                'show',
+                showInput.id,
+            )
+            console.log(id)
             // Firestore 문서 업데이트
             await updateDoc(docRef, updatedShowInput)
             setPost((prevPostState) => {
@@ -136,8 +149,8 @@ export function ShowEditor() {
         }
     }
     // 게시글 리셋
-    const resetForm = () => {
-        setShowInput({
+    async function resetForm() {
+        await setShowInput({
             id: '',
             title: '',
             date: new Date().toISOString().slice(0, 10),

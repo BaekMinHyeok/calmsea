@@ -19,7 +19,6 @@ interface LikeButtonProps {
 export const LikeButton = ({ id, like }: LikeButtonProps) => {
     const [likeCount, setLikeCount] = useRecoilState(likeCountState(id))
     const [isLiked, setIsLiked] = useState(false)
-    console.log(likeCount)
     // 초기 좋아요 수
     useEffect(() => {
         async function fetchInitialLikeCount() {
@@ -29,8 +28,8 @@ export const LikeButton = ({ id, like }: LikeButtonProps) => {
                     'show',
                     id,
                 )
+                console.log(docRef)
                 const docSnap = await getDoc(docRef)
-
                 if (docSnap.exists()) {
                     setLikeCount(docSnap.data()?.like || 0)
                 }
@@ -70,7 +69,6 @@ export const LikeButton = ({ id, like }: LikeButtonProps) => {
         try {
             const docRef: DocumentReference<DocumentData> = doc(db, 'show', id)
             const docSnap = await getDoc(docRef)
-
             if (docSnap.exists() && !isLiked) {
                 const currentLikeCount = docSnap.data()?.like || 0
 

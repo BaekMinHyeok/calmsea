@@ -94,6 +94,9 @@ export function Header() {
                                         </Link>
                                     </S.SiteLink>
                                 </li>
+                                <li>
+                                    <Link to="/shownew">게시글 작성</Link>
+                                </li>
                             </S.ModalMenu>
                         </S.ModalContent>
                     </MenuModal>
