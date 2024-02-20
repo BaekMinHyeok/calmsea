@@ -45,8 +45,6 @@ export function ShowEditor() {
     // 게시글 상태관리
     const setPost = useSetRecoilState(postState)
     // 게시글 수정시 해당 내용 상태관리
-    console.log(showInput)
-    console.log(showInput.id)
     useEffect(() => {
         // id가 존재할때
         if (id) {
@@ -73,9 +71,8 @@ export function ShowEditor() {
             fetchShowData()
         }
     }, [id, setShowInput])
-
+    // 페이지를 떠날 때마다 상태 초기화
     useEffect(() => {
-        // 페이지를 떠날 때마다 상태 초기화
         return () => {
             resetForm()
         }
@@ -100,22 +97,25 @@ export function ShowEditor() {
     async function handleCreatePost() {
         try {
             const docRef = await addDoc(collection(db, 'show'), showInput)
-
+            console.log(docRef.id)
             const newPost = {
                 ...showInput,
                 id: docRef.id,
             }
-            console.log('id', newPost.id)
             setPost((prevPosts) => [...prevPosts, newPost])
+            console.log(newPost)
+            console.log(newPost.id)
             setShowInput(newPost)
-            resetForm()
+            console.log(showInput.id)
             navigate(`/showlist`, { replace: true })
             // window.location.reload()
             alert('게시글이 작성되었습니다.')
+            resetForm()
         } catch (error) {
             console.error('error', error)
         }
     }
+
     // 게시글 수정
     async function handleEditPost() {
         try {
@@ -149,8 +149,8 @@ export function ShowEditor() {
         }
     }
     // 게시글 리셋
-    async function resetForm() {
-        await setShowInput({
+    function resetForm() {
+        setShowInput({
             id: '',
             title: '',
             date: new Date().toISOString().slice(0, 10),
