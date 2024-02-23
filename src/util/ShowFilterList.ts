@@ -1,13 +1,11 @@
-interface DateSortTable {
-    date: string
-}
+import { PostState } from '@/recoil/atoms/postState'
 
 export const sortFunction: {
-    [key: string]: (a: DateSortTable, b: DateSortTable) => number
+    [key: string]: (a: PostState, b: PostState) => number
 } = {
-    latest: (a: DateSortTable, b: DateSortTable) =>
-        new Date(b.date).getTime() - new Date(a.date).getTime(),
+    latest: (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
 
-    oldest: (a: DateSortTable, b: DateSortTable) =>
-        new Date(a.date).getTime() - new Date(b.date).getTime(),
+    oldest: (a, b) =>
+        new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
 }

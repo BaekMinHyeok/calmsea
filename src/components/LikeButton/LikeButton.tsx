@@ -28,7 +28,6 @@ export const LikeButton = ({ id, like }: LikeButtonProps) => {
                     'show',
                     id,
                 )
-                console.log(docRef)
                 const docSnap = await getDoc(docRef)
                 if (docSnap.exists()) {
                     setLikeCount(docSnap.data()?.like || 0)

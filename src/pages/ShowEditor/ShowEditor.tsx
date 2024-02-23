@@ -1,7 +1,7 @@
 import * as S from './ShowEditor.styles'
 import * as T from '../../components/Text/Text'
 import {
-    DateInput,
+    // DateInput,
     ShowDateInput,
     TextInput,
 } from '../../components/Form/TextInput'
@@ -17,7 +17,7 @@ import { AdminBtn } from '../../components/Button/Button'
 import { useRecoilState, useSetRecoilState } from 'recoil'
 import {
     PostState,
-    postState,
+    currentTime,
     showInputState,
 } from '../../recoil/atoms/postState'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -31,6 +31,7 @@ import {
     updateDoc,
 } from 'firebase/firestore/lite'
 import { db } from '@/firebase'
+import { postState } from '@/recoil/atoms/postState'
 
 export const getStringDate = (date: Date) => {
     return date.toISOString().slice(0, 10)
@@ -42,6 +43,7 @@ export function ShowEditor() {
 
     // 게시글 내용관리
     const [showInput, setShowInput] = useRecoilState(showInputState)
+
     // 게시글 상태관리
     const setPost = useSetRecoilState(postState)
     // 게시글 수정시 해당 내용 상태관리
@@ -96,17 +98,19 @@ export function ShowEditor() {
     // 게시글 추가
     async function handleCreatePost() {
         try {
-            const docRef = await addDoc(collection(db, 'show'), showInput)
-            console.log(docRef.id)
-            const newPost = {
-                ...showInput,
-                id: docRef.id,
-            }
-            setPost((prevPosts) => [...prevPosts, newPost])
-            console.log(newPost)
-            console.log(newPost.id)
-            setShowInput(newPost)
-            console.log(showInput.id)
+            // Firestore에 추가할 새로운 객체를 생성
+            const firestoreData = { ...showInput }
+
+            // Firestore에 문서를 추가
+            await addDoc(collection(db, 'show'), firestoreData)
+
+            setShowInput(firestoreData)
+
+            setPost((prevPosts) => [...prevPosts, firestoreData])
+
+            console.log('showInput:', firestoreData)
+            console.log('showInput', showInput)
+
             navigate(`/showlist`, { replace: true })
             // window.location.reload()
             alert('게시글이 작성되었습니다.')
@@ -115,7 +119,6 @@ export function ShowEditor() {
             console.error('error', error)
         }
     }
-
     // 게시글 수정
     async function handleEditPost() {
         try {
@@ -125,7 +128,7 @@ export function ShowEditor() {
             const docRef: DocumentReference<DocumentData> = doc(
                 db,
                 'show',
-                showInput.id,
+                id || '',
             )
             console.log(id)
             // Firestore 문서 업데이트
@@ -133,7 +136,9 @@ export function ShowEditor() {
             setPost((prevPostState) => {
                 return [
                     ...prevPostState.map((post) =>
-                        post.id === id ? updatedShowInput : post,
+                        post.id === id
+                            ? { ...post, ...updatedShowInput }
+                            : post,
                     ),
                 ]
             })
@@ -151,9 +156,8 @@ export function ShowEditor() {
     // 게시글 리셋
     function resetForm() {
         setShowInput({
-            id: '',
             title: '',
-            date: new Date().toISOString().slice(0, 10),
+            createdAt: currentTime,
             showStartDate: new Date().toISOString().slice(0, 10),
             showEndDate: new Date().toISOString().slice(0, 10),
             address: {
@@ -184,13 +188,13 @@ export function ShowEditor() {
                         handleShowInputChange('title', e.target.value)
                     }
                 />
-                <DateInput
+                {/* <DateInput
                     label="작성일자"
-                    value={showInput.date}
+                    value={showInput.createdAt}
                     onChange={(e) =>
                         handleShowInputChange('date', e.target.value)
                     }
-                />
+                /> */}
                 <ShowDateInput
                     label="상영일자"
                     startValue={showInput.showStartDate}

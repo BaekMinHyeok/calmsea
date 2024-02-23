@@ -13,6 +13,7 @@ import { db } from '../../firebase'
 import { sortFunction } from '@/util/ShowFilterList'
 
 import { LikeButton } from '../../components/LikeButton/LikeButton'
+import { DayCounter } from '@/util/DayCounter'
 interface PostItemProps {
     post: PostState
 }
@@ -20,14 +21,23 @@ export function ShowList() {
     const [sortOption, setSortOption] = useState('latest')
     const boardList = useRecoilValueLoadable(getAllPostSelectors)
 
+    // // 날짜 계산
+    // const calculateDate = (createdAt: number): string => {
+    //     if (createdAt === 0) {
+    //         return '오늘'
+    //     } else {
+    //         return `${createdAt}일 전`
+    //     }
+    // }
+
     // 게시물 상태
     const sortedRows = useMemo(() => {
         const sortedData =
             boardList?.state === 'hasValue' ? boardList?.contents : []
         const sortFunctionToUse = sortFunction[sortOption]
-
         return sortedData ? [...sortedData].sort(sortFunctionToUse) : []
     }, [boardList, sortOption])
+    // 게시물 정렬
     const handleSortOptionChange = (option: 'latest' | 'oldest') =>
         setSortOption(option)
     return (
@@ -54,7 +64,7 @@ export function ShowList() {
 const PostItem = ({ post }: PostItemProps) => {
     const navigate = useNavigate()
     const { isOpen, openModal, closeModal } = useModal(ShowList)
-
+    // 옵션모달
     const handelEditClick = useCallback(() => {
         if (isOpen) {
             closeModal()
@@ -65,7 +75,8 @@ const PostItem = ({ post }: PostItemProps) => {
     const handleEdit = () => {
         navigate(`/showedit/${post.id}`)
     }
-
+    console.log(post.id)
+    console.log('리스트createdAt', post.createdAt)
     async function handleDelete() {
         const isConfirmed = window.confirm('정말로 삭제하시겠습니까?')
         if (isConfirmed) {
@@ -85,8 +96,7 @@ const PostItem = ({ post }: PostItemProps) => {
     return (
         <S.PostContent>
             {/* 작성일자 */}
-            <div>{post.id}</div>
-            <div>작성일 : {post.date}</div>
+            <div>{DayCounter(post.createdAt)}</div>
             <S.ContentWrap>
                 {/* 이미지 */}
                 <S.ImageWrap>
@@ -113,7 +123,10 @@ const PostItem = ({ post }: PostItemProps) => {
                     <div>
                         {post.showStartDate} ~ {post.showEndDate}
                     </div>
-                    <LikeButton id={post.id} like={post.like} />
+                    <LikeButton
+                        id={post.id ? post.id.toString() : ''}
+                        like={post.like}
+                    />
                 </S.TextWrap>
             </S.ContentWrap>
         </S.PostContent>

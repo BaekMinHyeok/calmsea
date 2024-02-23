@@ -3,11 +3,6 @@ import { ChangeEvent, FormEvent, useState } from 'react'
 import { db } from '@/firebase'
 import { addDoc, collection } from 'firebase/firestore/lite'
 
-// interface Post {
-//     id: string
-//     title: string
-//     date: string
-// }
 export const PostForm = () => {
     const [title, setTitle] = useState('')
     const [date, setDate] = useState('')
