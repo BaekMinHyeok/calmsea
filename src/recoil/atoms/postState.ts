@@ -1,7 +1,6 @@
 import { atom } from 'recoil'
 import { Address } from '../../components/Form/AddressInput'
 // import { recoilPersist } from 'recoil-persist'
-
 export interface PostState {
     id?: string
     title: string
@@ -23,15 +22,12 @@ export interface PostState {
 export const postState = atom<PostState[]>({
     key: 'postState',
     default: [],
-    // effects_UNSTABLE: [persistAtom],
 })
 // 게시글 input 상태
-// export const currentTime = new Date()
 export const showInputState = atom<PostState>({
     key: 'showInputState',
     default: {
         title: '',
-        // date: new Date().toISOString().slice(0, 10),
         createdAt: Date.now(),
         showStartDate: new Date().toISOString().slice(0, 10),
         showEndDate: new Date().toISOString().slice(0, 10),
@@ -48,5 +44,4 @@ export const showInputState = atom<PostState>({
         description: '',
         like: 0,
     },
-    // effects_UNSTABLE: [persistAtom],
 })

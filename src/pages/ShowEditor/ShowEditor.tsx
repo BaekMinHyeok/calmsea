@@ -1,10 +1,6 @@
 import * as S from './ShowEditor.styles'
 import * as T from '../../components/Text/Text'
-import {
-    // DateInput,
-    ShowDateInput,
-    TextInput,
-} from '../../components/Form/TextInput'
+import { ShowDateInput, TextInput } from '../../components/Form/TextInput'
 import { useEffect } from 'react'
 import { Address, AddressInput } from '../../components/Form/AddressInput'
 import { CategoryCheckbox } from '../../components/Form/CategoryCheckbox'
@@ -20,14 +16,12 @@ import { useNavigate, useParams } from 'react-router-dom'
 import {
     DocumentData,
     DocumentReference,
-    addDoc,
-    collection,
     doc,
     getDoc,
-    updateDoc,
 } from 'firebase/firestore/lite'
 import { db } from '@/firebase'
 import { postState } from '@/recoil/atoms/postState'
+import { createShow, updateShow } from '@/\bapi'
 
 export const getStringDate = (date: Date) => {
     return date.toISOString().slice(0, 10)
@@ -91,22 +85,15 @@ export function ShowEditor() {
         // Address 객체를 문자열로 변환
         handleShowInputChange('address', newAddress)
     }
-    // 게시글 추가
+    // 게시글 생성
     async function handleCreatePost() {
         try {
             // Firestore에 추가할 새로운 객체를 생성
             const firestoreData = { ...showInput, createdAt: Date.now() }
-
             // Firestore에 문서를 추가
-            await addDoc(collection(db, 'show'), firestoreData)
-
+            await createShow(firestoreData)
             setShowInput(firestoreData)
-
             setPost((prevPosts) => [...prevPosts, firestoreData])
-
-            console.log('showInput:', firestoreData)
-            console.log('showInput', showInput)
-
             navigate(`/showlist`, { replace: true })
             // window.location.reload()
             alert('게시글이 작성되었습니다.')
@@ -122,14 +109,14 @@ export function ShowEditor() {
                 ...showInput,
                 createdAt: Date.now(),
             }
-            const docRef: DocumentReference<DocumentData> = doc(
-                db,
-                'show',
-                id || '',
-            )
+            // const docRef: DocumentReference<DocumentData> = doc(
+            //     db,
+            //     'show',
+            //     id || '',
+            // )
             console.log(id)
             // Firestore 문서 업데이트
-            await updateDoc(docRef, updatedShowInput)
+            await updateShow(id!, updatedShowInput)
             setPost((prevPostState) => {
                 return [
                     ...prevPostState.map((post) =>
