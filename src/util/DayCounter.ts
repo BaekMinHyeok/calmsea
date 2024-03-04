@@ -1,6 +1,6 @@
 // import moment from 'moment'
 
-export const DayCounter = (createdAt: Date | string): string => {
+export const DayCounter = (createdAt: Date): string => {
     // createdAt이 문자열인 경우 Date 객체로 변환
     const createdAtDate =
         typeof createdAt === 'string' ? new Date(createdAt) : createdAt

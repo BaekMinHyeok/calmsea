@@ -20,7 +20,6 @@ export function ImageInput({
     selectedImage,
     onImageChange,
 }: ImageInputProps) {
-    // const [showInput, setShowInput] = useRecoilState(showInputState)
     const setShowInput = useSetRecoilState(showInputState)
 
     useEffect(() => {

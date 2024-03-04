@@ -64,6 +64,8 @@ export function ShowList() {
 const PostItem = ({ post }: PostItemProps) => {
     const navigate = useNavigate()
     const { isOpen, openModal, closeModal } = useModal(ShowList)
+    const createdAtDate = new Date(post.createdAt)
+
     // 옵션모달
     const handelEditClick = useCallback(() => {
         if (isOpen) {
@@ -96,7 +98,7 @@ const PostItem = ({ post }: PostItemProps) => {
     return (
         <S.PostContent>
             {/* 작성일자 */}
-            <div>{DayCounter(post.createdAt)}</div>
+            <div>{DayCounter(createdAtDate)}</div>
             <S.ContentWrap>
                 {/* 이미지 */}
                 <S.ImageWrap>

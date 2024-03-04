@@ -15,11 +15,7 @@ import { ImageInput } from '../../components/Form/ImageInput'
 import { Description } from '../../components/Form/Description'
 import { AdminBtn } from '../../components/Button/Button'
 import { useRecoilState, useSetRecoilState } from 'recoil'
-import {
-    PostState,
-    currentTime,
-    showInputState,
-} from '../../recoil/atoms/postState'
+import { PostState, showInputState } from '../../recoil/atoms/postState'
 import { useNavigate, useParams } from 'react-router-dom'
 import {
     DocumentData,
@@ -99,7 +95,7 @@ export function ShowEditor() {
     async function handleCreatePost() {
         try {
             // Firestore에 추가할 새로운 객체를 생성
-            const firestoreData = { ...showInput }
+            const firestoreData = { ...showInput, createdAt: Date.now() }
 
             // Firestore에 문서를 추가
             await addDoc(collection(db, 'show'), firestoreData)
@@ -124,6 +120,7 @@ export function ShowEditor() {
         try {
             const updatedShowInput = {
                 ...showInput,
+                createdAt: Date.now(),
             }
             const docRef: DocumentReference<DocumentData> = doc(
                 db,
@@ -157,7 +154,7 @@ export function ShowEditor() {
     function resetForm() {
         setShowInput({
             title: '',
-            createdAt: currentTime,
+            createdAt: Date.now(),
             showStartDate: new Date().toISOString().slice(0, 10),
             showEndDate: new Date().toISOString().slice(0, 10),
             address: {
@@ -188,13 +185,6 @@ export function ShowEditor() {
                         handleShowInputChange('title', e.target.value)
                     }
                 />
-                {/* <DateInput
-                    label="작성일자"
-                    value={showInput.createdAt}
-                    onChange={(e) =>
-                        handleShowInputChange('date', e.target.value)
-                    }
-                /> */}
                 <ShowDateInput
                     label="상영일자"
                     startValue={showInput.showStartDate}
