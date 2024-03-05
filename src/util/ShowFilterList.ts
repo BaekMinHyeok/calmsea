@@ -8,4 +8,6 @@ export const sortFunction: {
 
     oldest: (a, b) =>
         new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+    priceHigh: (a, b) => b.price - a.price,
+    priceLow: (a, b) => a.price - b.price,
 }

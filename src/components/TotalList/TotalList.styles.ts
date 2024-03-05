@@ -1,5 +1,9 @@
 import styled from 'styled-components'
 
+export const LineStyle = styled.div`
+    border: 1px solid #103680;
+    margin: 50px 0 20px 0;
+`
 export const Container = styled.div`
     width: 100%;
     text-align: center;

@@ -8,7 +8,7 @@ export interface PostState {
     showStartDate: string
     showEndDate: string
     address: Address
-    selectedCategories: number
+    category: number
     showTime: number
     performer: string
     price: number
@@ -16,6 +16,7 @@ export interface PostState {
     descriptionImage: string | null
     description: string
     like: number
+    quantity: number
 }
 // const { persistAtom } = recoilPersist()
 // 게시글 상태
@@ -35,7 +36,7 @@ export const showInputState = atom<PostState>({
             areaAddress: '',
             townAddress: '',
         },
-        selectedCategories: 1,
+        category: 1,
         showTime: 0,
         performer: '',
         price: 0,
@@ -43,5 +44,6 @@ export const showInputState = atom<PostState>({
         descriptionImage: null,
         description: '',
         like: 0,
+        quantity: 0,
     },
 })

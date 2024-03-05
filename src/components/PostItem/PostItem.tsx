@@ -1,10 +1,10 @@
 import { useModal } from '@/hooks/useModal'
-import { ShowList } from '@/pages/ShowList/ShowList'
+import { TotalList } from '@/components/TotalList/TotalList'
 import { PostState } from '@/recoil/atoms/postState'
 import { DayCounter } from '@/util/DayCounter'
 import { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
-import * as S from '@/pages/ShowList/ShowList.styles'
+import * as S from '@/components/TotalList/TotalList.styles'
 import { MdImageNotSupported } from 'react-icons/md'
 import { SlOptionsVertical } from 'react-icons/sl'
 import { LikeButton } from '../LikeButton/LikeButton'
@@ -15,7 +15,7 @@ interface PostItemProps {
 }
 export const PostItem = ({ post }: PostItemProps) => {
     const navigate = useNavigate()
-    const { isOpen, openModal, closeModal } = useModal(ShowList)
+    const { isOpen, openModal, closeModal } = useModal(TotalList)
     const createdAtDate = new Date(post.createdAt)
 
     // 옵션모달

@@ -22,6 +22,7 @@ import {
 import { db } from '@/firebase'
 import { postState } from '@/recoil/atoms/postState'
 import { createShow, updateShow } from '@/\bapi'
+import { QuantityInput } from '@/components/Form/QuantityInput'
 
 export const getStringDate = (date: Date) => {
     return date.toISOString().slice(0, 10)
@@ -109,11 +110,6 @@ export function ShowEditor() {
                 ...showInput,
                 createdAt: Date.now(),
             }
-            // const docRef: DocumentReference<DocumentData> = doc(
-            //     db,
-            //     'show',
-            //     id || '',
-            // )
             console.log(id)
             // Firestore 문서 업데이트
             await updateShow(id!, updatedShowInput)
@@ -148,7 +144,7 @@ export function ShowEditor() {
                 areaAddress: '',
                 townAddress: '',
             },
-            selectedCategories: 1,
+            category: 1,
             showTime: 0,
             performer: '',
             price: 0,
@@ -156,6 +152,7 @@ export function ShowEditor() {
             descriptionImage: null,
             description: '',
             like: 0,
+            quantity: 0,
         })
     }
 
@@ -198,12 +195,11 @@ export function ShowEditor() {
                                 key={item.categoryId}
                                 {...item}
                                 isSelected={
-                                    item.categoryId ===
-                                    showInput.selectedCategories
+                                    item.categoryId === showInput.category
                                 }
                                 onClick={() =>
                                     handleShowInputChange(
-                                        'selectedCategories',
+                                        'category',
                                         item.categoryId,
                                     )
                                 }
@@ -250,6 +246,15 @@ export function ShowEditor() {
                     onDescriptionChange={(e) =>
                         handleShowInputChange('description', e)
                     }
+                />
+                <QuantityInput
+                    label="수량"
+                    value={showInput.quantity}
+                    onChange={(value) =>
+                        handleShowInputChange('quantity', value)
+                    }
+                    min={0}
+                    max={100}
                 />
                 <AdminBtn
                     text={id ? '게시글 수정' : '게시글 작성'}
