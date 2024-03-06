@@ -4,7 +4,7 @@ export const Container = styled.div`
     display: flex;
     border-bottom: 1px solid #ccc;
 `
-export const TabButton = styled.button`
+export const StyledButton = styled.button`
     padding: 10px;
     border: none;
     cursor: pointer;

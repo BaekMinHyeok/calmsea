@@ -8,6 +8,10 @@ import {
     updateDoc,
     deleteDoc,
     getDoc,
+    query,
+    where,
+    QueryDocumentSnapshot,
+    DocumentData,
 } from 'firebase/firestore/lite'
 
 // 게시글 생성
@@ -51,7 +55,28 @@ export async function getShowById(id: string): Promise<PostState | null> {
         return null
     }
 }
-
+// 카테고리별 게시글 조회
+export async function getShowByCategory(
+    category: number,
+): Promise<PostState[]> {
+    try {
+        const q = query(
+            collection(db, 'show'),
+            where('category', '==', category),
+        )
+        const querySnapshot = await getDocs(q)
+        const data = querySnapshot.docs.map(
+            (doc: QueryDocumentSnapshot<DocumentData>) => ({
+                id: doc.id,
+                ...doc.data(),
+            }),
+        )
+        return data as PostState[]
+    } catch (error) {
+        console.error('카테고리 게시글 조회 에러', error)
+        return []
+    }
+}
 // 게시글 수정
 export async function updateShow(
     id: string,

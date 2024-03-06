@@ -1,9 +1,10 @@
 import { selector } from 'recoil'
-import { PostState } from '../atoms/postState'
-import { getAllShows } from '@/\bapi'
+import { PostState, categoryState } from '../atoms/postState'
+import { getAllShows, getShowByCategory } from '@/\bapi'
 
+// 모든 게시물
 export const getAllPostSelectors = selector<PostState[]>({
-    key: 'getAllPostsSelector',
+    key: 'getAllPostSelectors',
     get: async function fetchData() {
         const data = await getAllShows()
 
@@ -16,5 +17,17 @@ export const getAllPostSelectors = selector<PostState[]>({
         })
 
         return sortedData
+    },
+})
+
+// 카테고리별 게시물
+export const getCategoryPostSelectors = selector<PostState[]>({
+    key: 'getCategoryPostSelectors',
+    get: async function fetchData({ get }) {
+        const currentCategory = get(categoryState)
+
+        const data = await getShowByCategory(currentCategory)
+
+        return data
     },
 })

@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom'
 import App from '@/App'
 import { Home } from '@/pages/Home/Home'
-import { Concert } from '@/pages/Concert/Concert'
+import { Concert } from '@/pages/CategoryPage/Concert/Concert'
 import { ShowEditor } from '@/pages/\bShowEditor/ShowEditor'
 // import { TabMenu } from '@/components/TabMenu/TabMenu'
 

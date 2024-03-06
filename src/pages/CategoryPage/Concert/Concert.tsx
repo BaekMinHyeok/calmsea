@@ -1,22 +1,25 @@
 import { useState } from 'react'
-import { Container, TabButton } from './TabMenu.styles'
-import { TotalList } from '@/components/TotalList/TotalList'
+// import { Title } from '@/components/Text/Text'
+import { CategoryList } from '@/components/TotalList/CategoryList'
+import { Container } from '@/pages/CategoryPage/Concert/Concert.styles'
+import { TabButton } from '@/components/TabMenu/TabButton'
 
-export function TabMenu({ category }: { category: number }) {
+export function Concert() {
     const [activeTab, setActiveTab] = useState(1)
 
     const tabContent = () => {
         switch (activeTab) {
             case 1:
-                return <div>탭1 내용</div>
+                return <CategoryList category={3} />
             case 2:
-                return <div>탭2 내용</div>
+                return <CategoryList category={2} />
             case 3:
-                return <TotalList />
+                return <CategoryList category={1} />
             default:
                 return null
         }
     }
+
     return (
         <Container>
             <div>

@@ -47,3 +47,9 @@ export const showInputState = atom<PostState>({
         quantity: 0,
     },
 })
+
+// 카테고리별 게시물
+export const categoryState = atom({
+    key: 'currentCategory',
+    default: 1,
+})
