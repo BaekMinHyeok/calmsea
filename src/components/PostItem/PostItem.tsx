@@ -82,7 +82,6 @@ export const PostItem = ({ post }: PostItemProps) => {
                         id={post.id ? post.id.toString() : ''}
                         like={post.like}
                     />
-                    <div>{post.category}</div>
                 </S.TextWrap>
             </S.ContentWrap>
         </S.PostContent>

@@ -11,3 +11,10 @@ export const sortFunction: {
     priceHigh: (a, b) => b.price - a.price,
     priceLow: (a, b) => a.price - b.price,
 }
+
+export const recommendedFilter: {
+    [key: string]: (a: PostState, b: PostState) => number
+} = {
+    recommendTickets: (a, b) => b.like - a.like,
+    ticketRanking: (a, b) => a.quantity - b.quantity,
+}

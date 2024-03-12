@@ -10,9 +10,9 @@ export function Concert() {
     const tabContent = () => {
         switch (activeTab) {
             case 1:
-                return <CategoryList category={3} />
+                return <CategoryList category={1} />
             case 2:
-                return <CategoryList category={2} />
+                return <CategoryList category={1} />
             case 3:
                 return <CategoryList category={1} />
             default:
