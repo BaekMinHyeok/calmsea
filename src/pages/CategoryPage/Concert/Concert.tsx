@@ -1,8 +1,8 @@
 import { useState } from 'react'
-// import { Title } from '@/components/Text/Text'
 import { CategoryList } from '@/components/TotalList/CategoryList'
 import { Container } from '@/pages/CategoryPage/Concert/Concert.styles'
 import { TabButton } from '@/components/TabMenu/TabButton'
+import { recommendedFilter } from '@/util/ShowFilterList'
 
 export function Concert() {
     const [activeTab, setActiveTab] = useState(1)
@@ -10,9 +10,21 @@ export function Concert() {
     const tabContent = () => {
         switch (activeTab) {
             case 1:
-                return <CategoryList category={1} />
+                return (
+                    <CategoryList
+                        category={1}
+                        filterFn={recommendedFilter.recommendTickets}
+                    />
+                )
             case 2:
-                return <CategoryList category={1} />
+                return (
+                    <div>
+                        <CategoryList
+                            category={1}
+                            filterFn={recommendedFilter.ticketRanking}
+                        />
+                    </div>
+                )
             case 3:
                 return <CategoryList category={1} />
             default:
