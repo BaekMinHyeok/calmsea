@@ -36,7 +36,7 @@ export function Header() {
                             <S.ModalMenu>
                                 <li>
                                     <Link
-                                        to="/concert"
+                                        to="/showlist/1"
                                         onClick={onClickToggleModal}
                                     >
                                         콘서트
@@ -45,7 +45,15 @@ export function Header() {
                                 </li>
                                 <li>
                                     <Link
-                                        to="/concert"
+                                        to="/showlist/2"
+                                        onClick={onClickToggleModal}
+                                    >
+                                        뮤지컬
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link
+                                        to="/showlist/3"
                                         onClick={onClickToggleModal}
                                     >
                                         연극
@@ -53,7 +61,7 @@ export function Header() {
                                 </li>
                                 <li>
                                     <Link
-                                        to="/concert"
+                                        to="/showlist/4"
                                         onClick={onClickToggleModal}
                                     >
                                         아동

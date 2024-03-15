@@ -10,7 +10,7 @@ export function CategoryList({
     category,
     filterFn,
 }: {
-    category: number
+    category?: number
     filterFn?: (a: PostState, b: PostState) => number
 }) {
     const [sortOption, setSortOption] = useState('latest')

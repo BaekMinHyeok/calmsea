@@ -1,9 +1,9 @@
 import { createBrowserRouter } from 'react-router-dom'
 import App from '@/App'
 import { Home } from '@/pages/Home/Home'
-import { Concert } from '@/pages/CategoryPage/Concert/Concert'
 import { ShowEditor } from '@/pages/\bShowEditor/ShowEditor'
-// import { TabMenu } from '@/components/TabMenu/TabMenu'
+import { ShowList } from '@/pages/ShowList/ShowList'
+import { ShowDetail } from '@/pages/ShowDetail/ShowDetail'
 
 export const router = createBrowserRouter([
     {
@@ -16,10 +16,10 @@ export const router = createBrowserRouter([
                 path: '/',
                 element: <Home />,
             },
-            { path: '/concert', element: <Concert /> },
+            { path: '/showlist/:category', element: <ShowList /> },
+            { path: '/showlist/:category/:id', element: <ShowDetail /> },
             { path: '/shownew', element: <ShowEditor /> },
             { path: '/showedit/:id', element: <ShowEditor /> },
-            // { path: '/showlist', element: <TabMenu /> },
         ],
     },
 ])

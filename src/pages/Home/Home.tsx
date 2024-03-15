@@ -34,6 +34,7 @@ export function Home() {
                 ))}
             </Slick>
             <h1>RANKING</h1>
+            <h1>Sold Out Soon</h1>
         </Container>
     )
 }

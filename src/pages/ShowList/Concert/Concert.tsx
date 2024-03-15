@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { CategoryList } from '@/components/TotalList/CategoryList'
-import { Container } from '@/pages/CategoryPage/Concert/Concert.styles'
+import { Container } from '@/pages/ShowList/Concert/Concert.styles'
 import { TabButton } from '@/components/TabMenu/TabButton'
 import { recommendedFilter } from '@/util/ShowFilterList'
 
@@ -34,6 +34,7 @@ export function Concert() {
 
     return (
         <Container>
+            <h2>콘서트</h2>
             <div>
                 <TabButton
                     $isActive={activeTab === 1}

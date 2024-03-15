@@ -43,7 +43,6 @@ export function ShowEditor() {
         if (id) {
             async function fetchShowData(): Promise<void> {
                 try {
-                    // const params = useParams() as { id: string }
                     const docRef: DocumentReference<DocumentData> = doc(
                         db,
                         'show',
@@ -56,7 +55,6 @@ export function ShowEditor() {
                         const data = docSnap.data() as PostState
                         setShowInput(data)
                     }
-                    console.log('id', docRef.id)
                 } catch (error) {
                     console.error('error', error)
                 }
@@ -95,7 +93,8 @@ export function ShowEditor() {
             await createShow(firestoreData)
             setShowInput(firestoreData)
             setPost((prevPosts) => [...prevPosts, firestoreData])
-            navigate(`/showlist`, { replace: true })
+            const category = showInput.category
+            navigate(`/showlist/${category}`, { replace: true })
             // window.location.reload()
             alert('게시글이 작성되었습니다.')
             resetForm()
@@ -125,7 +124,8 @@ export function ShowEditor() {
             setShowInput(updatedShowInput)
             console.log(showInput)
             resetForm()
-            navigate('/showlist', { replace: true })
+            const category = showInput.category
+            navigate(`/showlist/${category}`, { replace: true })
             window.location.reload()
             alert('게시글이 수정되었습니다')
         } catch (error) {
