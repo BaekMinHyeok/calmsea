@@ -1,22 +1,20 @@
-import { Concert } from '@/pages/ShowList/Concert/Concert'
-import { Family } from '@/pages/ShowList/Family/Family'
-import { Musical } from '@/pages/ShowList/Musical/Musical'
-import { Theater } from '@/pages/ShowList/Theater/Theater'
+import { Show } from '@/pages/ShowList/Show/Show'
 import { useParams } from 'react-router-dom'
 
 export function ShowList() {
     const { category } = useParams()
+    const categryId = Number(category)
 
     const getComponent = () => {
-        switch (category) {
-            case '1':
-                return <Concert />
-            case '2':
-                return <Musical />
-            case '3':
-                return <Theater />
-            case '4':
-                return <Family />
+        switch (categryId) {
+            case 1:
+                return <Show category={categryId} />
+            case 2:
+                return <Show category={categryId} />
+            case 3:
+                return <Show category={categryId} />
+            case 4:
+                return <Show category={categryId} />
             default:
                 return <div>error</div>
         }

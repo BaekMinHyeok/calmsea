@@ -1,10 +1,13 @@
-import { useRecoilValueLoadable } from 'recoil'
+import { useRecoilState, useRecoilValueLoadable } from 'recoil'
 import * as S from '@/components/TotalList/TotalList.styles'
 import { getAllPostSelectors } from '../../recoil/selectors/getPosts'
 import { useMemo, useState } from 'react'
 import { sortFunction } from '@/util/ShowFilterList'
 import { PostItem } from '@/components/PostItem/PostItem'
 import { PostState } from '@/recoil/atoms/postState'
+import { dropDown } from '@/recoil/atoms/dropDown'
+import { TiArrowSortedDown, TiArrowSortedUp } from 'react-icons/ti'
+import { Button } from '../Button/Button'
 
 export function CategoryList({
     category,
@@ -15,6 +18,7 @@ export function CategoryList({
 }) {
     const [sortOption, setSortOption] = useState('latest')
     const boardList = useRecoilValueLoadable(getAllPostSelectors)
+    const [dropDownOpen, setDropDownOpen] = useRecoilState(dropDown)
     const { contents, state } = boardList
 
     // 게시물의 카테고리와 필터, 정렬을 적용한 데이터
@@ -45,20 +49,61 @@ export function CategoryList({
         <S.Container>
             {showSortButtons && (
                 <div>
-                    <button onClick={() => handleSortOptionChange('latest')}>
-                        최신순
-                    </button>
-                    <button onClick={() => handleSortOptionChange('oldest')}>
-                        오래된순
-                    </button>
-                    <button onClick={() => handleSortOptionChange('priceHigh')}>
-                        높은가격순
-                    </button>
-                    <button onClick={() => handleSortOptionChange('priceLow')}>
-                        낮은가격순
-                    </button>
+                    <span>
+                        {sortOption === 'latest'
+                            ? '최신순'
+                            : sortOption === 'oldest'
+                              ? '오래된순'
+                              : sortOption === 'priceHigh'
+                                ? '높은가격순'
+                                : '낮은가격순'}
+                    </span>
+                    <Button onClick={() => setDropDownOpen(!dropDownOpen)}>
+                        {dropDownOpen ? (
+                            <TiArrowSortedUp />
+                        ) : (
+                            <TiArrowSortedDown />
+                        )}
+                    </Button>
+                    {dropDownOpen && (
+                        <ul>
+                            <li
+                                onClick={() => {
+                                    handleSortOptionChange('latest')
+                                    setDropDownOpen(false)
+                                }}
+                            >
+                                최신순
+                            </li>
+                            <li
+                                onClick={() => {
+                                    handleSortOptionChange('oldest')
+                                    setDropDownOpen(false)
+                                }}
+                            >
+                                오래된순
+                            </li>
+                            <li
+                                onClick={() => {
+                                    handleSortOptionChange('priceHigh')
+                                    setDropDownOpen(false)
+                                }}
+                            >
+                                높은가격순
+                            </li>
+                            <li
+                                onClick={() => {
+                                    handleSortOptionChange('priceLow')
+                                    setDropDownOpen(false)
+                                }}
+                            >
+                                낮은가격순
+                            </li>
+                        </ul>
+                    )}
                 </div>
             )}
+
             <S.LineStyle />
 
             {state === 'loading' && <p>로딩 중...</p>}

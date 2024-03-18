@@ -1,18 +1,35 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { CategoryList } from '@/components/TotalList/CategoryList'
-import { Container } from '@/pages/ShowList/Concert/Concert.styles'
+import { Container } from '@/pages/ShowList/Show/Show.styles'
 import { TabButton } from '@/components/TabMenu/TabButton'
 import { recommendedFilter } from '@/util/ShowFilterList'
+// import { useRecoilValue } from 'recoil'
+// import { getCategoryPostSelectors } from '@/recoil/selectors/getPosts'
+// import { useParams } from 'react-router-dom'
 
-export function Concert() {
+export function Show({ category }: { category: number }) {
     const [activeTab, setActiveTab] = useState(1)
+    const title = useMemo(() => {
+        switch (category) {
+            case 1:
+                return '콘서트'
+            case 2:
+                return '뮤지컬'
+            case 3:
+                return '연극'
+            case 4:
+                return '가족'
+            default:
+                return '콘서트'
+        }
+    }, [category])
 
     const tabContent = () => {
         switch (activeTab) {
             case 1:
                 return (
                     <CategoryList
-                        category={1}
+                        category={category}
                         filterFn={recommendedFilter.recommendTickets}
                     />
                 )
@@ -20,7 +37,7 @@ export function Concert() {
                 return (
                     <div>
                         <CategoryList
-                            category={1}
+                            category={category}
                             filterFn={recommendedFilter.ticketRanking}
                         />
                     </div>
@@ -34,7 +51,7 @@ export function Concert() {
 
     return (
         <Container>
-            <h2>콘서트</h2>
+            <h2>{title}</h2>
             <div>
                 <TabButton
                     $isActive={activeTab === 1}
