@@ -1,9 +1,10 @@
 import React, { useCallback, useState } from 'react'
 import * as S from './Header.styles'
-import { FaGithub, FaSearch } from 'react-icons/fa'
+import { FaGithub } from 'react-icons/fa'
 import { IoShareSocial } from 'react-icons/io5'
 import { MenuModal } from '@/components/Modal/MenuModal'
 import { Link } from 'react-router-dom'
+import { SearchInput } from '../Form/SearchInput'
 
 const env = process.env
 env.PUBLIC_URL = env.PUBLIC_URL || ''
@@ -41,7 +42,6 @@ export function Header() {
                                     >
                                         콘서트
                                     </Link>
-                                    {/* 링크 이동시 모달창 닫기 추가 */}
                                 </li>
                                 <li>
                                     <Link
@@ -64,7 +64,7 @@ export function Header() {
                                         to="/showlist/4"
                                         onClick={onClickToggleModal}
                                     >
-                                        아동
+                                        가족
                                     </Link>
                                 </li>
                                 <li>
@@ -110,10 +110,7 @@ export function Header() {
                     </MenuModal>
                 )}
             </S.TopMenu>
-            <S.BottomMenu>
-                <S.SearchInput />
-                <FaSearch />
-            </S.BottomMenu>
+            <SearchInput />
         </S.Container>
     )
 }

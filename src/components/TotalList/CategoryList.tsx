@@ -108,8 +108,6 @@ export function CategoryList({
 
             {state === 'loading' && <p>로딩 중...</p>}
             {!contents && <p>로드에 실패했습니다.</p>}
-
-            {/* Display total posts and list */}
             <p>
                 현재 예매 가능한 공연은 <b>총 {totalPosts}개</b> 입니다.
             </p>

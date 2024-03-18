@@ -3,9 +3,6 @@ import { CategoryList } from '@/components/TotalList/CategoryList'
 import { Container } from '@/pages/ShowList/Show/Show.styles'
 import { TabButton } from '@/components/TabMenu/TabButton'
 import { recommendedFilter } from '@/util/ShowFilterList'
-// import { useRecoilValue } from 'recoil'
-// import { getCategoryPostSelectors } from '@/recoil/selectors/getPosts'
-// import { useParams } from 'react-router-dom'
 
 export function Show({ category }: { category: number }) {
     const [activeTab, setActiveTab] = useState(1)
