@@ -1,12 +1,12 @@
 import { ChangeEvent, useCallback, useEffect, useState } from 'react'
-import { BottomMenu, SearchInputStyle } from '../Header/Header.styles'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useRecoilState } from 'recoil'
 import { searchState } from '@/recoil/atoms/searchState'
 import { FaSearch } from 'react-icons/fa'
 import { getAllShows } from '@/\bapi'
+import * as S from './Form.styes'
 interface Suggestions {
-    id: number
+    id: string
     title: string
 }
 export function SearchInput() {
@@ -15,7 +15,6 @@ export function SearchInput() {
     const [suggestions, setSuggestions] = useState<Suggestions[]>([])
     const { search } = useLocation()
     const navigate = useNavigate()
-
     // 컴포넌트 마운트 시 URL에서 검색어 추출
     useEffect(() => {
         const keywordFromUrl = new URLSearchParams(search).get('keyword')
@@ -30,13 +29,12 @@ export function SearchInput() {
             setKeyword(inputKeyword)
             // 1글자 이상 입력했을 때에만 검색을 수행합니다.
             if (inputKeyword.length >= 1) {
-                // 모든 공연을 가져옵니다.
                 const allShows = await getAllShows()
                 // 입력 값에 기반하여 공연을 필터링합니다.
                 const filteredResults = allShows
                     .filter((show) => show.title.includes(inputKeyword))
                     .map((show) => ({
-                        id: Number(show.id),
+                        id: String(show.id),
                         title: show.title,
                     })) // PostState 객체를 Suggestions 객체로 변환합니다.
                 // 추천 목록을 설정합니다.
@@ -47,6 +45,7 @@ export function SearchInput() {
         },
         [],
     )
+
     // 검색 실행 함수
     const handleSearch = useCallback(async () => {
         if (keyword.length >= 1) {
@@ -56,6 +55,7 @@ export function SearchInput() {
                 )
                 setSearchState({ ...searchStateAtom, keyword, results })
                 navigate(`/search?keyword=${keyword}`)
+                resetInput()
             } catch (error) {
                 console.error('검색 에러', error)
             }
@@ -63,24 +63,52 @@ export function SearchInput() {
             alert('검색어를 입력해주세요.')
         }
     }, [keyword, navigate, searchStateAtom, setSearchState])
+
+    // 게시물 li클릭
+    const handleLiClick = useCallback(
+        (keyword: string) => {
+            const isExist = suggestions.find(
+                (suggestion) => suggestion.title === keyword,
+            )
+            if (isExist) {
+                navigate(`/search?keyword=${keyword}`)
+                resetInput()
+            }
+        },
+        [navigate, suggestions],
+    )
+
+    const resetInput = () => {
+        setKeyword('')
+        setSuggestions([])
+    }
+
     return (
-        <BottomMenu>
-            <SearchInputStyle>
+        <S.SearchInputContainer>
+            <S.SearchInputStyle>
                 <input
                     type="text"
                     value={keyword}
                     onChange={handleChange}
                     placeholder="검색어를 입력해주세요."
                 />
-            </SearchInputStyle>
-            <ul>
-                {suggestions.map((suggestion) => (
-                    <li key={suggestion.id}>{suggestion.title}</li>
-                ))}
-            </ul>
+            </S.SearchInputStyle>
+
             <button onClick={handleSearch}>
                 <FaSearch />
             </button>
-        </BottomMenu>
+            <S.AutoCompleteStyle
+                style={{ display: suggestions.length > 0 ? 'block' : 'none' }}
+            >
+                {suggestions.map((suggestion) => (
+                    <li
+                        key={suggestion.id}
+                        onClick={() => handleLiClick(suggestion.title)}
+                    >
+                        {suggestion.title}
+                    </li>
+                ))}
+            </S.AutoCompleteStyle>
+        </S.SearchInputContainer>
     )
 }

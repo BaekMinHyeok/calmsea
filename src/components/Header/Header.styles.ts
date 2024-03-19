@@ -42,36 +42,3 @@ export const SiteLink = styled.div`
     gap: 20px;
     font-size: 30px;
 `
-
-export const BottomMenu = styled.div`
-    text-align: center;
-    position: relative;
-    & button {
-        position: absolute;
-        transform: translate(0, 0);
-        top: 50%;
-        left: 80%;
-        background: inherit;
-        border: none;
-        cursor: pointer;
-    }
-    & svg {
-        font-size: 20px;
-        color: #a7b3c9;
-    }
-`
-
-export const SearchInputStyle = styled.div`
-    border: none;
-    & > input {
-        width: 300px;
-        height: 30px;
-        border-radius: 30px;
-        border: none;
-        margin-top: 20px;
-        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-        padding: 20px;
-        box-sizing: border-box;
-        font-size: 14px;
-    }
-`

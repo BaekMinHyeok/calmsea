@@ -151,3 +151,62 @@ export const DescriptionText = styled.textarea`
     overflow-y: scroll;
     resize: none;
 `
+// 검색창
+export const SearchInputContainer = styled.div`
+    text-align: center;
+    position: relative;
+    width: 300px;
+    margin: 20px auto 0 auto;
+    & button {
+        position: absolute;
+        transform: translate(420%, -40%);
+        top: 50%;
+        right: 50%;
+        background: inherit;
+        border: none;
+        cursor: pointer;
+        z-index: 99;
+    }
+    & svg {
+        font-size: 20px;
+        color: #a7b3c9;
+    }
+`
+
+export const SearchInputStyle = styled.div`
+    border: none;
+    & > input {
+        width: 100%;
+        height: 30px;
+        border-radius: 5px;
+        border: none;
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+        padding: 20px;
+        box-sizing: border-box;
+        font-size: 14px;
+    }
+`
+export const AutoCompleteStyle = styled.ul`
+    width: 100%;
+    max-height: 300px;
+    background: #fff;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 8%);
+    border-radius: 5px;
+    padding: 20px 0 20px 0;
+    box-sizing: border-box;
+    z-index: 9;
+    overflow-y: auto;
+    & li {
+        padding: 5px;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+
+        &:hover {
+            background: #ddd;
+        }
+    }
+`

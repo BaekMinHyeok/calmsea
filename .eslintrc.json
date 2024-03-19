@@ -18,10 +18,12 @@
     },
     "plugins": ["react", "@typescript-eslint"],
     "rules": {
+        "no-unused-vars": "error",
         "prettier/prettier": ["error", { "singleQuote": true, "semi": false }],
         "space-before-function-paren": "off",
         // "space-before-function-paren": ["error", "never"],
         "react/react-in-jsx-scope": "off"
+
         // "esModuleInterop": 1
     }
 }
