@@ -111,7 +111,6 @@ export const FileInputWrap = styled.div`
     gap: 20px;
 `
 export const FileLabel = styled.label`
-    display: inline-block;
     height: 35px;
     width: 40%;
     color: #fff;
@@ -124,7 +123,6 @@ export const FileLabel = styled.label`
     align-items: center;
     justify-content: center;
     font-size: 14px;
-    font-weight: normal;
 `
 export const FileInput = styled.input`
     display: none;

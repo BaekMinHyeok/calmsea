@@ -70,11 +70,6 @@ export function SearchResult() {
                                 </S.ImageWrap>
                                 <S.TextWrap>
                                     <h2>{result.title}</h2>
-                                    <div>
-                                        <p>{result.showStartDate}</p>~
-                                        <p>{result.showEndDate}</p>
-                                    </div>
-
                                     <p>{result.address.areaAddress}</p>
                                 </S.TextWrap>
                             </S.PostContent>

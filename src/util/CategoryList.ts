@@ -13,6 +13,13 @@ export const CategoryItems = [
     },
     {
         categoryId: 4,
-        categoryName: '아동',
+        categoryName: '가족',
     },
 ]
+
+export const CategoryMap = new Map([
+    [1, '콘서트'],
+    [2, '뮤지컬'],
+    [3, '연극'],
+    [4, '가족'],
+])
