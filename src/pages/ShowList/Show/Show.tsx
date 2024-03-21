@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { CategoryList } from '@/components/TotalList/CategoryList'
-import { Container } from '@/pages/ShowList/Show/Show.styles'
+import { Container, TabContainer } from '@/pages/ShowList/Show/Show.styles'
 import { TabButton } from '@/components/TabMenu/TabButton'
 import { recommendedFilter } from '@/util/ShowFilterList'
 
@@ -70,7 +70,7 @@ export function Show({ category }: { category: number }) {
                 </TabButton>
             </div>
 
-            <div>{tabContent()}</div>
+            <TabContainer>{tabContent()}</TabContainer>
         </Container>
     )
 }

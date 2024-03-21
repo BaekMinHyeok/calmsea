@@ -87,10 +87,12 @@ export function SearchInput() {
         <S.SearchInputContainer>
             <S.SearchInputStyle>
                 <input
+                    id="search-input"
                     type="text"
                     value={keyword}
                     onChange={handleChange}
                     placeholder="검색어를 입력해주세요."
+                    autoComplete="off"
                 />
             </S.SearchInputStyle>
 

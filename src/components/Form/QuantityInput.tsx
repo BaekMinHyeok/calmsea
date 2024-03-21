@@ -2,6 +2,7 @@ import { ChangeEvent } from 'react'
 import { Container } from '@/components/Form/Form.styes'
 
 interface QuantityInputProps {
+    id: string
     label: string
     value: number
     onChange: (value: number) => void
@@ -10,6 +11,7 @@ interface QuantityInputProps {
 }
 
 export function QuantityInput({
+    id,
     label,
     value,
     onChange,
@@ -38,8 +40,9 @@ export function QuantityInput({
 
     return (
         <Container>
-            <label>{label}</label>
+            <label htmlFor={id}>{label}</label>
             <input
+                id={id}
                 type="text"
                 value={formatQuantityWithCommas(value)}
                 onChange={handleInputChange}

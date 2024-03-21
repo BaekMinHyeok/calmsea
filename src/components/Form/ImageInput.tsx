@@ -9,6 +9,7 @@ import { useSetRecoilState } from 'recoil'
 import { showInputState } from '../../recoil/atoms/postState'
 
 interface ImageInputProps {
+    id: string
     label: string
     selectedImage: string | null
     onImageChange: (image: string | null) => void
@@ -16,6 +17,7 @@ interface ImageInputProps {
 const MAX_FILE_SIZE_MB = 5
 
 export function ImageInput({
+    id,
     label,
     selectedImage,
     onImageChange,
@@ -65,14 +67,10 @@ export function ImageInput({
 
     return (
         <Container>
-            <label>{label}</label>
+            <label htmlFor={id}>{label}</label>
             <FileInputWrap>
-                <input
-                    type="file"
-                    id="file-input"
-                    onChange={handleImageChange}
-                />
-                <FileLabel htmlFor="file-input">파일찾기</FileLabel>
+                <input id={id} type="file" onChange={handleImageChange} />
+                <FileLabel htmlFor={id}>파일찾기</FileLabel>
             </FileInputWrap>
 
             {selectedImage && (

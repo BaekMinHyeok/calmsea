@@ -43,15 +43,15 @@ export function Description({
 
     return (
         <Container>
-            <label>{label}</label>
+            <label htmlFor="desciption-input">{label}</label>
             <FileInputWrap>
                 <input
                     type="file"
-                    id="desciption-input"
+                    id="desciptionImg-input"
                     onChange={handleImageChange}
                 />
 
-                <FileLabel htmlFor="desciption-input">파일찾기</FileLabel>
+                <FileLabel htmlFor="desciptionImg-input">파일찾기</FileLabel>
             </FileInputWrap>
             {selectedImage && (
                 <ImageUploadStyle
@@ -61,6 +61,7 @@ export function Description({
                 />
             )}
             <DescriptionText
+                id="desciption-input"
                 placeholder="여기에 설명을 입력하세요."
                 value={description}
                 onChange={(e) => onDescriptionChange(e.target.value)}

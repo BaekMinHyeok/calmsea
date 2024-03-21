@@ -7,6 +7,7 @@ export interface Address {
     townAddress: string
 }
 interface AddressInputProps {
+    id: string
     label: string
     placeholder: string
     detailPlaceholder: string
@@ -24,6 +25,7 @@ interface AddressData {
 }
 
 export function AddressInput({
+    id,
     label,
     placeholder,
     detailPlaceholder,
@@ -83,9 +85,10 @@ export function AddressInput({
 
     return (
         <Container>
-            <label>{label}</label>
+            <label htmlFor="mainAdress-input">{label}</label>
             <AdressStyle>
                 <input
+                    id="mainAdress-input"
                     type="text"
                     readOnly={true}
                     placeholder={placeholder}
@@ -105,6 +108,7 @@ export function AddressInput({
             )}
 
             <input
+                id="subAdress-input"
                 type="text"
                 readOnly={true}
                 placeholder={detailPlaceholder}

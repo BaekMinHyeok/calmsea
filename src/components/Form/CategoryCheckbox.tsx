@@ -1,6 +1,7 @@
 import { CategoryContent, CategoryLabel } from '@/components/Form/Form.styes'
 
 interface CategoryCheckboxProps {
+    id: string
     categoryId: number
     categoryName: string
     isSelected: boolean
@@ -8,6 +9,7 @@ interface CategoryCheckboxProps {
 }
 
 export function CategoryCheckbox({
+    id,
     categoryId,
     categoryName,
     isSelected,
@@ -15,8 +17,9 @@ export function CategoryCheckbox({
 }: CategoryCheckboxProps) {
     return (
         <CategoryContent>
-            <CategoryLabel>{categoryName}</CategoryLabel>
+            <CategoryLabel htmlFor={id}>{categoryName}</CategoryLabel>
             <input
+                id={id}
                 type="checkbox"
                 value={categoryId}
                 checked={isSelected}

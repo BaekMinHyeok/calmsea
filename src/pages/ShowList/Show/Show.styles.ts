@@ -3,8 +3,13 @@ import styled from 'styled-components'
 export const Container = styled.div`
     width: 100%;
     text-align: center;
+    & > h2 {
+        margin-bottom: 10px;
+    }
 `
-
+export const TabContainer = styled.div`
+    padding: 0 20px;
+`
 export const PostWrap = styled.ul`
     display: flex;
     align-items: center;

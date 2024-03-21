@@ -6,11 +6,12 @@ import {
 } from '@/components/Form/Form.styes'
 
 interface TimeInputProps {
+    id: string
     label: string
     onChange: (minutes: number) => void
 }
 
-export function TimeInput({ label, onChange }: TimeInputProps) {
+export function TimeInput({ id, label, onChange }: TimeInputProps) {
     const [startTime, setStartTime] = useState('00:00')
     const [endTime, setEndTime] = useState('00:00')
 
@@ -40,15 +41,17 @@ export function TimeInput({ label, onChange }: TimeInputProps) {
 
     return (
         <div>
-            <TimeLabel>{label}</TimeLabel>
+            <TimeLabel htmlFor={id}>{label}</TimeLabel>
             <TimeInputWrap>
                 <TimeInputStyle
+                    id={id}
                     type="time"
                     value={startTime}
                     onChange={handleStartTimeChange}
                 />
                 <span>~</span>
                 <TimeInputStyle
+                    id={id}
                     type="time"
                     value={endTime}
                     onChange={handleEndTimeChange}

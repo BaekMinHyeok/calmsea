@@ -1,13 +1,13 @@
-import { useRecoilState, useRecoilValueLoadable } from 'recoil'
-import * as S from '@/components/TotalList/TotalList.styles'
-import { getAllPostSelectors } from '../../recoil/selectors/getPosts'
 import { useMemo, useState } from 'react'
-import { sortFunction } from '@/util/ShowFilterList'
-import { PostItem } from '@/components/PostItem/PostItem'
+import { useRecoilState, useRecoilValueLoadable } from 'recoil'
+import { getAllPostSelectors } from '../../recoil/selectors/getPosts'
 import { PostState } from '@/recoil/atoms/postState'
 import { dropDown } from '@/recoil/atoms/dropDown'
-import { TiArrowSortedDown, TiArrowSortedUp } from 'react-icons/ti'
+import { sortFunction } from '@/util/ShowFilterList'
 import { Button } from '../Button/Button'
+import { PostItem } from '@/components/PostItem/PostItem'
+import { TiArrowSortedDown, TiArrowSortedUp } from 'react-icons/ti'
+import * as S from '@/components/TotalList/TotalList.styles'
 
 export function CategoryList({
     category,
@@ -48,7 +48,7 @@ export function CategoryList({
     return (
         <S.Container>
             {showSortButtons && (
-                <div>
+                <S.TabBtnWrap>
                     <span>
                         {sortOption === 'latest'
                             ? '최신순'
@@ -66,7 +66,7 @@ export function CategoryList({
                         )}
                     </Button>
                     {dropDownOpen && (
-                        <ul>
+                        <S.DropDownWrap>
                             <li
                                 onClick={() => {
                                     handleSortOptionChange('latest')
@@ -99,12 +99,12 @@ export function CategoryList({
                             >
                                 낮은가격순
                             </li>
-                        </ul>
+                        </S.DropDownWrap>
                     )}
-                </div>
+                </S.TabBtnWrap>
             )}
 
-            <S.LineStyle />
+            {/* <S.LineStyle /> */}
 
             {state === 'loading' && <p>로딩 중...</p>}
             {!contents && <p>로드에 실패했습니다.</p>}

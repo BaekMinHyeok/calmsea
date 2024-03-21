@@ -7,6 +7,9 @@ export const LineStyle = styled.div`
 export const Container = styled.div`
     width: 100%;
     text-align: center;
+    border-top: 2px solid #103680;
+    margin-top: 40px;
+    padding-top: 20px;
 `
 
 export const PostWrap = styled.ul`
@@ -20,7 +23,7 @@ export const PostContent = styled.li`
     width: 100%;
     position: relative;
     border-bottom: 1px solid #000;
-    padding: 20px;
+    padding: 20px 0 20px 0;
 
     & svg {
         width: 100%;
@@ -59,7 +62,10 @@ export const EditIcon = styled.div`
     position: absolute;
     right: 0;
     top: 0;
-    transform: translate(-40%, 240%);
+    transform: translate(50%, 100%);
+    & > svg {
+        color: #103680;
+    }
 `
 export const EditModal = styled.div`
     display: flex;
@@ -67,17 +73,65 @@ export const EditModal = styled.div`
     position: absolute;
     right: 10%;
     top: 0;
-    transform: translate(30%, 90%);
+    transform: translate(60%, 70%);
     border-radius: 5px;
-    background-color: #a7b3c9;
-    border: 1px solid #a7b3c9;
+    background-color: #103680;
+    border: 1px solid #103680;
 
     & button {
         border: none;
         background-color: inherit;
         padding: 5px 15px 5px 15px;
+        color: #fff;
     }
     & button:hover {
         background-color: #fff;
+        border: 1px solid #fff;
+        color: #000;
     }
 `
+export const TabBtnWrap = styled.div`
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+    gap: 5px;
+    align-items: center;
+    margin-bottom: 20px;
+    font-weight: bold;
+    font-size: 12px;
+    & button {
+        border: none;
+        background-color: inherit;
+        padding: 0;
+    }
+    & svg {
+        font-size: 18px;
+    }
+`
+
+export const DropDownWrap = styled.ul`
+    position: absolute;
+    top: 0;
+    right: 0%;
+    transform: translate(0%, 20%);
+    z-index: 9;
+    & > li {
+        cursor: pointer;
+        padding: 5px 20px 5px 20px;
+        background-color: #fff;
+    }
+    & li:hover {
+        background-color: #103680;
+        color: #fff;
+    }
+    & li:nth-child(1) {
+        border-radius: 10px 10px 0 0;
+    }
+    & li:nth-child(4) {
+        border-radius: 0 0 10px 10px;
+    }
+`
+
+// export const DropDownContent = styled.li`
+//     cursor: pointer;
+// `

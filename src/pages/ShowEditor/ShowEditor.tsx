@@ -162,6 +162,7 @@ export function ShowEditor() {
             <T.Title text={id ? '게시글 수정' : '게시글 작성'} size="h2" />
             <S.Wrap>
                 <TextInput
+                    id="title-input"
                     label="제목"
                     placeholder="제목을 입력해주세요."
                     value={showInput.title}
@@ -170,6 +171,7 @@ export function ShowEditor() {
                     }
                 />
                 <ShowDateInput
+                    id="date-input"
                     label="상영일자"
                     startValue={showInput.showStartDate}
                     endValue={showInput.showEndDate}
@@ -181,6 +183,7 @@ export function ShowEditor() {
                     }
                 />
                 <AddressInput
+                    id="address-input"
                     label="주소"
                     address={showInput.address}
                     onAddressChange={handleAddressChange}
@@ -192,6 +195,7 @@ export function ShowEditor() {
                     <S.CategortWrap>
                         {CategoryItems.map((item) => (
                             <CategoryCheckbox
+                                id={`category${item.categoryId}-input`}
                                 key={item.categoryId}
                                 {...item}
                                 isSelected={
@@ -209,6 +213,7 @@ export function ShowEditor() {
                 </S.CategortContainer>
                 <S.TimeContainer>
                     <TimeInput
+                        id={`time-input`}
                         label="관람시간"
                         onChange={(value) =>
                             handleShowInputChange('showTime', value)
@@ -217,6 +222,7 @@ export function ShowEditor() {
                     <p>총 {showInput.showTime}분</p>
                 </S.TimeContainer>
                 <TextInput
+                    id="perfomer-input"
                     label="출연자"
                     placeholder="출연자를 작성해주세요."
                     value={showInput.performer}
@@ -225,11 +231,13 @@ export function ShowEditor() {
                     }
                 />
                 <PriceInput
+                    id="price-input"
                     label="가격"
                     value={showInput.price}
                     onChange={(value) => handleShowInputChange('price', value)}
                 />
                 <ImageInput
+                    id="img-input"
                     label="이미지"
                     selectedImage={showInput.selectedImage}
                     onImageChange={(image) =>
@@ -248,6 +256,7 @@ export function ShowEditor() {
                     }
                 />
                 <QuantityInput
+                    id="quantity-input"
                     label="수량"
                     value={showInput.quantity}
                     onChange={(value) =>

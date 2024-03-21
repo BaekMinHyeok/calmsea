@@ -2,6 +2,7 @@ import React, { ChangeEvent } from 'react'
 import { Container, ShowDateStyle } from '@/components/Form/Form.styes'
 
 interface TextInputProps {
+    id: string
     label: string
     placeholder?: string
     detailPlaceholder?: string
@@ -11,6 +12,7 @@ interface TextInputProps {
 }
 
 interface ShowDateInputProps {
+    id: string
     label: string
     startValue: string
     endValue: string
@@ -19,6 +21,7 @@ interface ShowDateInputProps {
 }
 
 export function TextInput({
+    id,
     label,
     placeholder,
     value,
@@ -26,8 +29,9 @@ export function TextInput({
 }: TextInputProps) {
     return (
         <Container>
-            <label>{label}</label>
+            <label htmlFor={id}>{label}</label>
             <input
+                id={id}
                 type="text"
                 placeholder={placeholder}
                 value={value}
@@ -47,6 +51,7 @@ export function DateInput({ label, value, onChange }: TextInputProps) {
 }
 
 export function ShowDateInput({
+    id,
     label,
     startValue,
     endValue,
@@ -55,9 +60,10 @@ export function ShowDateInput({
 }: ShowDateInputProps) {
     return (
         <Container>
-            <label>{label}</label>
+            <label htmlFor={id}>{label}</label>
             <ShowDateStyle>
                 <input
+                    id={id}
                     type="date"
                     value={startValue}
                     onChange={startOnChange}
