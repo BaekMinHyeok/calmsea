@@ -76,7 +76,6 @@ export const EditModal = styled.div`
     transform: translate(60%, 70%);
     border-radius: 5px;
     background-color: #103680;
-    border: 1px solid #103680;
 
     & button {
         border: none;
@@ -86,7 +85,6 @@ export const EditModal = styled.div`
     }
     & button:hover {
         background-color: #fff;
-        border: 1px solid #fff;
         color: #000;
     }
 `
