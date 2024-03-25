@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import { getShowById } from '@/\bapi'
+import { getShowById } from '@/\bapi/show'
 import { postState } from '@/recoil/atoms/postState'
 import { useRecoilState } from 'recoil'
 import { MdImageNotSupported } from 'react-icons/md'

@@ -3,8 +3,9 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { useRecoilState } from 'recoil'
 import { searchState } from '@/recoil/atoms/searchState'
 import { FaSearch } from 'react-icons/fa'
-import { getAllShows } from '@/\bapi'
+import { getAllShows } from '@/\bapi/show'
 import * as S from './Form.styes'
+
 interface Suggestions {
     id: string
     title: string

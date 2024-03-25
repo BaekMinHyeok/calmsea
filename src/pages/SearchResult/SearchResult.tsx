@@ -1,7 +1,7 @@
 import { MutableRefObject, useEffect, useRef } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useRecoilState } from 'recoil'
-import { getAllShows } from '@/\bapi'
+import { getAllShows } from '@/\bapi/show'
 import { PostState } from '@/recoil/atoms/postState'
 import { searchState } from '@/recoil/atoms/searchState'
 import { MdImageNotSupported } from 'react-icons/md'

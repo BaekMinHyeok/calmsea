@@ -7,7 +7,6 @@ import { CategoryCheckbox } from '../../components/Form/CategoryCheckbox'
 import { CategoryItems } from '../../util/CategoryList'
 import { TimeInput } from '../../components/Form/TimeInput'
 import { PriceInput } from '../../components/Form/PriceInput'
-import { ImageInput } from '../../components/Form/ImageInput'
 import { Description } from '../../components/Form/Description'
 import { AdminBtn } from '../../components/Button/Button'
 import { useRecoilState, useSetRecoilState } from 'recoil'
@@ -19,10 +18,14 @@ import {
     doc,
     getDoc,
 } from 'firebase/firestore/lite'
-import { db } from '@/firebase'
+import { db, storage } from '@/firebase'
 import { postState } from '@/recoil/atoms/postState'
-import { createShow, updateShow } from '@/\bapi'
+
 import { QuantityInput } from '@/components/Form/QuantityInput'
+import { FireImageInput } from '@/components/Form/FireImageInput'
+import { deleteObject, ref } from '@firebase/storage'
+import { createShow, updateShow } from '@/\bapi/show'
+import { createImage } from '@/\bapi/storage'
 
 export const getStringDate = (date: Date) => {
     return date.toISOString().slice(0, 10)
@@ -84,6 +87,12 @@ export function ShowEditor() {
         // Address 객체를 문자열로 변환
         handleShowInputChange('address', newAddress)
     }
+    // 이미지 업로드 함수
+    async function uploadImage(image: File) {
+        const imageUrl = await createImage(image)
+        return imageUrl
+    }
+
     // 게시글 생성
     async function handleCreatePost() {
         try {
@@ -91,6 +100,11 @@ export function ShowEditor() {
             const firestoreData = { ...showInput, createdAt: Date.now() }
             // Firestore에 문서를 추가
             await createShow(firestoreData)
+            // 이미지 업로드 ㅇㄴㄹㄴㄹㅇ
+            if (showInput.selectedImage) {
+                const imageUrl = await uploadImage(showInput.selectedImage)
+                firestoreData.selectedImage = imageUrl
+            }
             setShowInput(firestoreData)
             setPost((prevPosts) => [...prevPosts, firestoreData])
             const category = showInput.category
@@ -105,11 +119,23 @@ export function ShowEditor() {
     // 게시글 수정
     async function handleEditPost() {
         try {
+            // 기존 이미지 삭제
+            if (showInput.selectedImage) {
+                await deleteObject(ref(storage, showInput.selectedImage))
+            }
+
+            // 이미지 업로드
+            if (showInput.selectedImage) {
+                const imageUrl = await uploadImage(showInput.selectedImage)
+                showInput.selectedImage = imageUrl
+            }
+
+            // ㅇㅁ
             const updatedShowInput = {
                 ...showInput,
                 createdAt: Date.now(),
             }
-            console.log(id)
+
             // Firestore 문서 업데이트
             await updateShow(id!, updatedShowInput)
             setPost((prevPostState) => {
@@ -236,9 +262,17 @@ export function ShowEditor() {
                     value={showInput.price}
                     onChange={(value) => handleShowInputChange('price', value)}
                 />
-                <ImageInput
+                {/* <ImageInput
                     id="img-input"
                     label="이미지"
+                    selectedImage={showInput.selectedImage}
+                    onImageChange={(image) =>
+                        handleShowInputChange('selectedImage', image ?? '')
+                    }
+                /> */}
+                <FireImageInput
+                    id="img-input"
+                    label="testImg"
                     selectedImage={showInput.selectedImage}
                     onImageChange={(image) =>
                         handleShowInputChange('selectedImage', image ?? '')
@@ -265,6 +299,7 @@ export function ShowEditor() {
                     min={0}
                     max={100}
                 />
+
                 <AdminBtn
                     text={id ? '게시글 수정' : '게시글 작성'}
                     onClick={id ? handleEditPost : handleCreatePost}

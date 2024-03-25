@@ -8,8 +8,10 @@ import * as S from '@/components/TotalList/TotalList.styles'
 import { MdImageNotSupported } from 'react-icons/md'
 import { SlOptionsVertical } from 'react-icons/sl'
 import { LikeButton } from '../LikeButton/LikeButton'
-import { deleteShow } from '@/\bapi'
+
 import { CategoryList } from '../TotalList/CategoryList'
+import { storage } from '@/firebase'
+import { deleteShow } from '@/\bapi/show'
 
 interface PostItemProps {
     post: PostState
@@ -38,6 +40,11 @@ export const PostItem = ({ post }: PostItemProps) => {
                 return
             }
             try {
+                if (post.selectedImage) {
+                    const storageRef = storage.refFromURL(post.selectedImage)
+                    await storageRef.delete()
+                    console.log('이미지가 성공적으로 삭제되었습니다.')
+                }
                 await deleteShow(post.id?.toString())
                 console.log('게시글이 성공적으로 삭제되었습니다.')
                 navigate(`/`, { replace: true })

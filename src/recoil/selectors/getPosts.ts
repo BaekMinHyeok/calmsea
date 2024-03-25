@@ -1,6 +1,6 @@
 import { selector } from 'recoil'
 import { PostState, categoryState } from '../atoms/postState'
-import { getAllShows, getShowByCategory } from '@/\bapi'
+import { getAllShows, getShowByCategory } from '@/\bapi/show'
 
 // 모든 게시물
 export const getAllPostSelectors = selector<PostState[]>({
