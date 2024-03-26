@@ -12,7 +12,8 @@ export interface PostState {
     showTime: number
     performer: string
     price: number
-    selectedImage: string | null
+    selectedImage: File | null
+    imageUrl?: string | null
     descriptionImage: string | null
     description: string
     like: number

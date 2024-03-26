@@ -66,14 +66,11 @@ export function Home() {
                             <p>
                                 <span>{number++}</span>
                             </p>
-                            {item.selectedImage !== null ? (
+                            {item.imageUrl !== null ? (
                                 <Link
                                     to={`/showlist/${item.category}/${item.id}`}
                                 >
-                                    <img
-                                        src={item.selectedImage}
-                                        alt={item.title}
-                                    />
+                                    <img src={item.imageUrl} alt={item.title} />
                                 </Link>
                             ) : (
                                 <div>
@@ -89,14 +86,11 @@ export function Home() {
                 <CenterMode autoplay={true} speed={500}>
                     {soldOutItems.map((item) => (
                         <div key={item.id}>
-                            {item.selectedImage !== null ? (
+                            {item.imageUrl !== null ? (
                                 <Link
                                     to={`/showlist/${item.category}/${item.id}`}
                                 >
-                                    <img
-                                        src={item.selectedImage}
-                                        alt={item.title}
-                                    />
+                                    <img src={item.imageUrl} alt={item.title} />
                                 </Link>
                             ) : (
                                 <div>

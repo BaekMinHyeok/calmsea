@@ -18,14 +18,16 @@ import {
     doc,
     getDoc,
 } from 'firebase/firestore/lite'
-import { db, storage } from '@/firebase'
+import { db } from '@/firebase'
 import { postState } from '@/recoil/atoms/postState'
 
 import { QuantityInput } from '@/components/Form/QuantityInput'
 import { FireImageInput } from '@/components/Form/FireImageInput'
-import { deleteObject, ref } from '@firebase/storage'
+
 import { createShow, updateShow } from '@/\bapi/show'
-import { createImage } from '@/\bapi/storage'
+
+// import { ImageInput } from '@/components/Form/ImageInput'
+import { createImage, deleteImage } from '@/\bapi/storage'
 
 export const getStringDate = (date: Date) => {
     return date.toISOString().slice(0, 10)
@@ -75,7 +77,7 @@ export function ShowEditor() {
     // input value 업데이트
     const handleShowInputChange = (
         key: keyof PostState,
-        value: string | number | Address,
+        value: string | number | Address | File | null,
     ) => {
         setShowInput((prevInputState) => ({
             ...prevInputState,
@@ -87,24 +89,27 @@ export function ShowEditor() {
         // Address 객체를 문자열로 변환
         handleShowInputChange('address', newAddress)
     }
-    // 이미지 업로드 함수
-    async function uploadImage(image: File) {
-        const imageUrl = await createImage(image)
-        return imageUrl
-    }
 
+    console.log(showInput.selectedImage)
+    console.log(showInput.imageUrl)
     // 게시글 생성
     async function handleCreatePost() {
         try {
-            // Firestore에 추가할 새로운 객체를 생성
-            const firestoreData = { ...showInput, createdAt: Date.now() }
-            // Firestore에 문서를 추가
-            await createShow(firestoreData)
-            // 이미지 업로드 ㅇㄴㄹㄴㄹㅇ
+            let imgUrl: string | null = null
+            console.log(imgUrl)
             if (showInput.selectedImage) {
-                const imageUrl = await uploadImage(showInput.selectedImage)
-                firestoreData.selectedImage = imageUrl
+                imgUrl = await createImage(showInput.selectedImage)
             }
+
+            // Firestore에 추가할 새로운 객체를 생성
+            const firestoreData = {
+                ...showInput,
+                createdAt: Date.now(),
+                imageUrls: imgUrl,
+            }
+
+            // Firestore에 문서를 추가ㅁㅇㄴㅁ
+            await createShow(firestoreData)
             setShowInput(firestoreData)
             setPost((prevPosts) => [...prevPosts, firestoreData])
             const category = showInput.category
@@ -116,26 +121,32 @@ export function ShowEditor() {
             console.error('error', error)
         }
     }
+
     // 게시글 수정
     async function handleEditPost() {
         try {
-            // 기존 이미지 삭제
-            if (showInput.selectedImage) {
-                await deleteObject(ref(storage, showInput.selectedImage))
-            }
+            let updatedShowInput = { ...showInput }
 
-            // 이미지 업로드
+            // 새 이미지가 선택되었는지 확인합니다.
             if (showInput.selectedImage) {
-                const imageUrl = await uploadImage(showInput.selectedImage)
-                showInput.selectedImage = imageUrl
+                // 이전 이미지를 스토리지에서 삭제합니다.
+                if (updatedShowInput.selectedImage) {
+                    await deleteImage(updatedShowInput.selectedImage.name)
+                }
+
+                // 새 이미지를 스토리지에 업로드하고 URL을 가져옵니다.
+                const imgUrl = await createImage(showInput.selectedImage)
+
+                // updatedShowInput의 selectedImage 필드를 업데이트합니다.
+                updatedShowInput = {
+                    ...updatedShowInput,
+                    selectedImage: showInput.selectedImage,
+                    imageUrl: imgUrl,
+                }
             }
 
             // ㅇㅁ
-            const updatedShowInput = {
-                ...showInput,
-                createdAt: Date.now(),
-            }
-
+            updatedShowInput.createdAt = Date.now()
             // Firestore 문서 업데이트
             await updateShow(id!, updatedShowInput)
             setPost((prevPostState) => {
@@ -148,7 +159,6 @@ export function ShowEditor() {
                 ]
             })
             setShowInput(updatedShowInput)
-            console.log(showInput)
             resetForm()
             const category = showInput.category
             navigate(`/showlist/${category}`, { replace: true })
@@ -181,7 +191,7 @@ export function ShowEditor() {
             quantity: 0,
         })
     }
-
+    console.log(showInput.selectedImage)
     return (
         <S.Container>
             {/* 게시글 수정일때도 만들어야함 */}
@@ -273,9 +283,9 @@ export function ShowEditor() {
                 <FireImageInput
                     id="img-input"
                     label="testImg"
-                    selectedImage={showInput.selectedImage}
+                    selectedImage={showInput.selectedImage ?? null}
                     onImageChange={(image) =>
-                        handleShowInputChange('selectedImage', image ?? '')
+                        handleShowInputChange('selectedImage', image ?? null)
                     }
                 />
                 <Description

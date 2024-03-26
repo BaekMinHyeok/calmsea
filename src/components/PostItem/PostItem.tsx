@@ -1,5 +1,4 @@
 import { useModal } from '@/hooks/useModal'
-// import { TotalList } from '@/components/TotalList/TotalList'
 import { PostState } from '@/recoil/atoms/postState'
 import { DayCounter } from '@/util/DayCounter'
 import { useCallback } from 'react'
@@ -8,10 +7,9 @@ import * as S from '@/components/TotalList/TotalList.styles'
 import { MdImageNotSupported } from 'react-icons/md'
 import { SlOptionsVertical } from 'react-icons/sl'
 import { LikeButton } from '../LikeButton/LikeButton'
-
 import { CategoryList } from '../TotalList/CategoryList'
-import { storage } from '@/firebase'
 import { deleteShow } from '@/\bapi/show'
+import { deleteImage } from '@/\bapi/storage'
 
 interface PostItemProps {
     post: PostState
@@ -35,15 +33,18 @@ export const PostItem = ({ post }: PostItemProps) => {
     async function handleDelete() {
         const isConfirmed = window.confirm('정말로 삭제하시겠습니까?')
         if (isConfirmed) {
-            if (post.id === null || post.id === undefined) {
-                console.error('게시글 ID가 없습니다.')
-                return
-            }
+            // if (post.id === null || post.id === undefined) {
+            //     console.error('게시글 ID가 없습니다.')
+            //     return
+            // }
             try {
-                if (post.selectedImage) {
-                    const storageRef = storage.refFromURL(post.selectedImage)
-                    await storageRef.delete()
+                if (post.selectedImage && post.imageUrl) {
+                    await deleteImage(post.imageUrl)
                     console.log('이미지가 성공적으로 삭제되었습니다.')
+                }
+                if (!post.id) {
+                    console.error('게시글 ID가 없습니다.')
+                    return
                 }
                 await deleteShow(post.id?.toString())
                 console.log('게시글이 성공적으로 삭제되었습니다.')
@@ -73,8 +74,8 @@ export const PostItem = ({ post }: PostItemProps) => {
                 <S.ContentWrap>
                     {/* 이미지 */}
                     <S.ImageWrap>
-                        {post.selectedImage !== null ? (
-                            <img src={post.selectedImage} alt={post.title} />
+                        {post.imageUrl !== null ? (
+                            <img src={post.imageUrl} alt={post.title} />
                         ) : (
                             <S.EmptyImage>
                                 <MdImageNotSupported />

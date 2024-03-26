@@ -43,10 +43,10 @@ export function ShowDetail() {
                         </p>
                     </S.TitleWrap>
                     <S.ImageWrap>
-                        {post[0].selectedImage !== null ? (
+                        {post[0].imageUrl !== null ? (
                             <S.ImageBox>
                                 <img
-                                    src={post[0].selectedImage}
+                                    src={post[0].imageUrl}
                                     alt={post[0].title}
                                 />
                                 <LikeButton
