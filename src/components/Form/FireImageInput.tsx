@@ -1,11 +1,11 @@
-import { ChangeEvent } from 'react'
+import { ChangeEvent, useState } from 'react'
 import * as S from './Form.styes'
 
 interface FireImageInputProps {
     id: string
     label: string
-    selectedImage: File | null
-    onImageChange: (imageUrl: string | null) => void
+    // selectedImage: File | null
+    onImageChange: (file: File | null) => void
 }
 const MAX_FILE_SIZE_MB = 5
 const ALLOWED_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif']
@@ -13,9 +13,10 @@ const ALLOWED_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif']
 export const FireImageInput = ({
     id,
     label,
-    selectedImage,
+    // selectedImage,
     onImageChange,
 }: FireImageInputProps) => {
+    const [selectedImage, setSelectedImage] = useState<File | null>(null)
     const isImageFile = (file: File): boolean => {
         const extension = file.name.split('.').pop()?.toLowerCase()
         return extension ? ALLOWED_EXTENSIONS.includes(extension) : false
@@ -40,13 +41,14 @@ export const FireImageInput = ({
                 )
                 return
             }
-            const imageUrl = URL.createObjectURL(file)
-            onImageChange(imageUrl)
+
+            setSelectedImage(file)
+            onImageChange(file)
         } else {
             onImageChange(null)
         }
     }
-    console.log(selectedImage)
+    console.log('selectedImage:', selectedImage)
     return (
         <S.Container>
             <label htmlFor={id}>{label}</label>

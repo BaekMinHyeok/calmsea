@@ -1,12 +1,11 @@
 import { useRecoilValueLoadable } from 'recoil'
+import { Link } from 'react-router-dom'
 import { Slick } from '../../components/Slider/MainSlider'
-import * as S from '@/pages/Home/Home.styles'
 import { getAllPostSelectors } from '@/recoil/selectors/getPosts'
 import { PostState } from '@/recoil/atoms/postState'
 import { MdImageNotSupported } from 'react-icons/md'
 import CenterMode from '@/components/Slider/CenterMod'
-import { Link } from 'react-router-dom'
-
+import * as S from '@/pages/Home/Home.styles'
 const env = process.env
 env.PUBLIC_URL = env.PUBLIC_URL || ''
 interface itemsProps {
@@ -66,11 +65,14 @@ export function Home() {
                             <p>
                                 <span>{number++}</span>
                             </p>
-                            {item.imageUrl !== null ? (
+                            {item.selectedImage !== null ? (
                                 <Link
                                     to={`/showlist/${item.category}/${item.id}`}
                                 >
-                                    <img src={item.imageUrl} alt={item.title} />
+                                    <img
+                                        src={item.selectedImage}
+                                        alt={item.title}
+                                    />
                                 </Link>
                             ) : (
                                 <div>
@@ -86,11 +88,14 @@ export function Home() {
                 <CenterMode autoplay={true} speed={500}>
                     {soldOutItems.map((item) => (
                         <div key={item.id}>
-                            {item.imageUrl !== null ? (
+                            {item.selectedImage !== null ? (
                                 <Link
                                     to={`/showlist/${item.category}/${item.id}`}
                                 >
-                                    <img src={item.imageUrl} alt={item.title} />
+                                    <img
+                                        src={item.selectedImage}
+                                        alt={item.title}
+                                    />
                                 </Link>
                             ) : (
                                 <div>

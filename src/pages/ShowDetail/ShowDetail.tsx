@@ -4,9 +4,9 @@ import { getShowById } from '@/\bapi/show'
 import { postState } from '@/recoil/atoms/postState'
 import { useRecoilState } from 'recoil'
 import { MdImageNotSupported } from 'react-icons/md'
-import * as S from './ShowDetail.styles'
 import { CategoryMap } from '@/util/CategoryList'
 import { LikeButton } from '@/components/LikeButton/LikeButton'
+import * as S from './ShowDetail.styles'
 
 export function ShowDetail() {
     const { id } = useParams<{ id: string }>()
@@ -43,10 +43,10 @@ export function ShowDetail() {
                         </p>
                     </S.TitleWrap>
                     <S.ImageWrap>
-                        {post[0].imageUrl !== null ? (
+                        {post[0].selectedImage !== null ? (
                             <S.ImageBox>
                                 <img
-                                    src={post[0].imageUrl}
+                                    src={post[0].selectedImage}
                                     alt={post[0].title}
                                 />
                                 <LikeButton

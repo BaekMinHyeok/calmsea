@@ -57,9 +57,9 @@ export function SearchResult() {
                                 to={`/showlist/${result.category}/${result.id}`}
                             >
                                 <S.ImageWrap>
-                                    {result.imageUrl !== null ? (
+                                    {result.selectedImage !== null ? (
                                         <img
-                                            src={result.imageUrl}
+                                            src={result.selectedImage}
                                             alt={result.title}
                                         />
                                     ) : (

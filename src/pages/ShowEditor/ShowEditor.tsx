@@ -1,7 +1,5 @@
-import * as S from './ShowEditor.styles'
-import * as T from '../../components/Text/Text'
 import { ShowDateInput, TextInput } from '../../components/Form/TextInput'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Address, AddressInput } from '../../components/Form/AddressInput'
 import { CategoryCheckbox } from '../../components/Form/CategoryCheckbox'
 import { CategoryItems } from '../../util/CategoryList'
@@ -20,12 +18,11 @@ import {
 } from 'firebase/firestore/lite'
 import { db } from '@/firebase'
 import { postState } from '@/recoil/atoms/postState'
-
 import { QuantityInput } from '@/components/Form/QuantityInput'
 import { FireImageInput } from '@/components/Form/FireImageInput'
-
 import { createShow, updateShow } from '@/\bapi/show'
-
+import * as S from './ShowEditor.styles'
+import * as T from '../../components/Text/Text'
 // import { ImageInput } from '@/components/Form/ImageInput'
 import { createImage, deleteImage } from '@/\bapi/storage'
 
@@ -36,12 +33,12 @@ export const getStringDate = (date: Date) => {
 export function ShowEditor() {
     const { id } = useParams<{ id: string }>()
     const navigate = useNavigate()
-
     // 게시글 내용관리
     const [showInput, setShowInput] = useRecoilState(showInputState)
-
     // 게시글 상태관리
     const setPost = useSetRecoilState(postState)
+    // 이미지 파일관리
+    const [selectedFile, setSelectedFile] = useState<File | null>(null)
     // 게시글 수정시 해당 내용 상태관리
     useEffect(() => {
         // id가 존재할때
@@ -91,32 +88,39 @@ export function ShowEditor() {
     }
 
     console.log(showInput.selectedImage)
-    console.log(showInput.imageUrl)
+
     // 게시글 생성
     async function handleCreatePost() {
         try {
-            let imgUrl: string | null = null
-            console.log(imgUrl)
-            if (showInput.selectedImage) {
-                imgUrl = await createImage(showInput.selectedImage)
-            }
+            if (selectedFile) {
+                console.log('selectedImage', showInput.selectedImage)
+                const imageUrl = await createImage(selectedFile)
+                if (!imageUrl) {
+                    throw new Error('이미지 업로드 실패')
+                }
+                console.log('imageUrl', imageUrl)
+                // const imageFile = await fetchImageFile(imageUrl)
+                // console.log('imageFile', imageFile)
+                // Firestore에 추가할 새로운 객체를 생성
+                const firestoreData: PostState = {
+                    ...showInput,
+                    createdAt: Date.now(),
+                    selectedImage: imageUrl,
+                }
 
-            // Firestore에 추가할 새로운 객체를 생성
-            const firestoreData = {
-                ...showInput,
-                createdAt: Date.now(),
-                imageUrls: imgUrl,
+                // Firestore에 문서를 추가
+                await createShow(firestoreData)
+                console.log(firestoreData)
+                setShowInput(firestoreData)
+                setPost((prevPosts) => [...prevPosts, firestoreData])
+                const category = showInput.category
+                navigate(`/showlist/${category}`, { replace: true })
+                // window.location.reload()
+                alert('게시글이 작성되었습니다.')
+                resetForm()
+            } else {
+                alert('이미지를 선택해주세요.')
             }
-
-            // Firestore에 문서를 추가ㅁㅇㄴㅁ
-            await createShow(firestoreData)
-            setShowInput(firestoreData)
-            setPost((prevPosts) => [...prevPosts, firestoreData])
-            const category = showInput.category
-            navigate(`/showlist/${category}`, { replace: true })
-            // window.location.reload()
-            alert('게시글이 작성되었습니다.')
-            resetForm()
         } catch (error) {
             console.error('error', error)
         }
@@ -128,20 +132,18 @@ export function ShowEditor() {
             let updatedShowInput = { ...showInput }
 
             // 새 이미지가 선택되었는지 확인합니다.
-            if (showInput.selectedImage) {
+            if (selectedFile) {
                 // 이전 이미지를 스토리지에서 삭제합니다.
                 if (updatedShowInput.selectedImage) {
-                    await deleteImage(updatedShowInput.selectedImage.name)
+                    await deleteImage(updatedShowInput.selectedImage)
                 }
 
                 // 새 이미지를 스토리지에 업로드하고 URL을 가져옵니다.
-                const imgUrl = await createImage(showInput.selectedImage)
+                const imageUrl = await createImage(selectedFile)
 
-                // updatedShowInput의 selectedImage 필드를 업데이트합니다.
                 updatedShowInput = {
                     ...updatedShowInput,
-                    selectedImage: showInput.selectedImage,
-                    imageUrl: imgUrl,
+                    selectedImage: imageUrl,
                 }
             }
 
@@ -162,7 +164,7 @@ export function ShowEditor() {
             resetForm()
             const category = showInput.category
             navigate(`/showlist/${category}`, { replace: true })
-            window.location.reload()
+            // window.location.reload()
             alert('게시글이 수정되었습니다')
         } catch (error) {
             console.error('error', error)
@@ -283,10 +285,8 @@ export function ShowEditor() {
                 <FireImageInput
                     id="img-input"
                     label="testImg"
-                    selectedImage={showInput.selectedImage ?? null}
-                    onImageChange={(image) =>
-                        handleShowInputChange('selectedImage', image ?? null)
-                    }
+                    // selectedImage={showInput.imageUrl ?? null}
+                    onImageChange={(image) => setSelectedFile(image)}
                 />
                 <Description
                     label="상세설명"
