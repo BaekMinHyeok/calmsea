@@ -22,10 +22,12 @@ export function SearchResult() {
                 try {
                     if (keyword) {
                         const shows = await getAllShows()
-                        const results = shows.filter((show) =>
-                            show.title
-                                .toLowerCase()
-                                .includes(keyword.toLowerCase()),
+                        const results = shows.filter(
+                            (show) =>
+                                show.title &&
+                                show.title
+                                    .toLowerCase()
+                                    .includes(keyword.toLowerCase()),
                         )
                         setSearchResults((prev) => ({
                             ...prev,

@@ -1,10 +1,10 @@
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import * as S from './Form.styes'
 
 interface FireImageInputProps {
     id: string
     label: string
-    // selectedImage: File | null
+    selectedImage?: string
     onImageChange: (file: File | null) => void
 }
 const MAX_FILE_SIZE_MB = 5
@@ -13,20 +13,29 @@ const ALLOWED_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif']
 export const FireImageInput = ({
     id,
     label,
-    // selectedImage,
+    selectedImage,
     onImageChange,
 }: FireImageInputProps) => {
-    const [selectedImage, setSelectedImage] = useState<File | null>(null)
+    const [previewImage, setPreviewImage] = useState<string | null>(
+        selectedImage ?? null,
+    )
+    useEffect(() => {
+        // 수정 페이지에서 전달된 이미지 URL이 있을 경우 설정
+        if (selectedImage) {
+            setPreviewImage(selectedImage)
+        }
+    }, [selectedImage])
+    // 파일이 이미지인지 확인하는 함수
     const isImageFile = (file: File): boolean => {
         const extension = file.name.split('.').pop()?.toLowerCase()
         return extension ? ALLOWED_EXTENSIONS.includes(extension) : false
     }
-
+    // 파일 크기가 유효한지 확인하는 함수
     const isFileSizeValid = (file: File): boolean => {
         const fileSizeInMB = file.size / (1024 * 1024)
         return fileSizeInMB <= MAX_FILE_SIZE_MB
     }
-
+    // 이미지 변경 이벤트 핸들러
     const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
         console.log(file)
@@ -41,14 +50,21 @@ export const FireImageInput = ({
                 )
                 return
             }
+            const reader = new FileReader()
+            reader.onload = (event) => {
+                if (event.target) {
+                    setPreviewImage(event.target.result as string)
+                }
+            }
+            reader.readAsDataURL(file)
 
-            setSelectedImage(file)
             onImageChange(file)
         } else {
+            setPreviewImage(null)
             onImageChange(null)
         }
     }
-    console.log('selectedImage:', selectedImage)
+    console.log('selectedImage:', previewImage)
     return (
         <S.Container>
             <label htmlFor={id}>{label}</label>
@@ -62,11 +78,8 @@ export const FireImageInput = ({
                 <S.FileLabel htmlFor={id}>파일찾기</S.FileLabel>
             </S.FileInputWrap>
 
-            {selectedImage && (
-                <S.ImageUploadStyle
-                    src={URL.createObjectURL(selectedImage)}
-                    alt="Preview image"
-                />
+            {previewImage && (
+                <S.ImageUploadStyle src={previewImage} alt="Preview image" />
             )}
         </S.Container>
     )

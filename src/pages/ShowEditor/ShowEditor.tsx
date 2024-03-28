@@ -285,7 +285,7 @@ export function ShowEditor() {
                 <FireImageInput
                     id="img-input"
                     label="testImg"
-                    // selectedImage={showInput.imageUrl ?? null}
+                    selectedImage={showInput.selectedImage ?? undefined}
                     onImageChange={(image) => setSelectedFile(image)}
                 />
                 <Description
