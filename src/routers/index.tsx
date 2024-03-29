@@ -5,6 +5,7 @@ import { ShowEditor } from '@/pages/\bShowEditor/ShowEditor'
 import { ShowDetail } from '@/pages/ShowDetail/ShowDetail'
 import { ShowList } from '@/pages/ShowList/ShowList'
 import { SearchResult } from '@/pages/SearchResult/SearchResult'
+import { QueyTest } from '@/hooks/QueyTest'
 
 export const router = createBrowserRouter([
     {
@@ -22,6 +23,7 @@ export const router = createBrowserRouter([
             { path: '/shownew', element: <ShowEditor /> },
             { path: '/showedit/:id', element: <ShowEditor /> },
             { path: '/search', element: <SearchResult /> },
+            { path: '/test', element: <QueyTest /> },
         ],
     },
 ])
