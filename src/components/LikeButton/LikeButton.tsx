@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil'
 import { likeCountState } from '../../recoil/atoms/likeState'
 import {
@@ -8,7 +9,6 @@ import {
     updateDoc,
 } from 'firebase/firestore/lite'
 import { db } from '@/firebase'
-import { useEffect, useState } from 'react'
 import { FaRegHeart } from 'react-icons/fa6'
 import { Container, RedHeartIcon } from './LikeButton.styles'
 interface LikeButtonProps {

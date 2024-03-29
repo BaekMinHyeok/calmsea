@@ -6,8 +6,8 @@ import { PostState } from '@/recoil/atoms/postState'
 import { MdImageNotSupported } from 'react-icons/md'
 import CenterMode from '@/components/Slider/CenterMod'
 import * as S from '@/pages/Home/Home.styles'
-const env = process.env
-env.PUBLIC_URL = env.PUBLIC_URL || ''
+// const env = process.env
+// env.PUBLIC_URL = env.PUBLIC_URL || ''
 interface itemsProps {
     item: string
     name: string
@@ -15,15 +15,15 @@ interface itemsProps {
 
 const items: itemsProps[] = [
     {
-        item: process.env.PUBLIC_URL + `assets/main01.png`,
+        item: 'assets/main01.png',
         name: 'slide01',
     },
     {
-        item: process.env.PUBLIC_URL + `assets/main02.png`,
+        item: 'assets/main02.png',
         name: 'slide02',
     },
     {
-        item: process.env.PUBLIC_URL + `assets/main03.png`,
+        item: 'assets/main03.png',
         name: 'slide03',
     },
 ]

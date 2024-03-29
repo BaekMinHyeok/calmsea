@@ -6,8 +6,8 @@ import { MenuModal } from '@/components/Modal/MenuModal'
 import { Link } from 'react-router-dom'
 import { SearchInput } from '../Form/SearchInput'
 
-const env = process.env
-env.PUBLIC_URL = env.PUBLIC_URL || ''
+// const env = process.env
+// env.PUBLIC_URL = env.PUBLIC_URL || ''
 
 export function Header() {
     const [isOpenModal, setOpenModal] = useState<boolean>(false)
@@ -20,16 +20,10 @@ export function Header() {
         <S.Container>
             <S.TopMenu>
                 <Link to="/">
-                    <img
-                        src={process.env.PUBLIC_URL + `assets/logo.svg`}
-                        alt="logo"
-                    />
+                    <img src={'assets/logo.svg'} alt="logo" />
                 </Link>
                 <div onClick={onClickToggleModal}>
-                    <img
-                        src={process.env.PUBLIC_URL + `assets/menu.svg`}
-                        alt="menu"
-                    />
+                    <img src={'assets/menu.svg'} alt="menu" />
                 </div>
                 {isOpenModal && (
                     <MenuModal onClickToggleModal={onClickToggleModal}>
