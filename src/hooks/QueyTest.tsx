@@ -10,6 +10,7 @@ export function QueyTest() {
     if (error) {
         return <div>Error: {error.message}</div>
     }
+    console.log(error)
     if (!data) {
         return <div>No data available.</div>
     }

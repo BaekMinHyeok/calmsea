@@ -1,13 +1,13 @@
 import { useMemo, useState } from 'react'
-import { useRecoilState, useRecoilValueLoadable } from 'recoil'
-import { getAllPostSelectors } from '../../recoil/selectors/getPosts'
+import { useRecoilState } from 'recoil'
 import { PostState } from '@/recoil/atoms/postState'
 import { dropDown } from '@/recoil/atoms/dropDown'
 import { sortFunction } from '@/util/ShowFilterList'
 import { Button } from '../Button/Button'
 import { PostItem } from '@/components/PostItem/PostItem'
 import { TiArrowSortedDown, TiArrowSortedUp } from 'react-icons/ti'
-import * as S from '@/components/TotalList/TotalList.styles'
+import * as S from '@/components/CategoryList/TotalList.styles'
+import { useAllShow } from '@/hooks/useShows'
 
 export function CategoryList({
     category,
@@ -17,14 +17,13 @@ export function CategoryList({
     filterFn?: (a: PostState, b: PostState) => number
 }) {
     const [sortOption, setSortOption] = useState('latest')
-    const boardList = useRecoilValueLoadable(getAllPostSelectors)
+    const { data, isLoading, error } = useAllShow()
     const [dropDownOpen, setDropDownOpen] = useRecoilState(dropDown)
-    const { contents, state } = boardList
 
     // 게시물의 카테고리와 필터, 정렬을 적용한 데이터
     const filteredAndSortedRows = useMemo(() => {
-        if (state === 'hasValue' && contents) {
-            const filteredRows = contents.filter(
+        if (data) {
+            const filteredRows = data.filter(
                 (post) => post.category === category,
             )
             return filterFn
@@ -32,7 +31,7 @@ export function CategoryList({
                 : filteredRows.sort(sortFunction[sortOption])
         }
         return []
-    }, [contents, category, sortOption, state])
+    }, [data, category, sortOption])
     // 조건부로 정렬 탭 표시
     const showSortButtons = !filterFn
 
@@ -103,11 +102,8 @@ export function CategoryList({
                     )}
                 </S.TabBtnWrap>
             )}
-
-            {/* <S.LineStyle /> */}
-
-            {state === 'loading' && <p>로딩 중...</p>}
-            {!contents && <p>로드에 실패했습니다.</p>}
+            {isLoading && <p>로딩 중...</p>}
+            {error && <p>로드에 실패했습니다.</p>}
             <p>
                 현재 예매 가능한 공연은 <b>총 {totalPosts}개</b> 입니다.
             </p>

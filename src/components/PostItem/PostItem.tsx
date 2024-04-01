@@ -6,16 +6,17 @@ import { Link, useNavigate } from 'react-router-dom'
 import { MdImageNotSupported } from 'react-icons/md'
 import { SlOptionsVertical } from 'react-icons/sl'
 import { LikeButton } from '../LikeButton/LikeButton'
-import { CategoryList } from '../TotalList/CategoryList'
-import { deleteShow } from '@/\bapi/show'
+import { CategoryList } from '../CategoryList/CategoryList'
 import { deleteImage } from '@/\bapi/storage'
-import * as S from '@/components/TotalList/TotalList.styles'
+import * as S from '@/components/CategoryList/TotalList.styles'
+import { useDeleteShow } from '@/hooks/useShows'
 interface PostItemProps {
     post: PostState
 }
 export const PostItem = ({ post }: PostItemProps) => {
     const navigate = useNavigate()
     const { isOpen, openModal, closeModal } = useModal(CategoryList)
+    const { mutateAsync: deleteShowMutation } = useDeleteShow()
     const createdAtDate = new Date(post.createdAt)
 
     // 옵션모달
@@ -30,12 +31,10 @@ export const PostItem = ({ post }: PostItemProps) => {
         navigate(`/showedit/${post.id}`)
     }
     async function handleDelete() {
-        // const isConfirmed = window.confirm('정말로 삭제하시겠습니까?')
-        // if (isConfirmed) {
-        // if (post.id === null || post.id === undefined) {
-        //     console.error('게시글 ID가 없습니다.')
-        //     return
-        // }
+        const isConfirmed = window.confirm('정말로 삭제하시겠습니까?')
+        if (!isConfirmed) {
+            return // If the user cancels the deletion, return early
+        }
         try {
             if (typeof post.selectedImage === 'string') {
                 await deleteImage(post.selectedImage)
@@ -47,7 +46,7 @@ export const PostItem = ({ post }: PostItemProps) => {
                 console.error('게시글 ID가 없습니다.')
                 return
             }
-            await deleteShow(post.id?.toString())
+            await deleteShowMutation(post.id?.toString())
             console.log('게시글이 성공적으로 삭제되었습니다.')
             navigate(`/`, { replace: true })
             closeModal()

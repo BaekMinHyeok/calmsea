@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { CategoryList } from '@/components/TotalList/CategoryList'
+import { CategoryList } from '@/components/CategoryList/CategoryList'
 import { Container, TabContainer } from '@/pages/ShowList/Show/Show.styles'
 import { TabButton } from '@/components/TabMenu/TabButton'
 import { recommendedFilter } from '@/util/ShowFilterList'
@@ -40,7 +40,7 @@ export function Show({ category }: { category: number }) {
                     </div>
                 )
             case 3:
-                return <CategoryList category={1} />
+                return <CategoryList category={category} />
             default:
                 return null
         }

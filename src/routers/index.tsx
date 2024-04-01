@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom'
 import App from '@/App'
 import { Home } from '@/pages/Home/Home'
-import { ShowEditor } from '@/pages/\bShowEditor/ShowEditor'
+import { ShowEditor } from '@/pages/\bShowEditor/\bShowEditor'
 import { ShowDetail } from '@/pages/ShowDetail/ShowDetail'
 import { ShowList } from '@/pages/ShowList/ShowList'
 import { SearchResult } from '@/pages/SearchResult/SearchResult'

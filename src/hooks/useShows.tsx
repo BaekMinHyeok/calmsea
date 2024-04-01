@@ -45,7 +45,7 @@ export function useGetShowByCategory(category: number) {
         getShowByCategory(category),
     )
 }
-
+// 게시글 수정
 export function useUpdateShow() {
     const queryClient = useQueryClient()
 

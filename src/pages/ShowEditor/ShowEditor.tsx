@@ -10,21 +10,15 @@ import { AdminBtn } from '../../components/Button/Button'
 import { useRecoilState, useSetRecoilState } from 'recoil'
 import { PostState, showInputState } from '../../recoil/atoms/postState'
 import { useNavigate, useParams } from 'react-router-dom'
-import {
-    DocumentData,
-    DocumentReference,
-    doc,
-    getDoc,
-} from 'firebase/firestore/lite'
-import { db } from '@/firebase'
 import { postState } from '@/recoil/atoms/postState'
 import { QuantityInput } from '@/components/Form/QuantityInput'
 import { FireImageInput } from '@/components/Form/FireImageInput'
-import { createShow, updateShow } from '@/\bapi/show'
 import * as S from './ShowEditor.styles'
 import * as T from '../../components/Text/Text'
 // import { ImageInput } from '@/components/Form/ImageInput'
 import { createImage, deleteImage } from '@/\bapi/storage'
+import { useCreateShow, useUpdateShow } from '@/hooks/useShows'
+import { getShowById } from '@/\bapi/show'
 
 export const getStringDate = (date: Date) => {
     return date.toISOString().slice(0, 10)
@@ -39,23 +33,17 @@ export function ShowEditor() {
     const setPost = useSetRecoilState(postState)
     // 이미지 파일관리
     const [selectedFile, setSelectedFile] = useState<File | null>(null)
+    const { mutateAsync: createPostData } = useCreateShow()
+    const { mutateAsync: updatePostData } = useUpdateShow()
     // 게시글 수정시 해당 내용 상태관리
     useEffect(() => {
         // id가 존재할때
         if (id) {
-            async function fetchShowData(): Promise<void> {
+            async function fetchShowData() {
                 try {
-                    const docRef: DocumentReference<DocumentData> = doc(
-                        db,
-                        'show',
-                        id!,
-                    )
-
-                    const docSnap = await getDoc(docRef)
-
-                    if (docSnap.exists()) {
-                        const data = docSnap.data() as PostState
-                        setShowInput(data)
+                    const showData = await getShowById(id!)
+                    if (showData !== null) {
+                        setShowInput(showData)
                     }
                 } catch (error) {
                     console.error('error', error)
@@ -87,20 +75,15 @@ export function ShowEditor() {
         handleShowInputChange('address', newAddress)
     }
 
-    console.log(showInput.selectedImage)
-
     // 게시글 생성
     async function handleCreatePost() {
         try {
             if (selectedFile) {
-                console.log('selectedImage', showInput.selectedImage)
                 const imageUrl = await createImage(selectedFile)
                 if (!imageUrl) {
                     throw new Error('이미지 업로드 실패')
                 }
-                console.log('imageUrl', imageUrl)
-                // const imageFile = await fetchImageFile(imageUrl)
-                // console.log('imageFile', imageFile)
+
                 // Firestore에 추가할 새로운 객체를 생성
                 const firestoreData: PostState = {
                     ...showInput,
@@ -109,8 +92,7 @@ export function ShowEditor() {
                 }
 
                 // Firestore에 문서를 추가
-                await createShow(firestoreData)
-                console.log(firestoreData)
+                await createPostData(firestoreData)
                 setShowInput(firestoreData)
                 setPost((prevPosts) => [...prevPosts, firestoreData])
                 const category = showInput.category
@@ -150,7 +132,7 @@ export function ShowEditor() {
             // ㅇㅁ
             updatedShowInput.createdAt = Date.now()
             // Firestore 문서 업데이트
-            await updateShow(id!, updatedShowInput)
+            await updatePostData({ id: id!, data: updatedShowInput })
             setPost((prevPostState) => {
                 return [
                     ...prevPostState.map((post) =>
@@ -193,7 +175,7 @@ export function ShowEditor() {
             quantity: 0,
         })
     }
-    console.log(showInput.selectedImage)
+
     return (
         <S.Container>
             {/* 게시글 수정일때도 만들어야함 */}

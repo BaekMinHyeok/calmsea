@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { useRecoilValueLoadable } from 'recoil'
-import * as S from '@/components/TotalList/TotalList.styles'
+import * as S from '@/components/CategoryList/TotalList.styles'
 import { getAllPostSelectors } from '../../recoil/selectors/getPosts'
 import { sortFunction } from '@/util/ShowFilterList'
 import { PostItem } from '@/components/PostItem/PostItem'

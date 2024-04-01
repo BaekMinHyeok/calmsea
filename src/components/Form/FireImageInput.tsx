@@ -38,7 +38,6 @@ export const FireImageInput = ({
     // 이미지 변경 이벤트 핸들러
     const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
-        console.log(file)
         if (file) {
             if (!isImageFile(file)) {
                 alert('올바른 이미지 파일 형식이 아닙니다.')
@@ -64,7 +63,7 @@ export const FireImageInput = ({
             onImageChange(null)
         }
     }
-    console.log('selectedImage:', previewImage)
+
     return (
         <S.Container>
             <label htmlFor={id}>{label}</label>
