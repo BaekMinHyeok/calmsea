@@ -58,7 +58,7 @@ export function Home() {
                 ))}
             </Slick>
             <S.RankingContent>
-                <h1>RANKING</h1>
+                <h1>Ranking</h1>
                 <S.RankingWrap>
                     {rankingItems.map((item) => (
                         <S.RankingBox key={item.id}>
