@@ -51,19 +51,19 @@ export function Show({ category }: { category: number }) {
             <h2>{title}</h2>
             <div>
                 <TabButton
-                    $isActive={activeTab === 1}
+                    isActive={activeTab === 1}
                     onClick={() => setActiveTab(1)}
                 >
                     추천공연
                 </TabButton>
                 <TabButton
-                    $isActive={activeTab === 2}
+                    isActive={activeTab === 2}
                     onClick={() => setActiveTab(2)}
                 >
                     예매랭킹
                 </TabButton>
                 <TabButton
-                    $isActive={activeTab === 3}
+                    isActive={activeTab === 3}
                     onClick={() => setActiveTab(3)}
                 >
                     전체리스트
