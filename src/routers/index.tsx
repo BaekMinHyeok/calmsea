@@ -6,6 +6,9 @@ import { ShowDetail } from '@/pages/ShowDetail/ShowDetail'
 import { ShowList } from '@/pages/ShowList/ShowList'
 import { SearchResult } from '@/pages/SearchResult/SearchResult'
 import { QueyTest } from '@/hooks/QueyTest'
+import { Login } from '@/pages/Login/Login'
+import { Kakao } from '@/components/Auth/Kakao/Kakao'
+import { Register } from '@/pages/Register/Register'
 
 export const router = createBrowserRouter([
     {
@@ -18,6 +21,9 @@ export const router = createBrowserRouter([
                 path: '/',
                 element: <Home />,
             },
+            { path: '/register', element: <Register /> },
+            { path: '/login', element: <Login /> },
+            { path: '/login/kakao', element: <Kakao /> },
             { path: '/showlist/:category', element: <ShowList /> },
             { path: '/showlist/:category/:id', element: <ShowDetail /> },
             { path: '/shownew', element: <ShowEditor /> },

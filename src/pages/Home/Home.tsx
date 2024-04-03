@@ -47,7 +47,6 @@ export function Home() {
         .slice(0, 5)
     let number = 1
 
-    console.log(soldOutItems)
     return (
         <S.Container>
             <Slick autoplay={true} speed={500}>
