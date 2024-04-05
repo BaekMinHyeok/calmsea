@@ -16,6 +16,7 @@ export function Kakao() {
     useEffect(() => {
         const getKakaoToken = async (code: string) => {
             try {
+                // Kakao OAuth 서버에 인가 코드로 토큰 요청
                 const response = await fetch(
                     'https://kauth.kakao.com/oauth/token',
                     {
@@ -23,44 +24,39 @@ export function Kakao() {
                         headers: {
                             'Content-Type': 'application/x-www-form-urlencoded',
                         },
-                        body: `grant_type=authorization_code&client_id=${process.env.REACT_APP_KAKAO_RESTAPI_KEY}&redirect_uri=${window.location.origin}/login/kakao&code=${code}`,
+                        body: `grant_type=authorization_code&client_id=${process.env.REACT_APP_KAKAO_RESTAPI_KEY}&redirect_uri=${window.location.origin}/auth/kakao/callback&code=${code}`,
                     },
                 )
                 const data = await response.json()
                 console.log('response', response)
                 console.log('data', data)
-                // OIDC 사용하는 경우 id_token으로 접근
-                console.log('id_token', data.id_token)
-                if (data.id_token) {
-                    setIdToken(data.id_token)
-                } else {
-                    navigate('/')
-                }
 
+                // 받은 데이터에서 access_token이 있는지 확인하여 상태 변수에 설정
                 if (data.access_token) {
                     setAccessToken(data.access_token)
-                    window.Kakao.Auth.setAccessToken(data.access_token)
-                    localStorage.setItem('accessToken', data.access_token)
+                    // window.Kakao.Auth.setAccessToken(data.access_token)
+                    const credential = provider.credential({
+                        accessToken: data.access_token,
+                    })
+                    await signInWithCredential(auth, credential)
+                    setIdToken(data.id_token)
+                    // access_token을 쿠키에 저장 (2시간 만료)
+                    Cookies.set('accessToken', data.access_token, {
+                        expires: 0.08333,
+                    })
+                    navigate('/')
+                } else {
+                    navigate('/login')
                 }
-
-                if (data.refresh_token) {
-                    Cookies.set('refreshToken', data.refresh_token, {
-                        expires: 60 - 2,
-                    }) // 유효기간 2개월
-                }
-
-                const nickname = data.profile.nickname
-                console.log(nickname)
-                return nickname
             } catch (error) {
-                console.error('Kakao 토큰 가져오기 오류', error)
+                console.error('카카오 인증 중 오류 발생:', error)
             }
         }
         console.log('code', code)
         if (code) {
             getKakaoToken(code)
         }
-    }, [code, navigate])
+    }, [code, navigate, provider, auth])
 
     useEffect(() => {
         if (idToken && accessToken) {
@@ -71,6 +67,7 @@ export function Kakao() {
                         'Kakao를 사용하여 Firebase에 성공적으로 로그인했습니다:',
                         result,
                     )
+                    // Firebase에서 반환된 결과를 확인하여 필요한 작업 수행
                     const credentialFromResult =
                         OAuthProvider.credentialFromResult(result)
                     if (credentialFromResult) {
@@ -78,7 +75,6 @@ export function Kakao() {
                         const idToken = credentialFromResult.idToken
                         const user = {
                             uid: result.user.uid,
-                            displayName: nickname,
                         }
                     }
                 })

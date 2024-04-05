@@ -23,7 +23,7 @@ export const router = createBrowserRouter([
             },
             { path: '/register', element: <Register /> },
             { path: '/login', element: <Login /> },
-            { path: '/login/kakao', element: <Kakao /> },
+            { path: '/auth/kakao/callback', element: <Kakao /> },
             { path: '/showlist/:category', element: <ShowList /> },
             { path: '/showlist/:category/:id', element: <ShowDetail /> },
             { path: '/shownew', element: <ShowEditor /> },

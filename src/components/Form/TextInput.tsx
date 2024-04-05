@@ -3,6 +3,7 @@ import { Container, ShowDateStyle } from '@/components/Form/Form.styes'
 
 interface TextInputProps {
     id: string
+    type: string
     label: string
     placeholder?: string
     detailPlaceholder?: string
@@ -22,6 +23,7 @@ interface ShowDateInputProps {
 
 export function TextInput({
     id,
+    type,
     label,
     placeholder,
     value,
@@ -32,7 +34,7 @@ export function TextInput({
             <label htmlFor={id}>{label}</label>
             <input
                 id={id}
-                type="text"
+                type={type}
                 placeholder={placeholder}
                 value={value}
                 onChange={onChange}

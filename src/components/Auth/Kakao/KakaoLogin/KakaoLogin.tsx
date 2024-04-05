@@ -21,9 +21,9 @@ export function KakaoLogin() {
             console.error('Kakao SDK가 아직 초기화되지 않았습니다')
             return
         }
-        const redirectUri = `${window.location.origin}/login/kakao`
+        const redirectUri = `${window.location.origin}/auth/kakao/callback`
         console.log(redirectUri)
-        const scope = ['profile_nickname'].join(',')
+        const scope = ['profile_nickname', 'openid'].join(',')
         window.Kakao.Auth.authorize({
             redirectUri,
             scope,
