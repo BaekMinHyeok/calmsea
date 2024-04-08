@@ -68,15 +68,15 @@ export function Kakao() {
                         result,
                     )
                     // Firebase에서 반환된 결과를 확인하여 필요한 작업 수행
-                    const credentialFromResult =
-                        OAuthProvider.credentialFromResult(result)
-                    if (credentialFromResult) {
-                        const acToken = credentialFromResult.accessToken
-                        const idToken = credentialFromResult.idToken
-                        const user = {
-                            uid: result.user.uid,
-                        }
-                    }
+                    // const credentialFromResult =
+                    //     OAuthProvider.credentialFromResult(result)
+                    // if (credentialFromResult) {
+                    //     const acToken = credentialFromResult.accessToken
+                    //     const idToken = credentialFromResult.idToken
+                    //     const user = {
+                    //         uid: result.user.uid,
+                    //     }
+                    // }
                 })
                 .catch((error) => {
                     console.log(
