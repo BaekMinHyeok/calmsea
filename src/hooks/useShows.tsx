@@ -7,14 +7,23 @@ import {
     updateShow,
 } from '@/\bapi/show'
 import { PostState } from '@/recoil/atoms/postState'
-import { useMutation, useQuery, useQueryClient } from 'react-query'
+import {
+    useInfiniteQuery,
+    useMutation,
+    useQuery,
+    useQueryClient,
+} from 'react-query'
 
 // 전체 게시글 조회
 export function useAllShow() {
-    return useQuery<PostState[], Error>('allShows', getAllShows, {
-        staleTime: 1000 * 60 * 5,
-        refetchOnWindowFocus: false,
-    })
+    return useInfiniteQuery<PostState[], Error>(
+        'allShows',
+        ({ pageParam = 1 }) => getAllShows(pageParam),
+        {
+            staleTime: 1000 * 60 * 5, // 데이터가 캐시에서 만료되는 시간 설정
+            refetchOnWindowFocus: false, // 창 포커스 시 자동 재요청 비활성화
+        },
+    )
 }
 
 // 게시글 생성

@@ -21,7 +21,7 @@ export function SearchResult() {
             const fetchData = async () => {
                 try {
                     if (keyword) {
-                        const shows = await getAllShows()
+                        const shows = await getAllShows(0)
                         const results = shows.filter(
                             (show) =>
                                 show.title &&
