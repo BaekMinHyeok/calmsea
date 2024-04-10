@@ -26,11 +26,12 @@ export function useModal(component: React.FC) {
         setIsOpen(false)
 
         // 해당 ID에 해당하는 모달만 제거
-        setModalStack((prev) => {
-            const newModalStack = [...prev]
-            newModalStack.pop()
-            return newModalStack
-        })
+        // setModalStack((prev) => {
+        //     const newModalStack = [...prev]
+        //     newModalStack.pop()
+        //     return newModalStack
+        // })
+        setModalStack((prev) => prev.filter((item) => item.id !== id))
     }, [id, setModalStack])
     return { isOpen, openModal, closeModal }
 }
