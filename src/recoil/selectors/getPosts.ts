@@ -6,7 +6,7 @@ import { getAllShows, getShowByCategory } from '@/\bapi/show'
 export const getAllPostSelectors = selector<PostState[]>({
     key: 'getAllPostSelectors',
     get: async function fetchData() {
-        const data = await getAllShows()
+        const data = await getAllShows(0)
 
         // 정렬 옵션에 따라 데이터를 정렬
         const sortedData = data.slice().sort((a, b) => {

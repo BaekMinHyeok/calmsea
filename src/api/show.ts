@@ -21,7 +21,7 @@ export async function createShow(data: PostState): Promise<string | null> {
 }
 
 // 게시글 전체조회
-export async function getAllShows(): Promise<PostState[]> {
+export async function getAllShows(pageParam: number): Promise<PostState[]> {
     const querySnapshot = await getDocs(collection(db, 'show'))
     const data = querySnapshot.docs.map((doc) => ({
         id: doc.id,

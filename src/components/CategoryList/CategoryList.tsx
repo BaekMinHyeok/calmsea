@@ -8,6 +8,7 @@ import { PostItem } from '@/components/PostItem/PostItem'
 import { TiArrowSortedDown, TiArrowSortedUp } from 'react-icons/ti'
 import * as S from '@/components/CategoryList/TotalList.styles'
 import { useAllShow } from '@/hooks/useShows'
+import { useIntersectionObserver } from '@/hooks/useIntersectionObserver'
 
 export function CategoryList({
     category,
@@ -17,13 +18,14 @@ export function CategoryList({
     filterFn?: (a: PostState, b: PostState) => number
 }) {
     const [sortOption, setSortOption] = useState('latest')
-    const { data, isLoading, error } = useAllShow()
+    const { data, isLoading, error, hasNextPage, fetchNextPage } = useAllShow()
     const [dropDownOpen, setDropDownOpen] = useRecoilState(dropDown)
 
     // 게시물의 카테고리와 필터, 정렬을 적용한 데이터
     const filteredAndSortedRows = useMemo(() => {
-        if (data) {
-            const filteredRows = data.filter(
+        if (data && data.pages) {
+            const allPosts = data.pages.flatMap((page) => page)
+            const filteredRows = allPosts.filter(
                 (post) => post.category === category,
             )
             return filterFn
@@ -44,6 +46,13 @@ export function CategoryList({
         }
     }
     const totalPosts = filteredAndSortedRows.length
+
+    // 무한 스크롤을 위한 Intersection Observer 설정
+    const { setTarget } = useIntersectionObserver({
+        hasNextPage,
+        fetchNextPage,
+    })
+
     return (
         <S.Container>
             {showSortButtons && (
@@ -111,6 +120,11 @@ export function CategoryList({
                 {filteredAndSortedRows.map((post) => (
                     <PostItem key={post.id} post={post} />
                 ))}
+                {/* Intersection Observer 타겟 */}
+                <div
+                    ref={setTarget}
+                    style={{ height: '10px', background: 'transparent' }}
+                ></div>
             </S.PostWrap>
         </S.Container>
     )

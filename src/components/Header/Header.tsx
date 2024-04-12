@@ -1,27 +1,58 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import * as S from './Header.styles'
 import { FaGithub } from 'react-icons/fa'
 import { IoShareSocial } from 'react-icons/io5'
 import { MenuModal } from '@/components/Modal/MenuModal'
 import { Link } from 'react-router-dom'
 import { SearchInput } from '../Form/SearchInput'
+import { auth } from '@/firebase'
+import { logout } from '@/\bapi/user'
+import Cookies from 'js-cookie'
 
 // const env = process.env
 // env.PUBLIC_URL = env.PUBLIC_URL || ''
 
 export function Header() {
     const [isOpenModal, setOpenModal] = useState<boolean>(false)
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
+
+    useEffect(() => {
+        const checkLoginStatus = async () => {
+            try {
+                auth.onAuthStateChanged((user) => {
+                    setIsLoggedIn(!!user)
+                })
+            } catch (error) {
+                console.error('로그인 상태 확인 오류:', error)
+            }
+        }
+        checkLoginStatus()
+    }, [])
+    // 모달창
     const onClickToggleModal = useCallback(
         () => setOpenModal(!isOpenModal),
         [isOpenModal],
     )
-
+    // 로그아웃
+    const handleLogout = async () => {
+        try {
+            await logout()
+            Cookies.remove('accessToeken')
+            setIsLoggedIn(false)
+            alert('로그아웃에 성공하였습니다.')
+        } catch (error) {
+            // 에러 메시지를 표시합니다.
+            console.error(error)
+            alert('로그아웃에 실패하였습니다.')
+        }
+    }
     return (
         <S.Container>
             <S.TopMenu>
                 <Link to="/">
                     <img src={'assets/logo.svg'} alt="logo" />
                 </Link>
+
                 <div onClick={onClickToggleModal}>
                     <img src={'assets/menu.svg'} alt="menu" />
                 </div>
@@ -29,6 +60,25 @@ export function Header() {
                     <MenuModal onClickToggleModal={onClickToggleModal}>
                         <S.ModalContent>
                             <S.ModalMenu>
+                                {isLoggedIn ? (
+                                    <li onClick={handleLogout}>
+                                        <Link
+                                            to="/"
+                                            onClick={onClickToggleModal}
+                                        >
+                                            로그아웃
+                                        </Link>
+                                    </li>
+                                ) : (
+                                    <li>
+                                        <Link
+                                            to="/login"
+                                            onClick={onClickToggleModal}
+                                        >
+                                            로그인
+                                        </Link>
+                                    </li>
+                                )}
                                 <li>
                                     <Link
                                         to="/showlist/1"

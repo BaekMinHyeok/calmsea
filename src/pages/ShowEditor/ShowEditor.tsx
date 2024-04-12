@@ -183,6 +183,7 @@ export function ShowEditor() {
             <S.Wrap>
                 <TextInput
                     id="title-input"
+                    type="text"
                     label="제목"
                     placeholder="제목을 입력해주세요."
                     value={showInput.title}
@@ -243,6 +244,7 @@ export function ShowEditor() {
                 </S.TimeContainer>
                 <TextInput
                     id="perfomer-input"
+                    type="text"
                     label="출연자"
                     placeholder="출연자를 작성해주세요."
                     value={showInput.performer}

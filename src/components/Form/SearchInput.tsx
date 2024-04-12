@@ -30,7 +30,7 @@ export function SearchInput() {
             setKeyword(inputKeyword)
             // 1글자 이상 입력했을 때에만 검색을 수행합니다.
             if (inputKeyword.length >= 1) {
-                const allShows = await getAllShows()
+                const allShows = await getAllShows(0)
                 // 입력 값에 기반하여 공연을 필터링합니다.
                 const filteredResults = allShows
                     .filter((show) => show.title.includes(inputKeyword))
@@ -51,7 +51,7 @@ export function SearchInput() {
     const handleSearch = useCallback(async () => {
         if (keyword.length >= 1) {
             try {
-                const results = await getAllShows().then((shows) =>
+                const results = await getAllShows(0).then((shows) =>
                     shows.filter((show) => show.title.includes(keyword)),
                 )
                 setSearchState({ ...searchStateAtom, keyword, results })

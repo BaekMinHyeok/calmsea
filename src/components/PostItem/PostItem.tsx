@@ -33,7 +33,7 @@ export const PostItem = ({ post }: PostItemProps) => {
     async function handleDelete() {
         const isConfirmed = window.confirm('정말로 삭제하시겠습니까?')
         if (!isConfirmed) {
-            return // If the user cancels the deletion, return early
+            return
         }
         try {
             if (typeof post.selectedImage === 'string') {
