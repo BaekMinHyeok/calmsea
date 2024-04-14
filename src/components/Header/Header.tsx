@@ -8,6 +8,7 @@ import { SearchInput } from '../Form/SearchInput'
 import { auth } from '@/firebase'
 import { logout } from '@/\bapi/user'
 import Cookies from 'js-cookie'
+import LogoIcon from '@/assets/LogoIcon'
 
 // const env = process.env
 // env.PUBLIC_URL = env.PUBLIC_URL || ''
@@ -50,7 +51,8 @@ export function Header() {
         <S.Container>
             <S.TopMenu>
                 <Link to="/">
-                    <img src={'assets/logo.svg'} alt="logo" />
+                    {/* <img src={'assets/logo.svg'} alt="logo" /> */}
+                    <LogoIcon fill="#103680" />
                 </Link>
 
                 <div onClick={onClickToggleModal}>
